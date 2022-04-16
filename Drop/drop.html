@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" href="style.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+   </head>
+   <body>
+      <nav>
+         <label for="btn" class="button">College of Liberal Arts
+         <span class="fas fa-caret-down"></span>
+         </label>
+         <input type="checkbox" id="btn">
+         <ul class="menu">
+            <li><a href="#">Rizal Life Works </a></li>
+            <li>
+               <label for="btn-2" class="first">Embedded Programming
+            </li>
+            <li>
+               <label for="btn-3" class="second">Physical Education
+               </label>
+              <li><a href="#">NSTP</a></li>
+            <li><a href="#">EKAWP</a></li>
+         </ul>
+      </nav>
+      <script>
+         $('nav .button').click(function(){
+           $('nav .button span').toggleClass("rotate");
+         });
+           $('nav ul li .first').click(function(){
+             $('nav ul li .first span').toggleClass("rotate");
+           });
+           $('nav ul li .second').click(function(){
+             $('nav ul li .second span').toggleClass("rotate");
+           });
+      </script>
+   </body>
+</html>

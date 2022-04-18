@@ -1,0 +1,215 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    overflow-y: visible;
+    overflow-x: hidden;
+}
+ul{
+    list-style: none;
+}
+ .clear{
+        clear: both;
+    }
+ a{
+   text-decoration: none;
+    color: #000;
+     cursor: pointer;
+    }
+.container{
+    width: 100%;
+    height: auto;
+}
+.left{
+    padding-top: 30px;
+    background-color: wheat;
+    width: 35%;
+    height: 695px;
+    float:left;
+    background-color: #fff;
+}
+
+.logo{
+    display: flex;
+    flex-direction: column;
+    width: 68%;
+    margin: 0px auto 30px auto;
+    align-items: center;
+    justify-content: center;
+}
+.logo a{
+    height:auto;
+}
+.logo img{
+    width: 190px;
+    height: 40px;
+}
+.logo h2{
+    font-weight: bold;
+    margin: 20px 0px 0px 0px;
+    font-family: sans-serif;
+    font-size: 33px;
+    color: rgba(0, 0, 0, 0.72);
+    letter-spacing: 1px;
+}
+.left-content form{
+    width: 68%;
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+.forgot-pass{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+}
+.forgot-pass a{
+     font-size: 12px;
+    color:rgba(255, 0, 0, 0.61);
+    font-family: sans-serif;
+    padding-right: 4px;
+    font-weight: bold;
+}
+.left-content p{
+    font-size: 13px;
+    color:rgba(0, 0, 0, 0.74);
+    font-family: sans-serif;
+}
+.left-content input[type=email], input[type=password]{
+    width: 100%;
+    border: 1px rgba(0, 0, 0, 0.28) solid;
+    outline-color: rgba(255, 128, 0, 0.67);
+    padding: 13px 20px;
+    color: rgba(0, 0, 0, 0.47);
+    border-radius: 3px;
+    margin: 5px 0 15px 0;
+}
+.info1 select{
+    border: 1px rgba(0, 0, 0, 0.28) solid;
+    outline-color: rgba(255, 128, 0, 0.67);
+    padding: 9px 20px;
+    color: rgba(0, 0, 0, 0.47);
+    border-radius: 3px;
+}
+.info-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0px 0px 15px 0px;
+}
+.info{
+    width: 49%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 5px;
+}
+.info1{
+     width: 49%;
+    display: flex;
+    flex-direction: column;
+}
+.info p{
+    padding: 5px 0px;
+}
+.info1 p{
+    padding: 5px 0px;
+}
+input[type=text]{
+    border: 1px rgba(0, 0, 0, 0.28) solid;
+    outline-color: rgba(255, 128, 0, 0.67);
+    padding: 10px 20px;
+    color: rgba(0, 0, 0, 0.47);
+    border-radius: 3px;
+}
+.error{
+    text-align: center;
+}
+.error p{
+    color: rgba(255, 0, 0, 0.78);
+    letter-spacing: 1px;
+    
+}
+.button1{
+    width: 100%;
+    cursor: pointer;
+    border: 1px rgba(255, 78, 0, 0.56) solid;
+    outline-color: rgba(255, 128, 0, 0.67);
+    padding: 13px 20px;
+    background-color: rgba(255, 165, 0, 0.81);
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: 14px;
+    border-radius: 3px;
+    margin: 10px 0px 20px 0px;
+    position: relative;
+    z-index: 1;
+}
+.button1:hover{
+    color: #fff;
+    cursor: pointer;
+}
+.button1:before{
+    transition: 0.5s all ease;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    right: 50%;
+    bottom: 0;
+    opacity: 0;
+    content: "";
+    background-color: rgb(255, 165, 0);
+}
+.button1:hover:before{
+    transition: 0.5s all ease;
+    left: 0;
+    right: 0;
+    opacity: 1;
+    z-index: -1;
+}
+.bottom-content{
+    text-align: center;
+}
+.bottom-content a{
+     font-size: 13px;
+    color:rgba(255, 0, 0, 0.61);
+    font-family: sans-serif;
+    padding-right: 4px;
+    font-weight: bold;
+}
+.bottom-content a:hover{
+    transition: 0.5s all ease;
+    color: #ff0000;
+}
+.bottom-content span{
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.47);
+    font-family: sans-serif;
+    padding-right: 4px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.right{
+    background-image: url(../img/login_background.png);
+    background-position:right;
+    background-repeat: no-repeat;
+    width: 65%;
+    float: right;
+    height: 695px;
+    position: relative;
+}
+.ucc-logo{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+.ucc-logo img{
+    height: 105px;
+    width: 100px;
+}
+
+

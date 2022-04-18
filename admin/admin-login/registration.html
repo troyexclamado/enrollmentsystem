@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="registration.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title">Registration</div>
+        <div class="content">
+          <form action="registration.php" method="post">
+            <div class="user-details">
+              <div class="input-box">
+                <span class="details">Firstname</span>
+                <input type="text" name="firstname" placeholder="Enter your firstname" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Middlename</span>
+                <input type="text" name="middlename" placeholder="Enter your middlename" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Lastname</span>
+                <input type="text" name="lastname" placeholder="Enter your lastname" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Email</span>
+                <input type="text" name="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Username</span>
+                <input type="text" name="username"placeholder="Enter your username" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Password</span>
+                <input type="text" name="password1"placeholder="Enter your password" id="password1" required>
+              </div>
+              <div class="input-box">
+                <span class="details">Confirm Password</span>
+                <input type="text" name="password2" placeholder="Confirm your password" id="password2" required>
+              </div>
+            </div>
+            <div class="gender-details">
+              <input type="radio" name="accountType" id="dot-1" value="ADMINISTRATOR">
+              <input type="radio" name="accountType" id="dot-2" value="FACILITATOR" checked>
+              <input type="radio" name="accountType" id="dot-3" value="PROFESSOR">
+              <span class="gender-title">Account Type</span>
+              <div class="category">
+                <label for="dot-1">
+                <span class="dot one"></span>
+                <span class="gender">Administrator</span>
+              </label>
+              <label for="dot-2">
+                <span class="dot two"></span>
+                <span class="gender">Facilitator</span>
+              </label>
+              <label for="dot-3">
+                <span class="dot three"></span>
+                <span class="gender">Professor</span>
+                </label>
+              </div>
+            </div>
+            <div class="button">
+              <input type="submit" value="Register" name="submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    
+</body>
+<script>
+    var checkPassword = function(){
+        if(document.getElementById('password1').value == document.getElementById('password2').value){
+            alert("Password are not the same");
+        }
+    }
+</script>
+</html>

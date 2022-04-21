@@ -2,6 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    
 }
 body{
     overflow-y: visible;
@@ -162,8 +165,9 @@ ul{
 }
 
 .right{
-    background-image: url(../img/login_background.png);
-    background-position:right;
+    background-image: url(../img/school.png);
+    background-position:center;
+    background-size: cover;
     background-repeat: no-repeat;
     width: 65%;
     float: right;

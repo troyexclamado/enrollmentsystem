@@ -16,8 +16,9 @@
 				$_SESSION['ID'] = $row['accountID'];
 				$_SESSION['Email'] = $row['email'];
 				$_SESSION['Password'] = $row['password'];
-				echo "<script>window.open('index.php','self')</script>";
-
+				
+				header('location: index.php');
+            	die();
 			}
 		}
 		else{

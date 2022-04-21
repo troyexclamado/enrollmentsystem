@@ -1,11 +1,11 @@
 <?php
-    require_once "includes/register.inc.php";
+    require_once "includes/register_old.inc.php";
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/register.css?<?php echo time(); ?>">
+    <link rel="stylesheet" type="text/css" href="css/register_old.css?<?php echo time(); ?>">
     <title>Enrollment Management System</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
        <a href=""> <img src="img/logo-orange-black.png"></a>
         <h2>Sign Up</h2>
             </div>
-        <form method="post" action="register.php">
+        <form method="post" action="register_old.php">
             <div class="info-container">
             <div class="info">
         <p>First Name</p>
@@ -63,6 +63,25 @@
                     </select>
             </div>
                 </div>   
+              <p>Student Number</p>
+        <?php
+         if(isset($_POST['studnum'])){
+            echo '<input type="text" name="studnum" onkeypress="inputnumber(event)" placeholder="Student Number" value="'.$studnum.'" required>';
+         }
+            else
+                { echo '<input type="text" name="studnum" onkeypress="inputnumber(event)" placeholder="Student Number" required>  '; 
+         }
+         ?>
+        <?php
+        if(isset($_SESSION['studnum_exist'])){
+         ?>
+
+            <div class="error">
+                <p><?php echo $_SESSION['studnum_exist'];?></p>
+            </div>
+        <?php } 
+        else{
+        }?>
         <p>Email</p>
         <?php
          if(isset($_POST['email'])){
@@ -82,7 +101,7 @@
         <?php } 
         else{
         }?>
-
+           
             <div class="forgot-pass">
                 <p>Password</p>
                 </div>
@@ -117,17 +136,31 @@
       </div>
       <div class="right">
            <div class="side-nav">
-                  <a href="register_old.php">Old Student</a>
+                  <a href="register.php">New Student</a>
               </div>
           <div class="ucc-logo">
           <img src="img/ucc_logo.png">  
           </div>
       </div>
     </div>
+     <!--- End Form --->  
+        <script type="text/javascript">
+            
+            function inputnumber(evt){
+
+            var char = String.fromCharCode(evt.which);
+
+            if(!(/[0-9]/.test(char))){
+                evt.preventDefault();
+
+            }
+        }
+        </script>
 </body>
 </html>
 <?php
    unset($_SESSION['not_match']);
    unset($_SESSION['pass_count']);
    unset($_SESSION['email_exist']);
+   unset($_SESSION['studnum_exist']);
 ?>

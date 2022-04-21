@@ -37,7 +37,7 @@ ul{
     display: flex;
     flex-direction: column;
     width: 68%;
-    margin: 0px auto 30px auto;
+    margin: 0px auto 15px auto;
     align-items: center;
     justify-content: center;
 }
@@ -79,20 +79,21 @@ ul{
     font-size: 13px;
     color:rgba(0, 0, 0, 0.74);
     font-family: sans-serif;
+    padding: 0px 0px 3px 0px;
 }
-.left-content input[type=email], input[type=password]{
+.left-content input[type=email], input[type=password], input[name=studnum]{
     width: 100%;
     border: 1px rgba(0, 0, 0, 0.28) solid;
     outline-color: rgba(255, 128, 0, 0.67);
-    padding: 13px 20px;
+    padding: 11px 20px;
     color: rgba(0, 0, 0, 0.47);
     border-radius: 3px;
-    margin: 5px 0 15px 0;
+    margin: 1px 0 10px 0;
 }
 .info1 select{
     border: 1px rgba(0, 0, 0, 0.28) solid;
     outline-color: rgba(255, 128, 0, 0.67);
-    padding: 9px 20px;
+    padding: 10px 20px;
     color: rgba(0, 0, 0, 0.47);
     border-radius: 3px;
 }
@@ -113,15 +114,15 @@ ul{
     flex-direction: column;
 }
 .info p{
-    padding: 5px 0px;
+    padding: 2px 0px;
 }
 .info1 p{
-    padding: 5px 0px;
+    padding: 2px 0px;
 }
 input[type=text]{
     border: 1px rgba(0, 0, 0, 0.28) solid;
     outline-color: rgba(255, 128, 0, 0.67);
-    padding: 10px 20px;
+    padding: 11px 20px;
     color: rgba(0, 0, 0, 0.47);
     border-radius: 3px;
 }
@@ -146,7 +147,7 @@ input[type=text]{
     font-family: sans-serif;
     font-size: 14px;
     border-radius: 3px;
-    margin: 10px 0px 20px 0px;
+    margin: 10px 0px 10px 0px;
     position: relative;
     z-index: 1;
 }
@@ -196,11 +197,11 @@ input[type=text]{
 }
 
 .right{
-    background-image: url(../img/school1.png);
+    background-image: url(../img/school2.png);
     background-position:right;
-    background-repeat: no-repeat;
-    background-position: center;
+     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     width: 65%;
     float: right;
     height: 695px;
@@ -210,7 +211,7 @@ input[type=text]{
         transform: rotate(90deg);
         position: absolute;
         top: 70px;
-        left: -79px;
+        left: -82px;
 }
 .side-nav a{
     font-size: 16px;

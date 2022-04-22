@@ -297,21 +297,21 @@ h3{
     justify-content: center;
     width: 100%;
     padding: 5px;
-    gap: 10px;
+
 }
 .enrollment .container .title h2{
     font-family: GothamUltra;
 }
 .enrollment .container .title{
     width: 100%;
-    text-align: center;
+    
     margin-bottom: 10px;
 }
 .enrollment .container .row{
     display: grid;
     margin: 15px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 40px;
+
 }
 .enrollment .container .row .inputbox{
     position: relative;

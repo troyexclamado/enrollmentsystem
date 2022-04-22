@@ -7,6 +7,7 @@ if(isset($_POST['submit_info'])){
 	$Firstname = $_POST['fname'];
 	$Midname = $_POST['mname'];
 	$Lastname = $_POST['lname'];
+    $studnum = $_POST['studnum'];
 	$Email = $_POST['email'];
 	$position = $_POST['position'];
 	$pass = $_POST['pass'];
@@ -21,6 +22,14 @@ if(isset($_POST['submit_info'])){
 		return;
 
 	}
+	$sql2 = "SELECT * FROM accounts WHERE student_number ='".$studnum."'";
+	$result2 = mysqli_query($conn, $sql2);
+
+	if(mysqli_num_rows($result2) > 0){
+		$_SESSION['studnum_exist'] = "Student number already exist"; 
+		return;
+	}
+	
 	if($count < 6){
 		$_SESSION['pass_count'] = "Password must be 6 or more";
 		return;
@@ -32,8 +41,8 @@ if(isset($_POST['submit_info'])){
 	if($pass == $pass1){
 		$Password = md5($pass1);
 
-		$sql2 = "INSERT INTO accounts(email, firstname, lastname, password, middlename, position) VALUES('".$Email."','".$Firstname."','".$Lastname."','".$Password."','".$Midname."', '".$position."')";
-	$success = mysqli_query($conn, $sql2);
+		$sql3 = "INSERT INTO accounts(student_number, email, firstname, lastname, password, middlename, position) VALUES('".$studnum."','".$Email."','".$Firstname."','".$Lastname."','".$Password."','".$Midname."', '".$position."')";
+	$success = mysqli_query($conn, $sql3);
 	if($success){
 		$_SESSION['register'] = "Sign up complete";
 		echo "<script>window.open('login.php','self')</script>";

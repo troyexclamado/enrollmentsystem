@@ -12,7 +12,7 @@
 
         if($results['email'] == $username && $results['password'] == $password){
             echo '<script>alert("Welcome admin!")</script>';
-            echo '<script>window.location.href="././admin-menu/Admin.html"</script>';
+            echo '<script>window.location.href="/admin/admin-menu/Admin.html"</script>';
         } else {
             echo '<script>alert("Login failed!")</script>';
         }

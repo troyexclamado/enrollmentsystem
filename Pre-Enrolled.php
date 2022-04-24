@@ -245,9 +245,10 @@
                 if(isset($_POST['btnreject'])){
                     $preID  = $_POST['btnreject'];
                     //echo $preID;
-                    $deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
-                    $resultdeleteinfo = $conn->query($deleteinfo);
-                    if($resultdeleteinfo){
+                    //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
+                    $rejectinfo = "update tblstudentinfo set statusID='3' where accountID = '$preID'";
+                    $resultrejectinfo = $conn->query($rejectinfo);
+                    if($resultrejectinfo){
                         echo "deleted";
                         echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                     }else{

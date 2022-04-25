@@ -3,7 +3,7 @@
     session_start();
     if(isset($_SESSION['ID'])){
           $accountID = $_SESSION['ID'];
-            $sql1 = "SELECT * FROM preenrolledstudents WHERE accountID = '$accountID'";
+            $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
                 $_SESSION['enrolled'] = $row['accountID'];
@@ -122,7 +122,7 @@
                 <?php
 
                 $ID = $_SESSION['ID'];
-                $sql = "SELECT * FROM accounts WHERE accountID = '$ID'";
+                $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
                 $res = mysqli_query($conn, $sql);
                 if($row = mysqli_fetch_array($res)){
                     $lastname = $row['lastname'];

@@ -23,12 +23,21 @@
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
 
-        $preenrollment = "INSERT INTO preenrolledstudents(accountID, firstname, middlename, lastname, birthday, birthplace, emailAddress, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, course, year, semester, position, status) VALUES('$accountID','$firstname','$middlename','$lastname','$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$course', '$year', '$semester', 'REGULAR', 'PRE-ENROLLED')";
+        $upperaddress = strtoupper($address);
+        $upperbirthplace = strtoupper($birthplace);
+
+        $sql = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
+        $res = mysqli_query($conn, $sql);
+        while($row = mysqli_fetch_array($res)){
+            $courseID = $row['courseID'];
+        }
+
+        $preenrollment = "INSERT INTO tblstudents(accountID, address, birthday, birthplace, email, contactNumber, courseID, enrollmentStatus, scheme, position) VALUES('$accountID', '$upperaddress', '$birthday','$upperbirthplace','$email','$contactnumber', '$courseID', 'PENDING', '1', 'REGULAR')";
         $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
         {
-        echo "<script>window.open('enroll.php#subject-container', 'self')</script>";
+        header('location:  enroll.php#subject-container');
         die();
     }
     }
@@ -54,12 +63,23 @@
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
 
-        $sql2 = "SELECT * FROM subjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
-        $result = mysqli_query($conn, $sql2);
-        while($row = mysqli_fetch_array($result)){
-            $subjectCode = $row['subjectCode'];
+        $upperaddress = strtoupper($address);
+        $upperbirthplace = strtoupper($birthplace);
 
-            $sql3 = "INSERT INTO back_subjects(accountNumber, subject_code, status) VALUES('".$accountID."', '".$subjectCode."', 'Save')";
+        $sql2 = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
+        $result = mysqli_query($conn, $sql2);
+
+        while($row = mysqli_fetch_array($result)){
+            $courseID = $row['courseID'];
+        }
+
+        $backsubject = "SELECT subjectCode FROM tblsubjects WHERE courseID = '$courseID'";
+        $success = mysqli_query($conn, $backsubject);
+
+        while($row_backsubject = mysqli_fetch_array($success)){
+            $subjectCode = $row_backsubject['subjectCode'];
+
+            $sql3 = "INSERT INTO tblbacksubjects(subjectCode, accountID, status) VALUES('".$subjectCode."','".$accountID."', 'SAVE')";
             $insert = mysqli_query($conn, $sql3);
         }
 
@@ -69,12 +89,13 @@
       {  
            if(trim($_POST["name"][$i] != ''))  
            {  
-                $sql = "INSERT INTO back_subjects(accountNumber , subject_code, status) VALUES('".$accountID."','".mysqli_real_escape_string($conn, $_POST["name"][$i])."','Required')";  
+            $uppersubject = strtoupper($_POST["name"][$i]);
+                $sql = "INSERT INTO tblbacksubjects(accountID , subjectCode, status) VALUES('".$accountID."','".$uppersubject."','REQUIRED')";  
                 $res = mysqli_query($conn, $sql);          
            }  
       }  
         if($number == $i){
-                    $preenrollment = "INSERT INTO preenrolledstudents(accountID, firstname, middlename, lastname, birthday, birthplace, emailAddress, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, course, year, semester, position, status) VALUES('$accountID','$firstname','$middlename','$lastname','$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$course', '$year', '$semester', 'IRREGULAR', 'PRE-ENROLLED')";
+                    $preenrollment = "INSERT INTO tblstudents(accountID, address, birthday, birthplace, email, contactNumber, courseID, enrollmentStatus, scheme, position) VALUES('$accountID', '$upperaddress', '$birthday','$upperbirthplace','$email','$contactnumber', '$courseID', 'PENDING', '1', 'IRREGULAR')";
         $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
@@ -93,7 +114,7 @@
         $accountID = $_SESSION['ID'];
         $subject_code = $_GET['action'];
 
-        $sql = "UPDATE back_subjects SET status = 'Taken' WHERE accountNumber = '$accountID' AND subject_code = '$subject_code' AND status = 'Save'";
+        $sql = "UPDATE tblbacksubjects SET status = 'PENDING' WHERE accountID = '$accountID' AND subjectCode = '$subject_code' AND status = 'SAVE'";
         $res = mysqli_query($conn, $sql);
         if($res){
             echo "<script>window.open('irregular_enroll.php#subject-container', 'self')</script>";

@@ -440,6 +440,12 @@ h3{
     color: rgba(0, 0, 0, 0.75);
     font-family: 'Anek Odia', sans-serif;
 }
+.units{
+    width: 15%;
+}
+.code{
+    width: 20%;
+}
 /* MODAL BOX */
     
 

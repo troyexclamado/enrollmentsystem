@@ -7,7 +7,7 @@
 		$Pass = $_POST['pass'];
 		$Password = md5($Pass);
 
-		$sql = "SELECT * FROM accounts WHERE email = '".$Email."' AND password = '".$Password."'";
+		$sql = "SELECT * FROM tblaccounts WHERE email = '".$Email."' AND password = '".$Password."'";
 		$result = mysqli_query($conn, $sql);
 
 		if(mysqli_num_rows($result) == 1){
@@ -25,7 +25,7 @@
 				$_SESSION['failed'] = "Wrong password or email";
 			}
 
-		$sql1 = "SELECT * FROM accounts WHERE email = '".$Email."'";
+		$sql1 = "SELECT * FROM tblaccounts WHERE email = '".$Email."'";
 		$success = mysqli_query($conn, $sql1);
 
 		if(mysqli_num_rows($success) == 0){

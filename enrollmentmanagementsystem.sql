@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2022 at 06:18 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.11
+-- Generation Time: Apr 25, 2022 at 11:56 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,9 +34,16 @@ CREATE TABLE `tblaccounts` (
   `firstname` varchar(256) NOT NULL,
   `lastname` varchar(256) NOT NULL,
   `middlename` varchar(256) NOT NULL,
-  `position` varchar(20) NOT NULL,
-  `studentNumber` int(8) NOT NULL
+  `position` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tblaccounts`
+--
+
+INSERT INTO `tblaccounts` (`accountID`, `email`, `password`, `firstname`, `lastname`, `middlename`, `position`) VALUES
+(1, 'espinola.demverleen.bscs2019@gmail.com', '123', 'demverleen', 'espinola', 'rovira', '3'),
+(2, 'espinoldanica@gmail.com', 'asd', 'danica', 'espinola', 'rovira', '3');
 
 -- --------------------------------------------------------
 
@@ -102,24 +109,77 @@ CREATE TABLE `tblprofessorsubjects` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tblstudentdatastatus`
+--
+
+CREATE TABLE `tblstudentdatastatus` (
+  `statusID` varchar(5) NOT NULL,
+  `statusDescription` varchar(55) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tblstudentdatastatus`
+--
+
+INSERT INTO `tblstudentdatastatus` (`statusID`, `statusDescription`) VALUES
+('0', 'Pending'),
+('1', 'Accepted'),
+('3', 'Rejected');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblstudentinfo`
+--
+
+CREATE TABLE `tblstudentinfo` (
+  `pre_id` int(11) NOT NULL,
+  `accountID` int(10) NOT NULL,
+  `firstname` varchar(55) NOT NULL,
+  `middlename` varchar(55) NOT NULL,
+  `lastname` varchar(55) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `birthday` date NOT NULL,
+  `birthplace` varchar(50) NOT NULL,
+  `email` varchar(55) NOT NULL,
+  `contactNumber` varchar(11) NOT NULL,
+  `lastSchoolAttended` varchar(100) NOT NULL,
+  `lastSchoolYearAttended` varchar(100) NOT NULL,
+  `lastSchoolAddress` varchar(100) NOT NULL,
+  `courseID` varchar(5) NOT NULL,
+  `statusID` varchar(5) NOT NULL,
+  `dateOfApplication` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tblstudentinfo`
+--
+
+INSERT INTO `tblstudentinfo` (`pre_id`, `accountID`, `firstname`, `middlename`, `lastname`, `fullname`, `address`, `birthday`, `birthplace`, `email`, `contactNumber`, `lastSchoolAttended`, `lastSchoolYearAttended`, `lastSchoolAddress`, `courseID`, `statusID`, `dateOfApplication`) VALUES
+(1, 1, 'demverleen', 'rovira', 'espinola', 'espinola,demverleen rovira', 'bagong silang caloocan city', '1999-10-07', 'caloocan city', 'espinola.demverleen.bscs2019@gmail.com', '09673222205', 'OLFU', '2018', 'Lagro quezon city', '1', '1', '2022-04-24'),
+(2, 2, 'danica', 'rovira', 'espinola', 'espinola,danica rovira', 'bagong silang caloocan city', '2005-10-05', 'caloocan city', 'espinoladanica@gmail.com', '09123456789', 'tala', '2018', 'tala caloocan city', '1', '0', '2022-04-23');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tblstudents`
 --
 
 CREATE TABLE `tblstudents` (
   `accountID` int(10) NOT NULL,
-  `studentNumber` int(8) NOT NULL,
-  `address` varchar(512) NOT NULL,
-  `birthday` date NOT NULL,
-  `birthplace` varchar(256) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `contactNumber` varchar(256) NOT NULL,
-  `courseID` int(10) NOT NULL,
-  `section` varchar(5) NOT NULL,
-  `enrollmentStatus` varchar(20) NOT NULL,
+  `studentNumber` varchar(10) NOT NULL,
   `scheme` int(1) NOT NULL,
-  `dateOfEnrollment` datetime NOT NULL,
+  `dateOfEnrollment` date NOT NULL,
   `MIS_ID` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tblstudents`
+--
+
+INSERT INTO `tblstudents` (`accountID`, `studentNumber`, `scheme`, `dateOfEnrollment`, `MIS_ID`) VALUES
+(1, '2022000001', 0, '2022-04-24', 0);
 
 -- --------------------------------------------------------
 
@@ -188,6 +248,13 @@ ALTER TABLE `tblmis`
   ADD PRIMARY KEY (`MIS_ID`);
 
 --
+-- Indexes for table `tblstudentinfo`
+--
+ALTER TABLE `tblstudentinfo`
+  ADD PRIMARY KEY (`pre_id`),
+  ADD UNIQUE KEY `accountID` (`accountID`);
+
+--
 -- Indexes for table `tblstudents`
 --
 ALTER TABLE `tblstudents`
@@ -208,7 +275,7 @@ ALTER TABLE `tblsubjectschedules`
 -- AUTO_INCREMENT for table `tblaccounts`
 --
 ALTER TABLE `tblaccounts`
-  MODIFY `accountID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `accountID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tblmis`
@@ -217,10 +284,10 @@ ALTER TABLE `tblmis`
   MODIFY `MIS_ID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tblstudents`
+-- AUTO_INCREMENT for table `tblstudentinfo`
 --
-ALTER TABLE `tblstudents`
-  MODIFY `studentNumber` int(8) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `tblstudentinfo`
+  MODIFY `pre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tblsubjectschedules`

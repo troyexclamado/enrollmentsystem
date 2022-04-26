@@ -141,7 +141,7 @@
                     </div>
                     <div class="inputbox">
                          <label for="name">Contact Number</label>
-                        <input type="text" id="contactnumber" name = "contactnumber" onkeypress="inputnumber(event)" placeholder="Enter your Contact Number" required>
+                        <input type="text" id="contactnumber" name = "contactnumber" placeholder="Enter your Contact Number" required>
                        
                     </div>
                 </div>
@@ -202,13 +202,13 @@
                 <div class="row">
                     <div class="inputbox">
                         <label for="year">Year</label>
-                        <input type="text" id="year" name = "year" maxlength="1" onkeypress="inputnumber(event)" placeholder="Enter year" required>
+                        <input type="text" id="year" name = "year" placeholder="Enter year" required>
                         
                     </div>
                     
                     <div class="inputbox">
                          <label for="semester">Semester</label>
-                        <input type="text" id="semester" name = "semester" maxlength="1" onkeypress="inputnumber(event)" placeholder="Enter Semester" required>
+                        <input type="text" id="semester" name = "semester" placeholder="Enter Semester" required>
                        
                     </div>
                 </div>
@@ -254,24 +254,33 @@
                     <tr>
                 <th>Subject Code</th>
                 <th>Subject Name</th>
-                <th>Status</th>        
+                <th>Action</th>        
                     </tr>
                 </thead>
                 <?php
-             
-                $sql3 = "SELECT * FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'Save' ORDER BY subjectCode ASC";
+
+                $sql2 = "SELECT * FROM preenrolledstudents WHERE accountID = '$accountID'";
+                $result = mysqli_query($conn, $sql2);
+                while($row = mysqli_fetch_array($result)){
+                    $course = $row['course'];
+                    $year = $row['year'];
+                    $semester = $row['semester'];
+                }
+
+                $sql3 = "SELECT * FROM back_subjects WHERE accountNumber = '$accountID' AND status = 'Save' ORDER BY subject_code ASC";
                 $res = mysqli_query($conn, $sql3);
 
                 while($row_subjects = mysqli_fetch_array($res)){
 
-                    $subject_code = $row_subjects['subjectCode'];
+                    $subject_id =   $row_subjects['back_subjectID'];
+                    $subject_code = $row_subjects['subject_code'];
                     $status = $row_subjects['status'];
 
-                $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code'";
+                $sql = "SELECT * FROM subjects WHERE subjectCode = '$subject_code'";
                 $success = mysqli_query($conn, $sql);
 
                 while($row = mysqli_fetch_array($success)){
-                    $subject_name = $row['subjectDescription'];
+                    $subject_name = $row['subjectName'];
 
                 ?>
                 <tbody>
@@ -282,49 +291,48 @@
                     </tr>
                     <?php } ?>
                 <?php } ?>
-
                     <?php
-
-                $sql = "SELECT * FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'Required'";
+                 $sql = "SELECT subject_code FROM back_subjects WHERE accountNumber = '$accountID' AND status = 'Required'";
                 $result = mysqli_query($conn, $sql);
                 while($row = mysqli_fetch_array($result)){
-                    $subjectCode = $row['subjectCode'];
-                    $status = $row['status'];
+                    $subjectCode = $row['subject_code'];
                 
-               $sql2 = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
-               $ress = mysqli_query($conn, $sql2);
-               while($rowsubject = mysqli_fetch_array($ress)){
-                    $subjectName = $rowsubject['subjectDescription'];
-               
+
+                $getsubject = "SELECT * FROM subjects WHERE subjectCode = '$subjectCode'";
+                $res = mysqli_query($conn, $getsubject);
+                while($subjectrow = mysqli_fetch_array($res)){
+                    $subjectName = $subjectrow['subjectName'];
+            
                     ?>
                     <tr>
                     <td><?php echo $subjectCode;?></td>
                     <td><?php echo $subjectName;?></td>
-                    <td><p class="required">REQUIRED</p></td>
+                    <td><p class="required">Required</p></td>
                     </tr>
                   <?php } ?>
-                 <?php } ?>
+                   <?php } ?>
 
                    <?php
-                   $sql5 = "SELECT * FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'PENDING' ORDER BY subjectCode ASC";
+                   $sql5 = "SELECT * FROM back_subjects WHERE accountNumber = '$accountID' AND status = 'Taken' ORDER BY subject_code ASC";
                    $res = mysqli_query($conn, $sql5);
 
                     while($row_subj = mysqli_fetch_array($res)){
 
-                    $subj_code = $row_subj['subjectCode'];
+                    $subj_id =   $row_subj['back_subjectID'];
+                    $subj_code = $row_subj['subject_code'];
                     $status = $row_subj['status'];
 
-                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subj_code'";
+                    $sql = "SELECT * FROM subjects WHERE subjectCode = '$subj_code'";
                     $success = mysqli_query($conn, $sql);
 
                     while($row = mysqli_fetch_array($success)){
-                    $subject_name = $row['subjectDescription'];
+                    $subject_name = $row['subjectName'];
 
                    ?>
                     <tr>
                     <td><?php echo $subj_code;?></td>
                     <td><?php echo $subject_name;?></td>
-                    <td><p class="required">PENDING</p></td>
+                    <td><p class="required">Taken</p></td>
                 <?php } ?>
             <?php } ?>
                     </tr>
@@ -354,22 +362,7 @@
         function hideMenu(){
             navLinks.style.right = "-200px";
         }
-         function inputnumber(evt){
-
-            var char = String.fromCharCode(evt.which);
-
-            if(!(/[0-9]/.test(char))){
-                evt.preventDefault();
-
-            }
-        }
-         document.getElementById('year').addEventListener('keyup', function(){
-            this.value = (parseInt(this.value) < 1 || parseInt(this.value) > 4 || isNaN(this.value)) ? "" : (this.value)
-        });
-        document.getElementById('semester').addEventListener('keyup', function(){
-            this.value = (parseInt(this.value) < 1 || parseInt(this.value) > 2 || isNaN(this.value)) ? "" : (this.value)
-        });
-
+        
         $(document).ready(function(){  
       var i=1;  
       $('#add').click(function(){  

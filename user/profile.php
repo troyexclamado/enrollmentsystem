@@ -7,7 +7,7 @@
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
                 $_SESSION['enrolled'] = $row['accountID'];
-                $_SESSION['position'] = $row['position'];
+                 $_SESSION['position'] = $row['position'];
             }
     }
 
@@ -122,7 +122,7 @@
                 <?php
 
                 $ID = $_SESSION['ID'];
-                $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
+                $sql = "SELECT * FROM accounts WHERE accountID = '$ID'";
                 $res = mysqli_query($conn, $sql);
                 if($row = mysqli_fetch_array($res)){
                     $lastname = $row['lastname'];

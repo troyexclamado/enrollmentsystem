@@ -2,7 +2,7 @@
 $servername = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "enrollmentmanagementsystem";
+$dbname = "enrollmentsystem";
 
 $conn = mysqli_connect($servername, $dbusername, $dbpassword, $dbname);
 

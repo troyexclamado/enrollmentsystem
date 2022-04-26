@@ -23,23 +23,25 @@
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
 
-        $upperaddress = strtoupper($address);
-        $upperbirthplace = strtoupper($birthplace);
 
-        $sql = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
-        $res = mysqli_query($conn, $sql);
-        while($row = mysqli_fetch_array($res)){
-            $courseID = $row['courseID'];
+        //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
+        $courseID = "";
+        $sqlGetCourseDetails = "SELECT courseID FROM tblcoursedetails WHERE courseDescription = '$course' AND year = $year AND semester = $semester AND section = 'A'";
+        $getCourseDetails = mysqli_query($conn, $sqlGetCourseDetails);
+        while($coursedetails = mysqli_fetch_array($getCourseDetails)){
+            $courseID = $coursedetails['courseID'];
         }
 
-        $preenrollment = "INSERT INTO tblstudents(accountID, address, birthday, birthplace, email, contactNumber, courseID, enrollmentStatus, scheme, position) VALUES('$accountID', '$upperaddress', '$birthday','$upperbirthplace','$email','$contactnumber', '$courseID', 'PENDING', '1', 'REGULAR')";
+        $preenrollment = "INSERT INTO tblstudents(accountID, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1)";
+
         $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
         {
-        header('location:  enroll.php#subject-container');
+
+        echo "<script>window.open('enroll.php#subject-container','self')</script>";
         die();
-    }
+        }
     }
 
     /* IRREGULAR STUDENT SUBMIT */
@@ -67,6 +69,7 @@
         $upperbirthplace = strtoupper($birthplace);
 
         $sql2 = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
+
         $result = mysqli_query($conn, $sql2);
 
         while($row = mysqli_fetch_array($result)){

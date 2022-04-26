@@ -12,7 +12,6 @@
         if($row = mysqli_fetch_array($sqlCheckID))
         {
             $_SESSION['exist'] = $row['accountID'];
-            $_SESSION['position'] = $row['position'];
         }
     }
     else {
@@ -250,7 +249,8 @@
                     $courseID = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblsubjects WHERE courseID = '$courseID'";
+                $sql = "SELECT * FROM tblsubjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
+
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){

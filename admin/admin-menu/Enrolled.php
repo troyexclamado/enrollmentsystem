@@ -122,7 +122,7 @@
         </div>
 
         <div class="container">
-            <h1> PRE-ENROLLED STUDENTS</h1>
+            <h1>ENROLLED STUDENTS</h1>
             <div class="search">
                 <div class="search-box">
                     <input type="text" placeholder="Type here...">
@@ -141,9 +141,12 @@
                 </thead>
             <!-- PHP CODE TO FETCH DATA FROM ROWS-->
                 <?php
-                    $withstudentnum = "SELECT * FROM tblstudentinfo as t1 left join tblstudents as t2 on t1.accountID = t2.accountID where t2.studentNumber is not null;";
+                    // $withstudentnum = "SELECT * FROM tblstudentinfo as t1 left join tblstudents as t2 on t1.accountID = t2.accountID where t2.studentNumber is not null;";
+                    $withstudentnum = "SELECT * FROM tblstudents WHERE statusID = '1'";
                     $resultwithstudentnum = $conn->query($withstudentnum);
-                    if ($resultwithstudentnum->num_rows > 0) 
+                    // if ($resultwithstudentnum->num_rows > 0) 
+                    // {
+                    if ($resultwithstudentnum !== false && $resultwithstudentnum->num_rows > 0) //binago ko yung nakacomment sa taas kasi nag eerror pag walang data na nakuha kaya ichecheck muna kung meron laman ganon
                     {
                         while($row = $resultwithstudentnum->fetch_assoc()) 
                         {
@@ -154,7 +157,18 @@
                                         <p><?=$row['studentNumber']?></p>
                                     </td>
                                     <td>
-                                        <p><?=$row['fullname']?></p>
+                                        <p><?php 
+                                            //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                            $accountID = $row['accountID'];
+                                            $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                            $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                            while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                            ?>
+                                            <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                            <?php
+                                            }
+                                            ?></p>
                                     </td>
                                     <td>
                                         <p><?=$row['dateOfEnrollment']?></p>
@@ -166,6 +180,8 @@
                             </tr>
             <?php
                         }//end of while loop
+                     } else {
+                         echo '0 data found';
                      }//if ($result->num_rows > 0) end bracket
                 // $conn->close();
                 
@@ -301,7 +317,8 @@ var datamap = new Map([
                 }
             });
         }
-
+        </script>
+        <script>
          $('.btn').click(function(){
            $(this).toggleClass("click");
            $('.sidebar').toggleClass("show");

@@ -7,12 +7,11 @@
         $accountID = $_SESSION['ID'];
 
         #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
-        $checkID = "SELECT * FROM preenrolledstudents WHERE accountID = '$accountID'";
+        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
         $sqlCheckID = mysqli_query($conn, $checkID);
         if($row = mysqli_fetch_array($sqlCheckID))
         {
             $_SESSION['exist'] = $row['accountID'];
-            $_SESSION['position'] = $row['position'];
         }
     }
     else {
@@ -245,7 +244,7 @@
 
                 <?php
 
-                $sql1 = "SELECT * FROM preenrolledstudents WHERE accountID = '$accountID'";
+                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
                     $course = $row['course'];
@@ -253,7 +252,7 @@
                     $semester = $row['semester'];
                 }
 
-                $sql = "SELECT * FROM subjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
+                $sql = "SELECT * FROM tblsubjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){

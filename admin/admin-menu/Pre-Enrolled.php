@@ -23,19 +23,14 @@
             <p>Admin</p>
           </div>
          <ul>
-            <li class="active">
-                <a href="Admin.html">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"</a>
-            </li> 
-            <li>
+         <li class="active"><a href="Admin.html">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></a></li> 
+         <li>
                <a href="#" class="feat-btn">STUDENTS  <img src="stud.png" alt="" style="width: 20px;height:20px;">
-                    <span class="fas fa-caret-down first"></span></a>
+               <span class="fas fa-caret-down first"></span>
+               </a>
                <ul class="feat-show">
-                    <li>
-                        <a href="Pre-Enrolled.php">PRE ENROLLED <img src="pending.png" alt="" style="width: 20px;height:20px;"></a>
-                    </li>
-                    <li>
-                        <a href="Enrolled.php">ENROLLED  <img src="enrlld.png" alt="" style="width: 20px;height:20px;"></a>
-                    </li>
+                  <li><a href="Pre-Enrolled.php">PRE ENROLLED <img src="pending.png" alt="" style="width: 20px;height:20px;"></a></li>
+                  <li><a href="Enrolled.php">ENROLLED  <img src="enrlld.png" alt="" style="width: 20px;height:20px;"></a></li>
                </ul>
             </li>
             
@@ -67,7 +62,7 @@
                     {
 
                         $preID = $_POST['myBtn'];
-                        $sql = "SELECT * FROM tblstudentinfo WHERE statusID = '0' AND accountID = '$preID'";
+                        $sql = "SELECT * FROM tblstudents WHERE statusID = '0' AND accountID = '$preID'";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) 
                         {
@@ -79,14 +74,37 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <span class="close" >&times;</span>
-                                            <h2><?=$row['fullname']?></h2> 
+                                            <h2><?php 
+                                                    //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                                    //etong part na to, di raw kasi maganda sa database na paulit ulit na may data, for example diba sa tblaccounts meron ng data ng firstname, lastname at middlename. tapos kung ilalagay ulit yung tatlong yun sa tblstudents, magiging redundant kaya ang gagawin nalang kukunin yung accountID tas ichecheck yung name nya na nakasave sa tblaccounts ganon
+                                                    $accountID = $row['accountID'];
+                                                    $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                                    $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                                    while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                                    ?>
+                                                    <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                                    <?php
+                                                    }
+                                                    ?></h2> 
                                         </div>
                                         <div class="modal-body">
                                             <table>
                                                 <tr>
                                                     <td style=" padding-right: 200px;"><p>Name:</p></td>
-                                                    <td><p><?=$row['fullname']?></p></td>
-                                                </tr> 
+                                                    <td><?php 
+                                                        //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                                        $accountID = $row['accountID'];
+                                                        $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                                        $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                                        while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                                        ?>
+                                                        <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                                        <?php
+                                                        }
+                                                        ?></td>
+                                                </tr>
                                                 <tr>
                                                     <td><p>Address:</p></td>
                                                     <td><p><?=$row['address']?></p></td>
@@ -157,9 +175,11 @@
                 </thead>
             <!-- PHP CODE TO FETCH DATA FROM ROWS-->
                 <?php
-                    $sql = "SELECT * FROM tblstudentinfo WHERE statusID = '0'";
+                    $sql = "SELECT * FROM tblstudents WHERE statusID = '0'";
                     $result = $conn->query($sql);
-                    if ($result->num_rows > 0) 
+                    // if ($result->num_rows > 0) 
+                    // {
+                    if ($result !== false && $result->num_rows > 0) //binago ko yung nakacomment sa taas kasi nag eerror pag walang data na nakuha kaya ichecheck muna kung meron laman ganon
                     {
                         while($row = $result->fetch_assoc()) 
                         {
@@ -167,13 +187,25 @@
                             <tr>
                                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
                                     <td>
-                                        <p><?=$row['fullname']?></p>
+                                        <p><?//=$row['fullname']?></p>
+                                        <?php 
+                                        $accountID = $row['accountID'];
+                                        $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                        $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                        while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                        ?>
+                                        <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                        <?php
+                                        }
+                                        ?>
+
                                     </td>
                                     <td>
                                         <p><?=$row['email']?></p>
                                     </td>
                                     <td>
-                                        <p><?=$row['dateOfApplication']?></p>
+                                        <p><?=$row['dateOfEnrollment']?></p>
                                     </td>
                                     <td>
                                         <button id="myBtn" class="myBtn" type="submit" name="myBtn" value="<?=$row['accountID']?>" >View Details</button> 
@@ -186,6 +218,8 @@
                             </tr>
             <?php
                         }//end of while loop
+                     } else {
+                         echo '0 results'; //di nagdagan ko lang ng statement para malamang walang nakuhang data
                      }//if ($result->num_rows > 0) end bracket
                 // $conn->close();
                 $preID ="";
@@ -246,7 +280,7 @@
                     $preID  = $_POST['btnreject'];
                     //echo $preID;
                     //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
-                    $rejectinfo = "update tblstudentinfo set statusID='3' where accountID = '$preID'";
+                    $rejectinfo = "update tblstudents set statusID='3' where accountID = '$preID'";
                     $resultrejectinfo = $conn->query($rejectinfo);
                     if($resultrejectinfo){
                         echo "deleted";
@@ -260,13 +294,18 @@
                 function insertSql($studentNum,$preID){
                     //echo $preID;
                     include('dbconnection.php');
-                    $update = "update tblstudentinfo set statusID='1' where accountID = '$preID'";
+                    $update = "update tblstudents set statusID='1' where accountID = '$preID'";
                     $resultupdate = $conn->query($update);
                     if($resultupdate){
                         $datenow = date('Y-m-d');
+                        //since nasa iisang table nalang lahat ng data ng students, iuupdate nalang yung data nya doon sa tblstudents. di na mag iinsert ng panibago
+
                         //echo $datenow  ;
-                        $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
-                        $resultsqlinsert = $conn->query($sqlinsert);
+                        // $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
+                        // $resultsqlinsert = $conn->query($sqlinsert);
+                        
+                        $sqlupdate = "UPDATE tblstudents SET studentNumber = $studentNum, datefOfEnrollment = $datenow WHERE accountID = '$preID'";
+                        $resultsqlupdate = $conn->query($sqlupdate);
                         if($sqlinsert){
                             echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                         }else{
@@ -321,7 +360,8 @@ var datamap = new Map([
                 }
             });
         }
-
+        </script>
+        <script>
          $('.btn').click(function(){
            $(this).toggleClass("click");
            $('.sidebar').toggleClass("show");

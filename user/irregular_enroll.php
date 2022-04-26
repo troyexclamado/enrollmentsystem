@@ -6,7 +6,7 @@
         $accountID = $_SESSION['ID'];
 
         #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
-        $checkID = "SELECT * FROM preenrolledstudents WHERE accountID = '$accountID'";
+        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
         $sqlCheckID = mysqli_query($conn, $checkID);
         if($row = mysqli_fetch_array($sqlCheckID)){
             $_SESSION['exist'] = $row['accountID'];

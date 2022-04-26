@@ -143,7 +143,7 @@
                     </div>
                     <div class="inputbox">
                          <label for="name">Contact Number</label>
-                        <input type="text" id="contactnumber" name = "contactnumber" placeholder="Enter your Contact Number" required>
+                        <input type="text" id="contactnumber" onkeypress="inputnumber(event)" name = "contactnumber" placeholder="Enter your Contact Number" required>
                        
                     </div>
                 </div>
@@ -204,13 +204,11 @@
                 <div class="row">
                     <div class="inputbox">
                         <label for="year">Year</label>
-                        <input type="text" id="year" name = "year" placeholder="Enter year" required>
-                        
+                        <input type="text" id="year" name = "year" maxlength="1" onkeypress="inputnumber(event)" placeholder="Enter year" required>
                     </div>
-                    
                     <div class="inputbox">
                          <label for="semester">Semester</label>
-                        <input type="text" id="semester" name = "semester" placeholder="Enter Semester" required>
+                        <input type="text" id="semester" name = "semester" maxlength="1" onkeypress="inputnumber(event)" placeholder="Enter Semester" required>
                        
                     </div>
                 </div>
@@ -237,8 +235,9 @@
             <table>
                 <thead>
                     <tr>
-                <th>Subject Code</th>
+                <th class="code">Subject Code</th>
                 <th>Subject Name</th>
+                <th class="units">Subject Units</th>
                     </tr>
                 </thead>
 
@@ -247,25 +246,25 @@
                 $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
-                    $course = $row['course'];
-                    $year = $row['year'];
-                    $semester = $row['semester'];
+                    $courseID = $row['courseID'];
                 }
 
                 $sql = "SELECT * FROM tblsubjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
+
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){
 
-                    $subject_id = $row_course['subj_id'];
                     $subject_code = $row_course['subjectCode'];
-                    $subject_name = $row_course['subjectName'];
+                    $subject_name = $row_course['subjectDescription'];
+                    $subject_units = $row_course['subjectUnits'];
             ?>
 
                 <tbody>
                 <tr>
                     <td><?php echo $subject_code;?></td>
                     <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
                     </tr>
                       <?php } ?>
                 </tbody>
@@ -287,6 +286,7 @@
         </div>
     </section>
     <script>
+
         var navLinks = document.getElementById("navLinks");
         function showMenu(){
             navLinks.style.right = "0";
@@ -294,6 +294,24 @@
         function hideMenu(){
             navLinks.style.right = "-200px";
         }
+
+        function inputnumber(evt){
+
+            var char = String.fromCharCode(evt.which);
+
+            if(!(/[0-9]/.test(char))){
+                evt.preventDefault();
+
+            }
+        }
+
+        document.getElementById('year').addEventListener('keyup', function(){
+            this.value = (parseInt(this.value) < 1 || parseInt(this.value) > 4 || isNaN(this.value)) ? "" : (this.value)
+        });
+        document.getElementById('semester').addEventListener('keyup', function(){
+            this.value = (parseInt(this.value) < 1 || parseInt(this.value) > 2 || isNaN(this.value)) ? "" : (this.value)
+        });
+       
     </script>
 </body>
 </html>

@@ -253,13 +253,8 @@
                     $semester = $row['semester'];
                 }
 
-<<<<<<< HEAD
-                $sql = "SELECT * FROM tblsubjects WHERE courseID = '$courseID'";
-=======
                 $sql = "SELECT * FROM tblsubjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
                 $res = mysqli_query($conn, $sql);
-
                 while($row_course = mysqli_fetch_array($res)){
 
                     $subject_id = $row_course['subj_id'];

@@ -23,18 +23,6 @@
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
 
-<<<<<<< HEAD
-        $upperaddress = strtoupper($address);
-        $upperbirthplace = strtoupper($birthplace);
-
-        $sql = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
-        $res = mysqli_query($conn, $sql);
-        while($row = mysqli_fetch_array($res)){
-            $courseID = $row['courseID'];
-        }
-
-        $preenrollment = "INSERT INTO tblstudents(accountID, address, birthday, birthplace, email, contactNumber, courseID, enrollmentStatus, scheme, position) VALUES('$accountID', '$upperaddress', '$birthday','$upperbirthplace','$email','$contactnumber', '$courseID', 'PENDING', '1', 'REGULAR')";
-=======
         //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
         $courseID = "";
         $sqlGetCourseDetails = "SELECT courseID FROM tblcoursedetails WHERE courseDescription = '$course' AND year = $year AND semester = $semester AND section = 'A'";
@@ -44,16 +32,11 @@
         }
 
         $preenrollment = "INSERT INTO tblstudents(accountID, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1)";
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
         $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
         {
-<<<<<<< HEAD
-        header('location:  enroll.php#subject-container');
-=======
         echo "<script>window.open('enroll.php#subject-container','self')</script>";
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
         die();
     }
     }
@@ -79,15 +62,10 @@
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
 
-<<<<<<< HEAD
         $upperaddress = strtoupper($address);
         $upperbirthplace = strtoupper($birthplace);
 
         $sql2 = "SELECT courseID FROM tblcoursedetails WHERE courseAbbr = '$course' AND semester = '$semester' AND year = '$year' LIMIT 1";
-=======
-        
-        $sql2 = "SELECT * FROM subjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
         $result = mysqli_query($conn, $sql2);
         while($row = mysqli_fetch_array($result)){
             $subjectCode = $row['subjectCode'];

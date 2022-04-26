@@ -52,7 +52,7 @@
                     {
 
                         $preID = $_POST['myBtn'];
-                        $sql = "SELECT * FROM tblstudentinfo as t1 left join tblstudents as t2 on t1.accountID = t2.accountID where t2.studentNumber is not null;";
+                        $sql = "SELECT * FROM tblstudents WHERE statusID = '1'";
                         $result = $conn->query($sql);
                         if ($result->num_rows > 0) 
                         {
@@ -64,13 +64,35 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <span class="close" >&times;</span>
-                                            <h2><?=$row['fullname']?></h2> 
+                                            <h2><?php 
+                                                //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                                $accountID = $row['accountID'];
+                                                $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                                $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                                while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                                ?>
+                                                <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                                <?php
+                                                }
+                                                ?></h2> 
                                         </div>
                                         <div class="modal-body">
                                             <table>
                                                 <tr>
                                                     <td style=" padding-right: 200px;"><p>Name:</p></td>
-                                                    <td><p><?=$row['fullname']?></p></td>
+                                                    <td><?php 
+                                                        //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                                        $accountID = $row['accountID'];
+                                                        $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                                        $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                                        while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                                        ?>
+                                                        <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                                        <?php
+                                                        }
+                                                        ?></p></td>
                                                 </tr> 
                                                 <tr>
                                                     <td><p>Address:</p></td>
@@ -122,7 +144,7 @@
         </div>
 
         <div class="container">
-            <h1> PRE-ENROLLED STUDENTS</h1>
+            <h1> ENROLLED STUDENTS</h1>
             <div class="search">
                 <div class="search-box">
                     <input type="text" placeholder="Type here...">
@@ -141,7 +163,7 @@
                 </thead>
             <!-- PHP CODE TO FETCH DATA FROM ROWS-->
                 <?php
-                    $withstudentnum = "SELECT * FROM tblstudentinfo as t1 left join tblstudents as t2 on t1.accountID = t2.accountID where t2.studentNumber is not null;";
+                    $withstudentnum = "SELECT * FROM tblstudents WHERE statusID = '1'";
                     $resultwithstudentnum = $conn->query($withstudentnum);
                     if ($resultwithstudentnum->num_rows > 0) 
                     {
@@ -154,7 +176,18 @@
                                         <p><?=$row['studentNumber']?></p>
                                     </td>
                                     <td>
-                                        <p><?=$row['fullname']?></p>
+                                    <?php 
+                                        //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                        $accountID = $row['accountID'];
+                                        $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                        $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                        while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                        ?>
+                                        <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                        <?php
+                                        }
+                                        ?>
                                     </td>
                                     <td>
                                         <p><?=$row['dateOfEnrollment']?></p>
@@ -301,6 +334,8 @@ var datamap = new Map([
                 }
             });
         }
+        </script>
+        <script>
 
          $('.btn').click(function(){
            $(this).toggleClass("click");

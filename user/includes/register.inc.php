@@ -13,14 +13,11 @@ if(isset($_POST['submit_info'])){
 	$pass1 = $_POST['pass1'];
 	$count = strlen($pass);
 
-<<<<<<< HEAD
 	$upperFname = strtoupper($Firstname);
 	$upperMname = strtoupper($Midname);
 	$upperLname = strtoupper($Lastname);
 	$upperposition = strtoupper($position);
 
-=======
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
 	$sql1 = "SELECT * FROM tblaccounts WHERE email ='".$Email."'";
 	$result = mysqli_query($conn, $sql1);
 
@@ -40,11 +37,7 @@ if(isset($_POST['submit_info'])){
 	if($pass == $pass1){
 		$Password = md5($pass1);
 
-<<<<<<< HEAD
 		$sql2 = "INSERT INTO tblaccounts(email, firstname, lastname, password, middlename, position) VALUES('".$Email."','".$upperFname."','".$upperLname."','".$Password."','".$upperMname."', '".$upperposition."')";
-=======
-		$sql2 = "INSERT INTO tblaccounts(email, firstname, lastname, password, middlename, position) VALUES('".$Email."','".$Firstname."','".$Lastname."','".$Password."','".$Midname."', '".$position."')";
->>>>>>> parent of 0a699e2 (Merge branch 'master' into added_features)
 	$success = mysqli_query($conn, $sql2);
 	if($success){
 		$_SESSION['register'] = "Sign up complete";

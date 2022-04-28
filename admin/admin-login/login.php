@@ -2,15 +2,15 @@
     require('database.php');
 
     if(isset($_POST['submit'])){
-        $username = $_POST['username'];
+        $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $verifyAdmin = "SELECT * FROM accounts WHERE email = '$username' && password = '$password'";
+        $verifyAdmin = "SELECT * FROM tblaccounts WHERE email = '$email' && password = '$password'";
         $sqlVerifyAdmin = mysqli_query($connection, $verifyAdmin);
 
         $results = mysqli_fetch_array($sqlVerifyAdmin);
 
-        if($results['email'] == $username && $results['password'] == $password){
+        if($results['email'] == $email && $results['password'] == $password){
             echo '<script>alert("Welcome admin!")</script>';
             echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/Admin.html"</script>';
         } else {

@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+    include('dbconnection.php');
+ ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
@@ -26,38 +30,89 @@
             </li>
             
             <li><a href="Courses.html">COURSE <img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="Subjects.html">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="#">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="Activity Log.html">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav><div class="container">
 <div class="container">
-  <h1>SUBJECTS</h1>
-<div class="search">
-    <div class="search-box">
-      <input type="text" placeholder="Type here...">
-      <button for="check" class="icon">
-        <i class="fas fa-search"></i>
-      </button>
+    <h1>SUBJECTS</h1>
+    <a href="addsub.php" class="sub">Add Subject</a>
+    <div class="search">
+        <div class="search-box">
+          <input type="text" placeholder="Type here...">
+          <button for="check" class="icon">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    <h4 id="filter"> FILTER BY : </h4>
+    <div class="custom-select" style="width:200px;">
+      <select>
+        <option value="0">Course:</option>
+        <option value="1">BSCS</option>
+        <option value="2">BSIT</option>
+        <option value="3">BSEMC</option>
+        <option value="4">BSIS</option>
+        <option value="5">BSM</option>
+        <option value="6">BSP</option>
+        <option value="7">BPA</option>
+        <option value="8">ABCOMM</option>
+        <option value="9">ABPS</option>
+        <option value="10">ABBS</option>
+        <option value="11">BSAT</option>
+        <option value="12">BSA</option>
+      </select>
+        <select>
+        <option value="0">Year:</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        
+      </select>
+        <select>
+        <option value="0">Units:</option>
+        <option value="1">Ascending</option>
+        <option value="2">Descending</option>
+        
+      </select>
+        <select>
+        <option value="0">Semester:</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+      </select>
     </div>
-  </div>
 <table class="content-table">
   <thead>
     <tr>
     <th>SUBJECT CODE</th>
     <th>SUBJECT DESCRIPTION</th>
-    <th>SUBJECT PRE-REQUISITE</th>
-    <th>SUBJECT TEACHER</th>
     <th>SUBJECT UNITS</th>
+    <th>COURSE, YEAR AND SECTION</th>
     <th>ACTIONS</th>
   </tr>
 </thead>
+    <?php
+        $getSubjects = "SELECT * FROM tblsubjects";
+        $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+
+        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+        $courseID = $subjects['courseID'];
+    ?>
   <tr>
-    <td>CSS 001</td>
-    <td>INTRODUCTION TO PROGRAMMING</td>
-    <td>NONE</td>
-    <td>MR. DELA CRUZ</td>
-    <td>3</td>
+    <td><?php echo $subjects['subjectCode'];?></td>
+    <td><?php echo $subjects['subjectDescription'];?></td>
+    <td><?php echo $subjects['subjectUnits'];?></td>
+    <td>
+    <?php
+        $getCourseDetails = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+        $sqlGetCourseDetails = mysqli_query($conn, $getCourseDetails);
+        while($details = mysqli_fetch_array($sqlGetCourseDetails)){
+            echo $details['courseDescription']." ".$details['year'].$details['section'];
+        }        
+    ?>
+    </td>
     <td>
       <button id="myBtn">EDIT</button>
       <button id="myBtn1">DELETE</button>
@@ -82,10 +137,8 @@
             </div>
         </div>
 </div>
-
     <!-- The Modal -->
     <div id="myModal1" class="modal">
-
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
@@ -104,9 +157,7 @@
 
             </div>
         </div>
-
     </div>
-
     <!-- The Modal -->
     <div id="myModal2" class="modal">
 
@@ -135,178 +186,9 @@
         </div>
 
     </div>
-
     </td>
   </tr>
-
-<tr>
-    <td>CSS 001</td>
-    <td>INTRODUCTION TO PROGRAMMING</td>
-    <td>NONE</td>
-    <td>MR. DELA CRUZ</td>
-    <td>3</td>
-    <td>
-      <button id="myBtn2">EDIT</button>
-      <button id="myBtn3">DELETE</button>
-         <div id="myModal3" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">	
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 4 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit laudantium quia non laborum
-                    ea, similique ex iusto minus obcaecati optio sapiente aut eveniet porro odio veniam excepturi
-                    facilis iste fuga? Porro atque odio, fuga blanditiis voluptate ducimus veritatis id ea possimus?
-                    Facilis tempore officiis quos assumenda dolorem placeat sed veniam dolor eveniet magnam. Iure ullam
-                    odit qui, magni suscipit pariatur nesciunt temporibus aspernatur doloribus quis nobis quas esse
-                    perspiciatis, asperiores eum quidem placeat minus alias veniam molestias sit. Ipsam numquam,
-                    sapiente facere voluptatem eum, maiores blanditiis cupiditate corporis quos ratione, quia
-                    praesentium dolore nihil voluptatum impedit quae consequatur sit pariatur.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-           <div id="myModal4" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">	
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 5 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit laudantium quia non laborum
-                    ea, similique ex iusto minus obcaecati optio sapiente aut eveniet porro odio veniam excepturi
-                    facilis iste fuga? Porro atque odio, fuga blanditiis voluptate ducimus veritatis id ea possimus?
-                    Facilis tempore officiis quos assumenda dolorem placeat sed veniam dolor eveniet magnam. Iure ullam
-                    odit qui, magni suscipit pariatur nesciunt temporibus aspernatur doloribus quis nobis quas esse
-                    perspiciatis, asperiores eum quidem placeat minus alias veniam molestias sit. Ipsam numquam,
-                    sapiente facere voluptatem eum, maiores blanditiis cupiditate corporis quos ratione, quia
-                    praesentium dolore nihil voluptatum impedit quae consequatur sit pariatur.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-
-    </td>
-  </tr>
-
-  <tr>
-    <td>CSS 001</td>
-    <td>INTRODUCTION TO PROGRAMMING</td>
-    <td>NONE</td>
-    <td>MR. DELA CRUZ</td>
-    <td>3</td>
-    <td>
-      <button id="myBtn4">EDIT</button>
-      <button id="myBtn5">DELETE</button> 
-             <!-- The Modal -->
-    <div id="myModal5" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 6 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores voluptatum ipsa cum aliquid, ex
-                    inventore, culpa obcaecati modi deleniti enim consequuntur tenetur. Earum numquam sit ratione eum
-                    sequi praesentium, unde maxime ullam iure rem mollitia perferendis eos possimus neque, nisi dicta.
-                    Obcaecati dignissimos, dolores labore rerum quisquam non explicabo repellat!</p>
-            </div>
-            <div class="modal-footer">
-                 <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- The Modal -->
-    <div id="myModal6" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">	
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 7 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit laudantium quia non laborum
-                    ea, similique ex iusto minus obcaecati optio sapiente aut eveniet porro odio veniam excepturi
-                    facilis iste fuga? Porro atque odio, fuga blanditiis voluptate ducimus veritatis id ea possimus?
-                    Facilis tempore officiis quos assumenda dolorem placeat sed veniam dolor eveniet magnam. Iure ullam
-                    odit qui, magni suscipit pariatur nesciunt temporibus aspernatur doloribus quis nobis quas esse
-                    perspiciatis, asperiores eum quidem placeat minus alias veniam molestias sit. Ipsam numquam,
-                    sapiente facere voluptatem eum, maiores blanditiis cupiditate corporis quos ratione, quia
-                    praesentium dolore nihil voluptatum impedit quae consequatur sit pariatur.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-     </td>
-  </tr>
-
-  <tr>
-    <td>CSS 001</td>
-    <td>INTRODUCTION TO PROGRAMMING</td>
-    <td>NONE</td>
-    <td>MR. DELA CRUZ</td>
-    <td>3</td>
-    <td>
-      <button id="myBtn6">EDIT</button>
-      <button id="myBtn7">DELETE</button>
-          <!-- The Modal -->
-    <div id="myModal7" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 8 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores voluptatum ipsa cum aliquid, ex
-                    inventore, culpa obcaecati modi deleniti enim consequuntur tenetur. Earum numquam sit ratione eum
-                    sequi praesentium, unde maxime ullam iure rem mollitia perferendis eos possimus neque, nisi dicta.
-                    Obcaecati dignissimos, dolores labore rerum quisquam non explicabo repellat!</p>
-            </div>
-            <div class="modal-footer">
-                 <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-    </td>
-  </tr>
+  <?php } ?>
 </div>
 <script>
 var datamap = new Map([

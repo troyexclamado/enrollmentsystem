@@ -36,7 +36,7 @@
             </li>
             
             <li><a href="Courses.html">COURSE <img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="Subjects.html">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="#">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="Activity Log.html">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>

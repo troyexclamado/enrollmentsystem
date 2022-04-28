@@ -58,8 +58,8 @@
         <select class="select1" name="position" required>
                     <option  value="" disabled selected>Position</option>
                     <option value="student">Student</option>
-                    <option value="professor">Professor</option>     
-                    <option value="administrator">Administrator</option>    
+                    <!-- <option value="professor">Professor</option>     
+                    <option value="administrator">Administrator</option>     -->
                     </select>
             </div>
                 </div>   

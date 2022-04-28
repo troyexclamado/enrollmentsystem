@@ -10,7 +10,7 @@
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
                 $_SESSION['enrolled'] = $row['accountID'];
-                $_SESSION['position'] = $row['position'];
+                $_SESSION['position'] = $row['studentType'];
             }
     }
 

@@ -46,7 +46,7 @@
                 <a href="Courses.html">SUBJECTS <img src="crse.png" alt="" style="width: 20px;height:20px;"></a>
             </li>
             <li>
-                <a href="Subjects.html">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a>
+                <a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a>
             </li>
             <li>
                 <a href="#">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a>
@@ -225,6 +225,13 @@
                 $max = "";
                 if(isset($_POST['btncmdAccept'])){
                     $preID  = $_POST['btncmdAccept'];
+                    $isOldStudent = "SELECT * FROM tblaccounts WHERE accountID=$preID";
+                    $sqlIsOldStudent = mysqli_query($conn, $isOldStudent);
+                    $results = mysqli_fetch_array($sqlIsOldStudent);
+                    if ($results['studentNumber'] != 0){
+                        $studentNumber = $results['studentNumber'];
+                        insertSql($studentNumber, $preID);
+                    } else {
                     $yearNow = date("Y");
                    // echo $_POST['btncmdAccept'];
                     $maxStudentNum = "SELECT RIGHT(max(studentNumber) ,6) as mnum FROM tblstudents";
@@ -237,14 +244,10 @@
                                 $format = str_pad($maxinc,6,"0",STR_PAD_LEFT);
                                 $studentNum = $yearNow.$format;
                                 insertSql($studentNum,$preID);
-
-                    
                                 //echo "<script>alert($studentNum)</script>";
                                 // DO SQL INSERT
-
-
                             }else{
-                                $maxyear = "SELECT LEFT(max(studentNumber) ,4) as myear, RIGHT(max(studentNumber) ,6) as maxnum FROM tblstudents";
+                                $maxyear = "SELECT LEFT(max(studentNumber) ,4) as myear, RIGHT(max(studentNumber) ,4) as maxnum FROM tblstudents";
                                 $result = $conn->query($maxyear);
                                 if(mysqli_num_rows($result) > 0){
                                     while($row = $result->fetch_assoc()) {
@@ -252,7 +255,7 @@
                                             $max =  $row['maxnum'];
                                             $yearNow = date("Y");
                                             $maxinc = $max+1;
-                                            $format = str_pad($maxinc,6,"0",STR_PAD_LEFT);
+                                            $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
                                             $studentNum = $yearNow.$format;
                                             //echo "<script>alert($studentNum)</script>";
                                             // DO SQL INSERT   
@@ -261,7 +264,7 @@
                                             $max =  $row['maxnum'];
                                             $yearNow = date("Y");
                                             $maxinc = $max+1;
-                                            $format = str_pad($maxinc,6,"0",STR_PAD_LEFT);
+                                            $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
                                             $studentNum = $yearNow.$format;
                                             //echo "<script>alert($studentNum)</script>";
                                             // DO SQL INSERT
@@ -271,6 +274,8 @@
                                 }
                             }
                         }
+                    }
+
                     }
                 }
 

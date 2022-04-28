@@ -12,7 +12,7 @@
         if($row = mysqli_fetch_array($sqlCheckID))
         {
             $_SESSION['exist'] = $row['accountID'];
-            $_SESSION['position'] = $row['position'];
+            $_SESSION['position'] = $row['studentType'];
         }
     }
     else {
@@ -123,8 +123,11 @@
                     </div>
                 <div class="row">
                     <div class="inputbox">
-                         <label for="name">Birthday</label>
-                        <input type="text" id="birthday" name = "birthday" placeholder="Enter your Birthday" required>
+                        <label for="name">Birthday</label>
+                        <!-- <input type="text" id="birthday" name = "birthday" placeholder="Enter your Birthday" required> -->
+                        <input type="date" id="birthday" name = "birthday" required>
+                        <br>
+                        
                        
                     </div>
                     <div class="inputbox">
@@ -195,7 +198,14 @@
                 <div class="row">
                     <div class="inputbox">
                          <label for="course">Course</label>
-                        <input type="text" id="course" name = "course" placeholder="Enter your course" required>
+                         <select id="course" name="course" required>
+                            <option selected disabled hidden value="">SELECT YOUR COURSE</option>
+                            <option>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</option>
+                            <option>BACHELOR OF SCIENCE IN ENTERTAINMENT AND MULITMEDIA COMPUTING</option>
+                            <option>BACHELOR OF SCIENCE IN INFORMATION SYSTEM</option>
+                            <option>BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY</option>
+                         </select>
+                        <!-- <input type="text" id="course" name = "course" placeholder="Enter your course" required> -->
                        
                     </div>
                 </div>
@@ -205,13 +215,25 @@
                 <div class="row">
                     <div class="inputbox">
                         <label for="year">Year</label>
-                        <input type="text" id="year" name = "year" placeholder="Enter year" required>
+                        <!-- <input type="text" id="year" name = "year" placeholder="Enter year" required> -->
+                        <select id="year" name="year" required>
+                            <option selected disabled hidden value="">SELECT YEAR</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                         </select>
                         
                     </div>
                     
                     <div class="inputbox">
-                         <label for="semester">Semester</label>
-                        <input type="text" id="semester" name = "semester" placeholder="Enter Semester" required>
+                        <label for="semester">Semester</label>
+                        <!-- <input type="text" id="semester" name = "semester" placeholder="Enter Semester" required> -->
+                        <select id="semester" name="semester" required>
+                            <option selected disabled hidden value="">SELECT SEMESTER</option>
+                            <option>1</option>
+                            <option>2</option>
+                         </select>
                        
                     </div>
                 </div>
@@ -240,6 +262,7 @@
                     <tr>
                 <th>Subject Code</th>
                 <th>Subject Name</th>
+                <th>Subject Units</th>
                     </tr>
                 </thead>
 
@@ -248,24 +271,27 @@
                 $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
-                    $course = $row['course'];
-                    $year = $row['year'];
-                    $semester = $row['semester'];
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblsubjects WHERE course = '$course' AND year = '$year' AND semester = '$semester'";
+                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
                 $res = mysqli_query($conn, $sql);
-                while($row_course = mysqli_fetch_array($res)){
 
-                    $subject_id = $row_course['subj_id'];
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
                     $subject_code = $row_course['subjectCode'];
-                    $subject_name = $row_course['subjectName'];
+                    $subject_name = $row_course['subjectDescription'];
+                    $subject_units = $row_course['subjectUnits'];
             ?>
 
                 <tbody>
                 <tr>
                     <td><?php echo $subject_code;?></td>
                     <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
                     </tr>
                       <?php } ?>
                 </tbody>

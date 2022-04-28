@@ -7,7 +7,7 @@
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
                 $_SESSION['enrolled'] = $row['accountID'];
-                 $_SESSION['position'] = $row['position'];
+                $_SESSION['position'] = $row['studentType'];
             }
     }
 
@@ -122,14 +122,14 @@
                 <?php
 
                 $ID = $_SESSION['ID'];
-                $sql = "SELECT * FROM accounts WHERE accountID = '$ID'";
+                $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
                 $res = mysqli_query($conn, $sql);
                 if($row = mysqli_fetch_array($res)){
                     $lastname = $row['lastname'];
                     $firstname = $row['firstname'];
                
                 ?>
-                <h1><?php echo $lastname. " " .$firstname;?></h1>
+                <h1><?php echo strtoupper($lastname). " " .strtoupper($firstname);?></h1>
             <?php } ?>
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident nemo facilis vitae itaque odio suscipit ullam tempore delectus doloribus repellendus odit consequatur nostrum assumenda modi tempora, quasi consequuntur inventore rerum.</p>
                 <a href="">See enrollment status</a>

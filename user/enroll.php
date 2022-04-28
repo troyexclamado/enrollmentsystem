@@ -102,20 +102,25 @@
                 <p>Full Name * </p>
                     </div>
                 <div class="row">
+                    <?php 
+                        $getNames = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                        $sqlGetNames = mysqli_query($conn, $getNames);
+                        while($names = mysqli_fetch_array($sqlGetNames)){
+                    ?>
                     <div class="inputbox">
                          <label for="name">Lastname</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Enter your Lastname" required>
+                        <input type="text" id="lastname" name="lastname" value = "<?php echo strtoupper($names['lastname'])?>" required>
                        
                     </div>
                     <div class="inputbox">
                         <label for="name">Firstname</label>
-                        <input type="text" id="firstname" name = "firstname" placeholder="Enter your Firstname" required>
+                        <input type="text" id="firstname" name = "firstname" value = "<?php echo strtoupper($names['firstname'])?>"  required>
                         
                     </div>
                     <div class="inputbox">
                         <label for="name">Middlename</label>
-                        <input type="text" id="middlename" name = "middlename" placeholder="Enter your Middlename" required>
-                        
+                        <input type="text" id="middlename" name = "middlename"value = "<?php echo strtoupper($names['middlename'])?>" required>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="intro">
@@ -200,10 +205,13 @@
                          <label for="course">Course</label>
                          <select id="course" name="course" required>
                             <option selected disabled hidden value="">SELECT YOUR COURSE</option>
-                            <option>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</option>
-                            <option>BACHELOR OF SCIENCE IN ENTERTAINMENT AND MULITMEDIA COMPUTING</option>
-                            <option>BACHELOR OF SCIENCE IN INFORMATION SYSTEM</option>
-                            <option>BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY</option>
+                            <?php 
+                                $getCourses = "SELECT DISTINCT courseDescription FROM tblcoursedetails";
+                                $sqlGetCourses = mysqli_query($conn, $getCourses);
+                                while($results = mysqli_fetch_array($sqlGetCourses)){
+                            ?>
+                            <option><?php echo $results['courseDescription']?></option>
+                            <?php } ?>
                          </select>
                         <!-- <input type="text" id="course" name = "course" placeholder="Enter your course" required> -->
                        

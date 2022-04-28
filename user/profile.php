@@ -131,8 +131,73 @@
                 ?>
                 <h1><?php echo strtoupper($lastname). " " .strtoupper($firstname);?></h1>
             <?php } ?>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident nemo facilis vitae itaque odio suscipit ullam tempore delectus doloribus repellendus odit consequatur nostrum assumenda modi tempora, quasi consequuntur inventore rerum.</p>
-                <a href="">See enrollment status</a>
+                <?php
+                    $ID = $_SESSION['ID'];
+                    $sqlGetData = "SELECT * FROM tblstudents WHERE accountID = '$ID'";
+                    $results = mysqli_query($conn, $sqlGetData);
+                    if($data = mysqli_fetch_array($results)){
+                        
+                ?>
+                <h4>APPLICATION STATUS: <?php
+                    if($data['statusID'] == 0){
+                        echo 'PENDING';
+                    } else if($data['statusID'] == 1){
+                        echo 'ACCEPTED';
+                    } else {
+                        echo 'REJECTED';
+                    }
+                ?></h4>
+                
+                <h6>YOUR SUBJECTS</h6>
+                <?php if($data['statusID'] = 1){?>
+                <div class="subject-container-profile">
+            <div class="subject">
+            <table>
+                <thead>
+                    <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Subject Units</th>
+                    </tr>
+                </thead>
+
+                <?php
+
+                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                $result = mysqli_query($conn, $sql1);
+                while($row = mysqli_fetch_array($result)){
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
+                }
+
+                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                $res = mysqli_query($conn, $sql);
+
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
+                    $subject_code = $row_course['subjectCode'];
+                    $subject_name = $row_course['subjectDescription'];
+                    $subject_units = $row_course['subjectUnits'];
+            ?>
+
+                <tbody>
+                <tr>
+                    <td><?php echo $subject_code;?></td>
+                    <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
+                    </tr>
+                      <?php } ?>
+                </tbody>
+                </table>
+            </div>
+                </div>
+                <?php
+                } else {
+                    echo 'NO SUBJECTS YET';
+                }
+                }?>
             </div>
             <div class="profile-col-image">
                 <img src="./img/person1.jpg">

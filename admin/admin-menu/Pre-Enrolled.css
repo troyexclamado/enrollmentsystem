@@ -76,7 +76,7 @@ nav ul ul li a{
   padding-left: 80px;
 }
 nav ul li.active ul li a{
-  color: #cyan;
+  color: cyan;
   background: #FFB52E;
   border-left-color: transparent;
 }
@@ -330,8 +330,76 @@ h1 {
             background-color: orange;
             color: white;
         }.modal_popup .popup .popup_foot .popup_cancel_btn{
-	background: #orange;
+	background: orange;
 }
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+  display: flex;
+ 
+}
+
+.custom-select select {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 110px;
+    border-radius: 5px;
+    min-width: 150px;
+    width: auto;
+}
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+}
+
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: #e6e6e6;
+}
+#filter {
+  position: absolute;
+  left: 20px;
+  right: 0;
+}
+
 
 
 

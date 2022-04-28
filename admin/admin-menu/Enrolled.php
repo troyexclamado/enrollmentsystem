@@ -151,7 +151,38 @@
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
+            <h4 id="filter"> FILTER BY : </h4>
+<div class="custom-select" style="width:200px;">
+  <select>
+    <option value="0">Course:</option>
+    <option value="1">BSCS</option>
+    <option value="2">BSIT</option>
+    <option value="3">BSEMC</option>
+    <option value="4">BSIS</option>
+    <option value="5">BSM</option>
+    <option value="6">BSP</option>
+    <option value="7">BPA</option>
+    <option value="8">ABCOMM</option>
+    <option value="9">ABPS</option>
+    <option value="10">ABBS</option>
+    <option value="11">BSAT</option>
+    <option value="12">BSA</option>
+  </select>
+    <select>
+    <option value="0">Year:</option>
+    <option value="1">1st</option>
+    <option value="2">2nd</option>
+    <option value="3">3rd</option>
+    <option value="4">4th</option>
     
+  </select>
+    <select>
+    <option value="0">Date of Enrollment:</option>
+    <option value="1">Ascending</option>
+    <option value="2">Descending</option>
+    
+  </select>
+</div>
             <table class="content-table">
                 <thead>
                     <tr>
@@ -336,7 +367,6 @@ var datamap = new Map([
         }
         </script>
         <script>
-
          $('.btn').click(function(){
            $(this).toggleClass("click");
            $('.sidebar').toggleClass("show");

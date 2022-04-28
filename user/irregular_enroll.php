@@ -99,20 +99,25 @@
                 <p>Full Name * </p>
                     </div>
                 <div class="row">
+                <?php 
+                        $getNames = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                        $sqlGetNames = mysqli_query($conn, $getNames);
+                        while($names = mysqli_fetch_array($sqlGetNames)){
+                    ?>
                     <div class="inputbox">
                          <label for="name">Lastname</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Enter your Lastname" required>
+                        <input type="text" id="lastname" name="lastname" value = "<?php echo strtoupper($names['lastname'])?>" required>
                        
                     </div>
                     <div class="inputbox">
                         <label for="name">Firstname</label>
-                        <input type="text" id="firstname" name = "firstname" placeholder="Enter your Firstname" required>
+                        <input type="text" id="firstname" name = "firstname" value = "<?php echo strtoupper($names['firstname'])?>"  required>
                         
                     </div>
                     <div class="inputbox">
                         <label for="name">Middlename</label>
-                        <input type="text" id="middlename" name = "middlename" placeholder="Enter your Middlename" required>
-                        
+                        <input type="text" id="middlename" name = "middlename"value = "<?php echo strtoupper($names['middlename'])?>" required>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="intro">
@@ -197,10 +202,13 @@
                         <!-- <input type="text" id="course" name = "course" placeholder="Enter your course" required> -->
                         <select id="course" name="course" required>
                             <option selected disabled hidden value="">SELECT YOUR COURSE</option>
-                            <option>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</option>
-                            <option>BACHELOR OF SCIENCE IN ENTERTAINMENT AND MULITMEDIA COMPUTING</option>
-                            <option>BACHELOR OF SCIENCE IN INFORMATION SYSTEM</option>
-                            <option>BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY</option>
+                            <?php 
+                                $getCourses = "SELECT DISTINCT courseDescription FROM tblcoursedetails";
+                                $sqlGetCourses = mysqli_query($conn, $getCourses);
+                                while($results = mysqli_fetch_array($sqlGetCourses)){
+                            ?>
+                            <option><?php echo $results['courseDescription']?></option>
+                            <?php } ?>
                          </select>
                     </div>
                 </div>
@@ -293,7 +301,7 @@
                     $subject_code = $row_subjects['subjectCode'];
                     $status = $row_subjects['status'];
 
-                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code'";
+                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code' AND courseID = $courseDetails";
                     $success = mysqli_query($conn, $sql);
 
                     while($row = mysqli_fetch_array($success)){
@@ -327,24 +335,32 @@
                     <td><p class="required">Required</p></td>
                     </tr>
                   <?php } ?>
-                   <?php } ?>
-
+                <?php } ?>
                    <?php
-                   $sql5 = "SELECT * FROM tblsubjects WHERE accountID = '$accountID' AND status = 'Taken'";
+                   $sql5 = "SELECT * FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'Taken'";
                    $res = mysqli_query($conn, $sql5);
                 
                    if($res == true){
                     while($row_subj = mysqli_fetch_array($res)){
 
                     $subj_id =   $row_subj['backsubjectID'];
-                    $subj_code = $row_subj['subject_code'];
+                    $subj_code = $row_subj['subjectCode'];
                     $status = $row_subj['status'];
-
-                    $sql = "SELECT * FROM subjects WHERE subjectCode = '$subj_code'";
+                    
+                    $courseDetails = "";
+                    $sql2 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                        $result = mysqli_query($conn, $sql2);
+                        while($row = mysqli_fetch_array($result)){
+                            // $course = $row['course'];
+                            // $year = $row['year'];
+                            // $semester = $row['semester'];
+                            $courseDetails = $row['courseID'];
+                        }
+                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subj_code' AND courseID = '$courseDetails'";
                     $success = mysqli_query($conn, $sql);
 
                     while($row = mysqli_fetch_array($success)){
-                    $subject_name = $row['subjectName'];
+                    $subject_name = $row['subjectDescription'];
 
                    ?>
                     <tr>

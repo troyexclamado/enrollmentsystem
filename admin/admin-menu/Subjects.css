@@ -12,6 +12,8 @@
   width: 250px;
   height: 100%;
   background: #FFC55C;
+  margin-bottom: 0;
+  padding-bottom: 0;
   
 }
 .sidebar .text{
@@ -103,6 +105,10 @@ nav ul li a span.rotate{
    height: 100vh;
    background: #FFF;
 }
+.container h2{
+  margin-top: 10px;
+  padding-top: 10px;
+}
 
 .mytabs{
     display: flex;
@@ -148,11 +154,12 @@ nav ul li a span.rotate{
   border-collapse: collapse;
   font-size: 0.9em;
   min-width: 76.5vw;
-  min-height: 50vh;
+  min-height: 75vh;
+  max-height: 75vh;
   border-radius: 5px 5px 0 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, .19);
   margin: auto;
-  margin-top: 30px;}
+  margin-top: 10px;}
 
 .content-table thead tr {
   background-color: orange;
@@ -415,5 +422,16 @@ h1 {
   border-radius: 15px;
   height: 50px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, .19);
+}
+.paginationbar{
+  text-decoration: none;
+  color:rgb(0, 0, 0);
+  text-align: center;
+}
+.pagination a{
+  text-decoration: none;
+  color:rgb(0, 0, 0);
+  display: inline-block;
+  padding-left: 10px;
 }
 

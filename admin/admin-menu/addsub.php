@@ -39,7 +39,7 @@
         <label for="fname">Subject Code</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subCodes" name="subjectCode" placeholder="Enter subject code">
+        <input type="text" id="subCodes" name="subjectCode" placeholder="Enter subject code" required>
       </div>
     </div>
     <div class="row">
@@ -47,7 +47,7 @@
         <label for="fname">Subject Description</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subDes" name="subjectDescription" placeholder="Enter subject description">
+        <input type="text" id="subDes" name="subjectDescription" placeholder="Enter subject description" required>
       </div>
     </div>
     <div class="row">
@@ -55,7 +55,7 @@
         <label for="lname">Subject Units</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subUnit" name="subjectUnits" placeholder="Enter subject units">
+        <input type="text" id="subUnit" name="subjectUnits" placeholder="Enter subject units" required>
       </div>
     </div>
    <div class="row">
@@ -64,7 +64,7 @@
       </div>
       <div class="col-75">
         <!-- <input type="text" id="subCourse" name="course" placeholder="Enter course"> -->
-        <select id="subCourse" name="course">
+        <select id="subCourse" name="course" required>
           <option>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</option>
           <option>BACHELOR OF SCIENCE IN ENTERTAINMENT AND MULTIMEDIA COMPUTING</option>
           <option>BACHELOR OF SCIENCE IN INFORMATION SYSTEM</option>
@@ -77,7 +77,7 @@
         <label for="country">Year</label>
       </div>
       <div class="col-75">
-        <select id="subYear" name="year">
+        <select id="subYear" name="year" required>
           <option value="1">1st</option>
           <option value="2">2nd</option>
           <option value="3">3rd</option>
@@ -90,7 +90,7 @@
         <label for="country">Semester</label>
       </div>
       <div class="col-75">
-        <select id="subSem" name="semester">
+        <select id="subSem" name="semester" required>
           <option value="1">1st</option>
           <option value="2">2nd</option>
         </select>
@@ -98,7 +98,7 @@
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="country">Section</label>
+        <label for="country">Section</label required>
       </div>
       <div class="col-75">
         <select id="subSection" name="section">

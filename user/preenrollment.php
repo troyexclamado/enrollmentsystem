@@ -22,7 +22,7 @@
         $year = $_POST['year'];
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
-        $dateOfEnrollment = date("F j, Y, g:i a");
+        $dateOfEnrollment = date("Y-m-d");
 
         //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
         $courseID = "";
@@ -47,7 +47,7 @@
         {
         echo "<script>window.open('enroll.php#subject-container','self')</script>";
         die();
-    }
+        }
     }
 
     /* IRREGULAR STUDENT SUBMIT */
@@ -70,7 +70,7 @@
         $year = $_POST['year'];
         $semester = $_POST['semester'];
         $accountID = $_SESSION['ID'];
-        $dateOfEnrollment = date("F j, Y, g:i a");
+        $dateOfEnrollment = date("Y-m-d");
 
         $upperaddress = strtoupper($address);
         $upperbirthplace = strtoupper($birthplace);
@@ -129,8 +129,10 @@
 
         $accountID = $_SESSION['ID'];
         $subject_code = $_GET['action'];
+        $subject_code = str_replace("%20"," ","$subject_code");
 
-        $sql = "UPDATE back_subjects SET status = 'Taken' WHERE accountNumber = '$accountID' AND subject_code = '$subject_code' AND status = 'Save'";
+        $sql = "UPDATE tblbacksubjects SET status = 'Taken' WHERE accountID = $accountID AND subjectCode = '$subject_code'";
+        // $sql = "INSERT INTO tblbacksubjects(subjectCode, accountID, status) VALUES('$subject_code', $accountID, 'Save')";
         $res = mysqli_query($conn, $sql);
         if($res){
             echo "<script>window.open('irregular_enroll.php#subject-container', 'self')</script>";

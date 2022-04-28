@@ -21,8 +21,8 @@
                 $addSubject = "INSERT INTO tblsubjects(subjectCode, subjectDescription, subjectUnits, courseID) VALUES('$subjectCode', '$subjectDescription', $subjectUnits,$courseID)";
                 $sqlAddSubject = mysqli_query($conn, $addSubject);
             }
-
-            echo '<script>windows.location.href="/enrollmentsystem/admin/admin-menu/Subjects.php"</script>';
+            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            exit();
         } else {
             //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
             $courseID = "";
@@ -36,7 +36,7 @@
             $sqlAddSubject = mysqli_query($conn, $addSubject);
 
             echo '<script>windows.location.href="/enrollmentsystem/admin/admin-menu/Subjects.php"</script>';
-
+            echo 'why?';
         }
     }
  ?>

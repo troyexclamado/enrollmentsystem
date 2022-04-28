@@ -419,6 +419,10 @@ h3{
     width: 75%;
     margin: 10px auto;
 }
+.subject-container-profile{
+    width: 100%;
+    margin: 10px auto;
+}
 .subject{
     display: grid;
     justify-content: center;

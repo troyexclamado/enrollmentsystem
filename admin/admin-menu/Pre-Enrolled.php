@@ -166,6 +166,38 @@
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
+            <h4 id="filter"> FILTER BY : </h4>
+<div class="custom-select" style="width:200px;">
+  <select>
+    <option value="0">Course:</option>
+    <option value="1">BSCS</option>
+    <option value="2">BSIT</option>
+    <option value="3">BSEMC</option>
+    <option value="4">BSIS</option>
+    <option value="5">BSM</option>
+    <option value="6">BSP</option>
+    <option value="7">BPA</option>
+    <option value="8">ABCOMM</option>
+    <option value="9">ABPS</option>
+    <option value="10">ABBS</option>
+    <option value="11">BSAT</option>
+    <option value="12">BSA</option>
+  </select>
+    <select>
+    <option value="0">Year:</option>
+    <option value="1">1st</option>
+    <option value="2">2nd</option>
+    <option value="3">3rd</option>
+    <option value="4">4th</option>
+    
+  </select>
+    <select>
+    <option value="0">Date of Enrollment:</option>
+    <option value="1">Ascending</option>
+    <option value="2">Descending</option>
+    
+  </select>
+</div>
     
             <table class="content-table">
                 <thead>
@@ -304,6 +336,42 @@
                         $datenow = date('Y-m-d');
                         //echo $datenow  ;
                         // $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
+                        
+                        //kukunin yung courseID para makuha yung mga subject at ienroll
+                        
+                        $getCourseID = "SELECT * FROM tblstudents WHERE accountID = $preID";
+                        $sqlGetCourseID = $conn->query($getCourseID);
+                        if($sqlGetCourseID){
+                            if(mysqli_num_rows($sqlGetCourseID) > 0){
+                                while($courseID = $sqlGetCourseID->fetch_assoc()) {
+                                $data_courseID = $courseID['courseID'];
+                                $studentType = $courseID['studentType'];
+                                
+                                if($studentType = "REGULAR"){
+                                $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
+                                $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                    $subjectCode = $subjects['subjectCode'];
+
+                                    $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                    $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                }
+                                } else if ($studentType = "IRREGULAR"){
+                                    $getSubjects = "SELECT * FROM tblbacksubjects WHERE accountID = $preID AND (status = 'Required' OR status = 'Taken')";
+                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                    while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                        $subjectCode = $subjects['subjectCode'];
+
+                                        $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                        $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                    }
+
+                                }
+                                }
+                            } 
+                        }
+
+
                         $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', studentNumber = $studentNum WHERE accountID = '$preID'";
                         $resultsqlinsert = $conn->query($sqlinsert);
 

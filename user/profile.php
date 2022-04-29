@@ -120,18 +120,22 @@
         <div class="row">
             <div class="profile-col">
                 <?php
-
-                $ID = $_SESSION['ID'];
-                $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
-                $res = mysqli_query($conn, $sql);
-                if($row = mysqli_fetch_array($res)){
-                    $lastname = $row['lastname'];
-                    $firstname = $row['firstname'];
-               
-                ?>
+                if(!empty($_SESSION['ID'])){
+                    $ID = $_SESSION['ID'];
+                    $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
+                    $res = mysqli_query($conn, $sql);
+                    if($row = mysqli_fetch_array($res)){
+                        $lastname = $row['lastname'];
+                        $firstname = $row['firstname'];
+                
+                    ?>
                 <h1><?php echo strtoupper($lastname). " " .strtoupper($firstname);?></h1>
-            <?php } ?>
+            <?php } } else {
+                echo 'NO DATA YET';
+            }
+                ?>
                 <?php
+                    if(!empty($_SESSION['ID'])){
                     $ID = $_SESSION['ID'];
                     $sqlGetData = "SELECT * FROM tblstudents WHERE accountID = '$ID'";
                     $results = mysqli_query($conn, $sqlGetData);
@@ -146,6 +150,7 @@
                     } else {
                         echo 'REJECTED';
                     }
+                }
                 ?></h4>
                 
                 <h6>YOUR SUBJECTS</h6>
@@ -197,11 +202,14 @@
                 } else {
                     echo 'NO SUBJECTS YET';
                 }
-                }?>
+                }
+            ?>
             </div>
+            <?php if (!empty($_SESSION['ID'])){?>
             <div class="profile-col-image">
                 <img src="./img/person1.jpg">
             </div>
+            <?php }?>
         </div>
     </section>
     <section class="footer">

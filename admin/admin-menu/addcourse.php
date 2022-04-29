@@ -32,61 +32,64 @@
          </ul>
 </nav>
 <br>
-<h2>ADD SUBJECT</h2>
+<h2>ADD COURSE</h2>
 <div class="container">
-  <form method = "post" action="addsubject.php">
+  <form method = "post" action="addcoursedata.php">
     <div class="row">
       <div class="col-25">
-        <label for="fname">Subject Code</label>
+        <label for="fname">Course Abbreviation</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subCodes" name="subjectCode" placeholder="Enter subject code" required>
+        <input type="text" id="subCodes" name="courseAbbr" placeholder="Enter course abbreviation (Ex. BSCS)" oninput="this.value = this.value.toUpperCase()" required>
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="fname">Subject Description</label>
+        <label for="fname">Course Description</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subDes" name="subjectDescription" placeholder="Enter subject description" required>
+        <input type="text" id="subDes" name="courseDescription" placeholder="Enter course description (Ex. BACHELOR OF SCIENCE IN COMPUTER SCIENCE)" oninput="this.value = this.value.toUpperCase()" required>
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="lname">Subject Units</label>
+        <label for="lname">Number of sections</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subUnit" name="subjectUnits" placeholder="Enter subject units" required>
+      <select id="subCourse" name="numberofsection" required>
+          <option>1</option>
+          <option>2</option>
+          <option selected>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
       </div>
     </div>
    <div class="row">
       <div class="col-25">
-        <label for="lname">Course</label>
+        <label for="lname">Number of year levels</label>
       </div>
       <div class="col-75">
         <!-- <input type="text" id="subCourse" name="course" placeholder="Enter course"> -->
-        <select id="subCourse" name="course" required>
-          <option>BACHELOR OF SCIENCE IN COMPUTER SCIENCE</option>
-          <option>BACHELOR OF SCIENCE IN ENTERTAINMENT AND MULTIMEDIA COMPUTING</option>
-          <option>BACHELOR OF SCIENCE IN INFORMATION SYSTEM</option>
-          <option>BACHELOR OF SCIENCE IN INFORMATION TECHNOLOGY</option>
+        <select id="subCourse" name="yearlevel" required>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option selected>4</option>
+          <option>5</option>
+          <option>6</option>
         </select>
       </div>
     </div>
     <div class="row">
       <div class="col-25">
-        <label for="country">Year</label>
+        <label for="country">Number of students per section</label>
       </div>
       <div class="col-75">
-        <select id="subYear" name="year" required>
-          <option value="1">1st</option>
-          <option value="2">2nd</option>
-          <option value="3">3rd</option>
-          <option value="4">4th</option>
-        </select>
+        <input type="text" id="subCourse" name="totalstudents" placeholder="Enter number of students per section" onkeypress="return /[0-9]/i.test(event.key)" required>
       </div>
     </div>
-      <div class="row">
+      <!-- <div class="row">
       <div class="col-25">
         <label for="country">Semester</label>
       </div>
@@ -110,10 +113,10 @@
           <option>D</option>
         </select>
       </div>
-    </div>
+    </div> -->
       
     <div class="row">
-      <input type="submit" value="Add Subject">
+      <input type="submit" value="Add Course">
     </div>
   </form>
 </div>

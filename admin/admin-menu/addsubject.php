@@ -35,7 +35,7 @@
             $addSubject = "INSERT INTO tblsubjects(subjectCode, subjectDescription, subjectUnits, courseID) VALUES('$subjectCode', '$subjectDescription', $subjectUnits, $courseID)";
             $sqlAddSubject = mysqli_query($conn, $addSubject);
 
-            echo '<script>windows.location.href="/enrollmentsystem/admin/admin-menu/Subjects.php"</script>';
+            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
             echo 'why?';
         }
     }

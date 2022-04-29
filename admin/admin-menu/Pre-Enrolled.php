@@ -43,7 +43,7 @@
                 <a href="Courses.html">COURSE <img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a>
             </li> -->
             <li>
-                <a href="Courses.html">SUBJECTS <img src="crse.png" alt="" style="width: 20px;height:20px;"></a>
+                <a href="Courses.php">COURSES <img src="crse.png" alt="" style="width: 20px;height:20px;"></a>
             </li>
             <li>
                 <a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a>

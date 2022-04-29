@@ -581,9 +581,9 @@ h3{
     padding-bottom: 50px;
 }
 .profile-col{
-    width: 50%;
-    flex-basis: 70%;
-    padding: 30px 2px;
+    width: 100%;
+    flex-basis: 100%;
+    padding: 0px 2px;
 }
 .profile-col-image{
     padding: 0;

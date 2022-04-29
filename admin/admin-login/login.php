@@ -1,5 +1,6 @@
 <?php
     require('database.php');
+    session_start();
 
     if(isset($_POST['submit'])){
         $email = $_POST['email'];
@@ -11,8 +12,9 @@
         $results = mysqli_fetch_array($sqlVerifyAdmin);
 
         if($results['email'] == $email && $results['password'] == $password){
+            $_SESSION['POSITION'] = $results['position'];
             echo '<script>alert("Welcome admin!")</script>';
-            echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/Admin.html"</script>';
+            echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/Admin.php"</script>';
         } else {
             echo '<script>alert("Login failed!")</script>';
         }

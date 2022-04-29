@@ -1,3 +1,7 @@
+<?php
+    require('dbconnection.php');
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
@@ -14,7 +18,7 @@
             
          </div>
          <ul>
-            <li class="active"><a href="Admin.html">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></a></li> 
+            <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></a></li> 
             <li>
                <a href="#" class="feat-btn">STUDENTS  <img src="stud.png" alt="" style="width: 20px;height:20px;">
                <span class="fas fa-caret-down first"></span>
@@ -27,8 +31,11 @@
             
             <li><a href="Courses.php">COURSES<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="#">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="Activity Log.html">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
+            <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <?php }?>
+            <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav><div class="container">
     
@@ -37,19 +44,19 @@
             <div class="card">
                 <div class="box">
                     <h1></h1>
-                    <h3 style="font-size:25px;">Course</h3>
+                    <h3 style="font-size:25px;">Courses</h3>
+                    <h3>123</h3>
                 </div>
                 <div class="icon-case">
                     <img src="course.png" alt=" "  style="width:110px;height:110px;">
-
-
                 </div>
             </div>
 
             <div class="card">
                 <div class="box">
                     <h1></h1>
-                    <h3  style="font-size:25px;">Students</h3>
+                    <h3  style="font-size:25px;">Professors</h3>
+                    <h3>123</h3>
                 </div>
                 <div class="icon-case">
                     <img src="student.png" alt="" style="width: 110px;height:110px;">
@@ -60,23 +67,45 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;">Pre-enrolled</h3>
+                    <h3>123</h3>
                 </div>
                 <div class="icon-case">
                     <img src="preenrolled.png" alt="" style="width: 100px;height:100px;">
                 </div>
             </div>
 
-
             <div class="card">
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;" >Enrolled</h3>
+                    <h3>123</h3>
                 </div>
                 <div class="icon-case">
                     <img src="enrolled.png" alt="" style="width: 110px;height:110px;">
                 </div>
             </div>
 
+            <div class="card">
+                <div class="box">
+                    <h1></h1>
+                    <h3 style="font-size:25px;" >Subjects</h3>
+                    <h3>123</h3>
+                </div>
+                <div class="icon-case">
+                    <img src="course.png" alt=" "  style="width:110px;height:110px;">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="box">
+                    <h1></h1>
+                    <h3 style="font-size:25px;" >Accounts</h3>
+                    <h3>123</h3>
+                </div>
+                <div class="icon-case">
+                    <img src="student.png" alt="" style="width: 110px;height:110px;">
+                </div>
+            </div>
         </div>
 
           

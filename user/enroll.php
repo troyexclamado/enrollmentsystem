@@ -2,6 +2,8 @@
     require('includes/db.inc.php');
     session_start();
 
+    $_SESSION['course'] = "";
+
     if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
 
         $accountID = $_SESSION['ID'];
@@ -203,6 +205,7 @@
                 <div class="row">
                     <div class="inputbox">
                          <label for="course">Course</label>
+                         <!-- <select id="course" name="course" onchange="display()" required> -->
                          <select id="course" name="course" required>
                             <option selected disabled hidden value="">SELECT YOUR COURSE</option>
                             <?php 
@@ -217,20 +220,31 @@
                        
                     </div>
                 </div>
+                <!-- <script>
+                    function display(){
+                        var x = document.getElementById('course').value;
+                        document.getElementById('selectedcourse').value = x;
+                    }
+                </script> -->
                 <div class="intro">
                 <p></p>
                     </div>
                 <div class="row">
                     <div class="inputbox">
                         <label for="year">Year</label>
+                        <input type="hidden" id="selectedcourse">
                         <!-- <input type="text" id="year" name = "year" placeholder="Enter year" required> -->
                         <select id="year" name="year" required>
+                            <?php 
+                                $countSection = "SELECT from "
+                            ?>
                             <option selected disabled hidden value="">SELECT YEAR</option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
                          </select>
+                         
                         
                     </div>
                     

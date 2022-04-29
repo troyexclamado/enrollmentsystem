@@ -1,7 +1,7 @@
 <?php
  require('includes/db.inc.php');
     session_start();
-    if(isset($_SESSION['ID'])){
+    if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
           $accountID = $_SESSION['ID'];
             $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
             $res = mysqli_query($conn, $sql1);
@@ -130,32 +130,31 @@
                 
                     ?>
                 <h1><?php echo strtoupper($lastname). " " .strtoupper($firstname);?></h1>
-            <?php } } else {
-                echo 'NO DATA YET';
-            }
-                ?>
-                <?php
-                    if(!empty($_SESSION['ID'])){
-                    $ID = $_SESSION['ID'];
-                    $sqlGetData = "SELECT * FROM tblstudents WHERE accountID = '$ID'";
-                    $results = mysqli_query($conn, $sqlGetData);
-                    if($data = mysqli_fetch_array($results)){
-                        
-                ?>
-                <h4>APPLICATION STATUS: <?php
-                    if($data['statusID'] == 0){
-                        echo 'PENDING';
-                    } else if($data['statusID'] == 1){
-                        echo 'ACCEPTED';
-                    } else {
-                        echo 'REJECTED';
-                    }
+                <?php 
+                    }//$row closing 
+                }   //if empty session closing
+                else {
+                    echo 'LOG IN FIRST';
                 }
-                ?></h4>
-                
-                <h6>YOUR SUBJECTS</h6>
-                <?php if($data['statusID'] = 1){?>
-                <div class="subject-container-profile">
+                if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+
+                    $accountID = $_SESSION['ID'];
+            
+                    #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
+                    $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 0";
+                    $sqlCheckID = mysqli_query($conn, $checkID);
+                    if($row = mysqli_fetch_array($sqlCheckID))
+                    {
+                        ?> <h3>APPLICATION STATUS: PENDING</h3> <?php
+                    } else {
+                        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 1 AND studentType = 'REGULAR'";
+                        $sqlCheckID = mysqli_query($conn, $checkID);
+                        if($row = mysqli_fetch_array($sqlCheckID)){
+                            ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
+                        <div id="subject-container" class="subject-title">
+                    <h2>Subjects</h2>
+                </div>
+            <div class="subject-container">
             <div class="subject">
             <table>
                 <thead>
@@ -198,18 +197,77 @@
                 </table>
             </div>
                 </div>
+    <?php } ?>
+                        <?php   
+                        }
+                        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 1 AND studentType = 'IRREGULAR'";
+                        $sqlCheckID = mysqli_query($conn, $checkID);
+                        if($row = mysqli_fetch_array($sqlCheckID)){
+                            ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
+                        <div id="subject-container" class="subject-title">
+                    <h2>Subjects</h2>
+                </div>
+            <div class="subject-container">
+            <div class="subject">
+            <table>
+                <thead>
+                    <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Subject Units</th>
+                    </tr>
+                </thead>
+
                 <?php
-                } else {
-                    echo 'NO SUBJECTS YET';
+
+                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                $result = mysqli_query($conn, $sql1);
+                while($row = mysqli_fetch_array($result)){
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
                 }
+
+                $sql = "SELECT * FROM tblbacksubjects WHERE accountID='$accountID' AND (status = 'Taken' OR status = 'Required')";
+                $res = mysqli_query($conn, $sql);
+
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
+                    $subject_code = $row_course['subjectCode'];
+                    $getSubjectDetails = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code'";
+                    $subject_name = "";
+                    $subject_units = "";
+                    $sqlGetSubjectDetails = mysqli_query($conn, $getSubjectDetails);
+                    while($subjectsresult = mysqli_fetch_array($sqlGetSubjectDetails)){
+                        $subject_name = $subjectsresult['subjectDescription'];
+                        $subject_units = $subjectsresult['subjectUnits'];
+                    }
+            ?>
+
+                <tbody>
+                <tr>
+                    <td><?php echo $subject_code;?></td>
+                    <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
+                    </tr>
+                      <?php }
+                        ?>
+                </tbody>
+                </table>
+            </div>
+                </div>
+                        
+                        
+                <?php
+                    }
+                
+                else {
+                    echo "NO DATA YET";
                 }
+            }
             ?>
             </div>
-            <?php if (!empty($_SESSION['ID'])){?>
-            <div class="profile-col-image">
-                <img src="./img/person1.jpg">
-            </div>
-            <?php }?>
         </div>
     </section>
     <section class="footer">

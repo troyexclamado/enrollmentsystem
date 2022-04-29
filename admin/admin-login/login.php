@@ -17,6 +17,7 @@
             echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/Admin.php"</script>';
         } else {
             echo '<script>alert("Login failed!")</script>';
+            echo '<script>window.location.href="/enrollmentsystem/admin/admin-login/index.html"</script>';
         }
     }
 ?>  

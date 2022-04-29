@@ -263,7 +263,7 @@
                     }
                 
                 else {
-                    echo "NO DATA YET";
+                    echo "";
                 }
             }
             ?>

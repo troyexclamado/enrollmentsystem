@@ -14,7 +14,14 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-            <p>Admin</p>
+         <?php
+                if($_SESSION['POSITION']== "PROFESSOR"){
+                    ?> <p>PROFESSOR</p>
+                    <?php
+                } else {
+                    ?> <p>Admin </p><?php
+                }
+            ?>
             
           </div>
          <ul>
@@ -50,10 +57,18 @@
 <div class="col-2">
 <h4> YOUR SUBJECTS </h4>
 <select>
-    <option value="0">CCS 001</option>
-    <option value="1">CSS 002</option>
-    <option value="2">CSS 003</option>
-    <option value="3">CSS 004</option>
+    <?php
+        $professorID = $_SESSION['PROFESSOR_ID'];
+        $getSubjects = "SELECT * FROM tblprofessorsubjects WHERE professorID = $professorID";
+        $sqlGetSubject = mysqli_query($conn, $getSubjects);
+        if(mysqli_num_rows($sqlGetSubject) > 0){
+          while($subjects = mysqli_fetch_array($sqlGetSubject)){
+            ?> <option><?php echo $subjects['subjectCode']?></option><?php
+          }
+        } else {
+          ?> <option value="">NO SUBJECTS YET</option><?php
+        }
+    ?> 
 </select>	
 </div>
 <div class="col-3">
@@ -61,34 +76,35 @@
 </div>
 
 <div class="col-1">
-<select>
-    <option value="">Section:</option>
-    <option value="1">BSCS 3A</option>
-    <option value="2">BSCS 3B</option>
-    <option value="3">BSCS 3C</option>
+<p style="float: left;"> VIEW SCHEDULE </p>
+<select style="float: right; width: 150px">
+    <option selected disabled hidden>SELECT SECTION</option>
+    <?php
+    $getCourses = "SELECT * FROM tblcoursedetails WHERE semester = $SEMESTER";
+    $sqlGetCourses = mysqli_query($conn, $getCourses);
+    while($results = mysqli_fetch_array($sqlGetCourses)){
+    ?>
+      <option><?php 
+        echo $results['courseAbbr']." ".$results['year'].$results['section']?></option>
+    <?php } ?>
   </select>	
 </div>
 <h4 id="filter"> ADD SCHEDULE: </h4>
 <div class="custom-select" style="width:200px;">
-  <select>
-    <option value="0">Course:</option>
-    <option value="1">BSCS</option>
-    <option value="2">BSIT</option>
-    <option value="3">BSEMC</option>
-    <option value="4">BSIS</option>
-    <option value="5">BSM</option>
-    <option value="6">BSP</option>
-    <option value="7">BPA</option>
-    <option value="8">ABCOMM</option>
-    <option value="9">ABPS</option>
-    <option value="10">ABBS</option>
-    <option value="11">BSAT</option>
-    <option value="12">BSA</option>
+  <select name="course">
+    <option selected disabled hidden>SELECT COURSE</option>
+  <?php
+    $getCourses = "SELECT DISTINCT courseAbbr FROM tblcoursedetails";
+    $sqlGetCourses = mysqli_query($conn, $getCourses);
+    while($results = mysqli_fetch_array($sqlGetCourses)){
+    ?>
+      <option><?php echo $results['courseAbbr']?></option>
+    <?php } ?>
   </select>
  <div class="space">
   </div>
-    <select>
-    <option value="0">Year:</option>
+    <select name="year">
+    <option selected disabled hidden>SELECT YEAR</option>
     <option value="1">1st</option>
     <option value="2">2nd</option>
     <option value="3">3rd</option>
@@ -96,36 +112,38 @@
   </select>
  <div class="space">
   </div>
-    <select>
-    <option value="0">Units:</option>
-    <option value="1">Ascending</option>
-    <option value="2">Descending</option>
+    <select name="section">
+    <option selected disabled hidden>SELECT SECTION</option>
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+    <option value="D">D</option>
+    <option value="E">E</option>
   </select>
  <div class="space">
   </div>
-    <select>
-    <option value="0">Semester:</option>
-    <option value="1">1st</option>
-    <option value="2">2nd</option>
+    <select name ="semester">
+    <option selected disabled hidden>SELECT SEMESTER</option>
+    <option value=<?php echo $SEMESTER?>>2ND</option>
   </select>
 <div class="space">
   </div>
-<select>
-    <option value="0">Day:</option>
-    <option value="1">Monday</option>
-    <option value="2">Tuesday</option>
-    <option value="3">Wednesday</option>
-    <option value="4">Thursday</option>
-    <option value="5">Friday</option>
-    <option value="6">Saturday</option>
-    <option value="7">Sunday</option>
+<select name="day">
+    <option selected disabled hidden>SELECT DAY</option>
+    <option value="MON">MONDAY</option>
+    <option value="TUE">TUESDAY</option>
+    <option value="WED">WEDNESDAY</option>
+    <option value="THU">THURSDAY</option>
+    <option value="FRI">FRIDAY</option>
+    <option value="SAT">SATURDAY</option>
+    <option value="SUM">SUNDAY</option>
 </select>
 </div>
 <div class="col-25">
-<input type="text" id="subUnit" size="16" name="unit" placeholder="Start..">
+<small>Start Time</small><input type="time" id="subUnit" size="16" name="startTime" required>
 </div>
 <div class="col-75">
-<input type="text" id="subUnit" size="16" name="unit" placeholder="End..">
+<small>End Time</small><input type="time" id="subUnit" size="16" name="endTime" required>
 </div>
 <div class="col-18">
 <button class="myCol">Add Schedule</button>

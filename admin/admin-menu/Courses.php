@@ -14,7 +14,14 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-            <p>Admin</p>
+         <?php
+                if($_SESSION['POSITION']== "PROFESSOR"){
+                    ?> <p>PROFESSOR</p>
+                    <?php
+                } else {
+                    ?> <p>Admin </p><?php
+                }
+            ?>
             
          </div>
          <ul>
@@ -72,7 +79,7 @@
     <td><?php echo $courses['courseDescription']?></td>
     <td><?php
         $courseAbbr = $courses['courseAbbr'];
-        $countCourse = "SELECT COUNT(courseDescription) AS numberofsections FROM tblcoursedetails WHERE courseAbbr = '$courseAbbr'";
+        $countCourse = "SELECT COUNT(courseDescription) AS numberofsections FROM tblcoursedetails WHERE courseAbbr = '$courseAbbr' AND semester = $SEMESTER";
         $sqlCountCourse = mysqli_query($conn, $countCourse);
 
         while($numberofsections = mysqli_fetch_array($sqlCountCourse)){

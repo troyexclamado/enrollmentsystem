@@ -20,7 +20,14 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-            <p>Admin</p>
+         <?php
+                if($_SESSION['POSITION']== "PROFESSOR"){
+                    ?> <p>PROFESSOR</p>
+                    <?php
+                } else {
+                    ?> <p>Admin </p><?php
+                }
+            ?>
             
            </div>
          <ul>

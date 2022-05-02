@@ -1,6 +1,8 @@
 <?php
     require('dbconnection.php');
     session_start();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -72,7 +74,43 @@
 </select>	
 </div>
 <div class="col-3">
-<button class="col-4">Add Subject</button>
+<button class="col-4" id="myBtn">Add Subject</button>
+</div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Add subject</h2>
+  </div>
+  <form method="POST" action="addsubjectprofessor.php">
+  <div class="modal-body">
+    <p>Add subject</p>
+    <select class="subject" name="subject" required>
+      <option selected disabled hidden>Select a subject</option>
+      <?php 
+        $getSubjects = "SELECT DISTINCT subjectCode, subjectDescription FROM tblsubjects";
+        $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+        if(mysqli_num_rows($sqlGetSubjects) > 0){
+          while($subjectsResult = mysqli_fetch_array($sqlGetSubjects)){
+      ?>
+      <option value="<?php echo $subjectsResult['subjectCode']?>"><?php echo $subjectsResult['subjectCode']." - ".$subjectsResult['subjectDescription']?></option>
+      <?php 
+          }
+        } else {
+          ?> <option>NO SUBJECTS AVAILABLE</option> <?php
+        }
+    ?>
+    </select>
+  </div>
+  <div class="modal-footer">
+  <button type="submit" name="submit">Add Subject</button>
+  </div>
+  </form>
+</div>
+
 </div>
 
 <div class="col-1">
@@ -190,7 +228,33 @@
   </tr>
 </div>
 
+<script>
+  // Get the modal
+var modal = document.getElementById("myModal");
 
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
 
 <script>
           $('.btn').click(function(){

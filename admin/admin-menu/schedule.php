@@ -2,7 +2,6 @@
     require('dbconnection.php');
     session_start();
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -47,6 +46,7 @@
             <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav>
+
 <div class="container">
 <div class="search">
     <div class="search-box">
@@ -58,7 +58,7 @@
   </div>
 <div class="col-2">
 <h4> YOUR SUBJECTS </h4>
-<select>
+<select id="subject" name="subject" onchange="update();" required>
     <?php
         $professorID = $_SESSION['PROFESSOR_ID'];
         $getSubjects = "SELECT * FROM tblprofessorsubjects WHERE professorID = $professorID";
@@ -72,13 +72,12 @@
         }
     ?> 
 </select>	
+
 </div>
 <div class="col-3">
 <button class="col-4" id="myBtn">Add Subject</button>
-</div>
 <!-- The Modal -->
 <div id="myModal" class="modal">
-
   <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
@@ -88,7 +87,7 @@
   <form method="POST" action="addsubjectprofessor.php">
   <div class="modal-body">
     <p>Add subject</p>
-    <select class="subject" name="subject" required>
+    <select id="currentSubject" class="subject" name="subject" required>
       <option selected disabled hidden>Select a subject</option>
       <?php 
         $getSubjects = "SELECT DISTINCT subjectCode, subjectDescription FROM tblsubjects";
@@ -106,13 +105,12 @@
     </select>
   </div>
   <div class="modal-footer">
-  <button type="submit" name="submit">Add Subject</button>
+  <button type="submit" name="professoraddsubject">Add Subject</button>
   </div>
   </form>
 </div>
 
 </div>
-
 <div class="col-1">
 <p style="float: left;"> VIEW SCHEDULE </p>
 <select style="float: right; width: 150px">
@@ -127,9 +125,11 @@
     <?php } ?>
   </select>	
 </div>
+
 <h4 id="filter"> ADD SCHEDULE: </h4>
+<form method="POST" action="addscheduleprofessor.php" name ="addschedule">
 <div class="custom-select" style="width:200px;">
-  <select name="course">
+  <select name="course" required>
     <option selected disabled hidden>SELECT COURSE</option>
   <?php
     $getCourses = "SELECT DISTINCT courseAbbr FROM tblcoursedetails";
@@ -139,9 +139,9 @@
       <option><?php echo $results['courseAbbr']?></option>
     <?php } ?>
   </select>
- <div class="space">
+  <div class="space">
   </div>
-    <select name="year">
+    <select name="year" required>
     <option selected disabled hidden>SELECT YEAR</option>
     <option value="1">1st</option>
     <option value="2">2nd</option>
@@ -150,7 +150,7 @@
   </select>
  <div class="space">
   </div>
-    <select name="section">
+    <select name="section" required>
     <option selected disabled hidden>SELECT SECTION</option>
     <option value="A">A</option>
     <option value="B">B</option>
@@ -183,9 +183,20 @@
 <div class="col-75">
 <small>End Time</small><input type="time" id="subUnit" size="16" name="endTime" required>
 </div>
+<input type="hidden" id="currentSubject" name="currentSubject">
+    <script type="text/javascript">
+			function update() {
+				// var select = document.getElementById('subject');
+				// var option = select.options[select.selectedIndex];
+        var textbox = document.forms['addschedule']['currentSubject'];
+        textbox.value = document.getElementById('subject').value;
+      }
+			update();
+		</script>
 <div class="col-18">
-<button class="myCol">Add Schedule</button>
+<button class="myCol" type="submit" name="addschedule">Add Schedule</button>
 </div>
+</form>
 
 <table class="content-table">
   <thead>
@@ -199,33 +210,27 @@
     <th>Sunday</th>
   </tr>
 </thead>
+    <?php 
+      $professorID = $_SESSION['PROFESSOR_ID'];
+      $showSchedule = "SELECT * FROM tblsubjectschedules WHERE courseID = 1 and professorID = $professorID";
+      $sqlShowSchedule = mysqli_query($conn, $showSchedule);
+      if(mysqli_num_rows($sqlShowSchedule) > 0){
+        while($schedule = mysqli_fetch_array($sqlShowSchedule)){
+    ?>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td><?php if($schedule['day'] == "MON"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "TUE"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "WED"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "THU"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "FRI"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "SAT"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
+    <td><?php if($schedule['day'] == "SUN"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
   </tr>
-
-<tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
+    <?php
+        }//end of while ($schedule = mysqli_fetch_array($sqlShowSchedule))
+      }//end of mysqli num rows
+    ?>
+</div>
 </div>
 
 <script>

@@ -115,50 +115,6 @@
             </div>
         </div>
 
-          
-          
-        <div class="content-2">
-            <div class="recent-payments">
-                <div class="title">
-                    <h2>Currently Enrolled</h2>
-                  
-                </div>
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Course</th>
-                        <th>Schedule</th>
-                    </tr>
-                    <tr>
-                        <td>John Doe</td>
-                        <td>Caloocan</td>
-                        <td>BSCS</td>
-                        <td>9:00pm-10:00pm</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="new-students">
-                <div class="title">
-                    <h2>Pre-enrolled</h2>
-                   
-                </div>
-                <table>
-                    <tr>
-                    <th>Name</th>
-                    <th>Message</th>
-                    </tr>
-                    <tr>
-                        
-                        <td>John Steve Doe</td>
-                        <td><img src="" alt=""></td>
-                    </tr> 
-                </table>
-            </div>
-        </div>
-    </div>
-
-
 
       <script>
          $('.btn').click(function(){

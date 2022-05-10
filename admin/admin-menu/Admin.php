@@ -52,7 +52,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;">Courses</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countCourses = "SELECT COUNT(DISTINCT courseDescription) AS courses FROM tblcoursedetails";
+                        $sqlCountCourses = mysqli_query($conn, $countCourses);
+                        if(mysqli_num_rows($sqlCountCourses) > 0){
+                            $coursesResult = mysqli_fetch_array($sqlCountCourses);
+                    ?>
+                    <h3><?php echo $coursesResult['courses']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="course.png" alt=" "  style="width:110px;height:110px;">
@@ -63,7 +74,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3  style="font-size:25px;">Professors</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countProfessor = "SELECT COUNT(DISTINCT professorID) AS professor FROM tblprofessors";
+                        $sqlCountProfessor = mysqli_query($conn, $countProfessor);
+                        if(mysqli_num_rows($sqlCountProfessor) > 0){
+                            $professorResult = mysqli_fetch_array($sqlCountProfessor);
+                    ?>
+                    <h3><?php echo $professorResult['professor']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="student.png" alt="" style="width: 110px;height:110px;">
@@ -74,7 +96,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;">Pre-enrolled</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countPreenrolled = "SELECT COUNT(statusID) AS preenrolled FROM tblstudents WHERE statusID=0";
+                        $sqlCountPreenrolled = mysqli_query($conn, $countPreenrolled);
+                        if(mysqli_num_rows($sqlCountPreenrolled) > 0){
+                            $preenrolledResult = mysqli_fetch_array($sqlCountPreenrolled);
+                    ?>
+                    <h3><?php echo $preenrolledResult['preenrolled']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="preenrolled.png" alt="" style="width: 100px;height:100px;">
@@ -85,7 +118,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;" >Enrolled</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countEnrolled = "SELECT COUNT(statusID) AS enrolled FROM tblstudents WHERE statusID=1";
+                        $sqlCountEnrolled = mysqli_query($conn, $countEnrolled);
+                        if(mysqli_num_rows($sqlCountEnrolled) > 0){
+                            $enrolledResult = mysqli_fetch_array($sqlCountEnrolled);
+                    ?>
+                    <h3><?php echo $enrolledResult['enrolled']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="enrolled.png" alt="" style="width: 110px;height:110px;">
@@ -96,7 +140,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;" >Subjects</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countSubjects = "SELECT COUNT(DISTINCT subjectCode) AS subjects FROM tblsubjects";
+                        $sqlCountSubjects = mysqli_query($conn, $countSubjects);
+                        if(mysqli_num_rows($sqlCountSubjects) > 0){
+                            $subjectResult = mysqli_fetch_array($sqlCountSubjects);
+                    ?>
+                    <h3><?php echo $subjectResult['subjects']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="course.png" alt=" "  style="width:110px;height:110px;">
@@ -107,7 +162,18 @@
                 <div class="box">
                     <h1></h1>
                     <h3 style="font-size:25px;" >Accounts</h3>
-                    <h3>123</h3>
+                    <?php 
+                        $countAccounts = "SELECT COUNT(accountID) AS accounts FROM tblaccounts";
+                        $sqlCountAccounts = mysqli_query($conn, $countAccounts);
+                        if(mysqli_num_rows($sqlCountAccounts) > 0){
+                            $accountsResult = mysqli_fetch_array($sqlCountAccounts);
+                    ?>
+                    <h3><?php echo $accountsResult['accounts']?></h3>
+                    <?php 
+                        } else {
+                            echo '0';
+                        }
+                    ?>
                 </div>
                 <div class="icon-case">
                     <img src="student.png" alt="" style="width: 110px;height:110px;">

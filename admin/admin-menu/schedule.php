@@ -228,6 +228,16 @@
   </tr>
     <?php
         }//end of while ($schedule = mysqli_fetch_array($sqlShowSchedule))
+      }else {
+        ?> 
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <?php
       }//end of mysqli num rows
     ?>
 </div>

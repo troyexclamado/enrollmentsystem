@@ -1,12 +1,12 @@
 <?php
  require('includes/db.inc.php');
     session_start();
-    if(isset($_SESSION['ID'])){
-          $accountID = $_SESSION['ID'];
-            $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+    if(isset($_SESSION['studentnum'])){
+          $accountID = $_SESSION['studentnum'];
+            $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
-                $_SESSION['enrolled'] = $row['accountID'];
+                $_SESSION['enrolled'] = $row['studentNumber'];
                  $_SESSION['position'] = $row['studentType'];
             }
     }
@@ -32,7 +32,7 @@
 
                  <!-- Button trigger modal & checking if ID and account ID exist -->
                       <?php
-                      if(!isset($_SESSION['ID'])){
+                      if(!isset($_SESSION['studentnum'])){
                       ?>     
                     <li><a href="login.php">Enroll</a></li>
                     <?php }  ?>
@@ -54,14 +54,22 @@
 
                     /*CHECK IF STUDENT = IS NOT ENROLLED*/
 
-                    elseif(isset($_SESSION['ID']) && !isset($_SESSION['enrolled'])) {
+                    elseif(isset($_SESSION['studentnum']) && !isset($_SESSION['enrolled'])) {
                           echo '<li><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Enroll</a></li>';   
                     }?>
 
-                    <li><a href="profile.php">Profile</a></li>
+                     <?php
+                    if(!isset($_SESSION['studentnum']))
+                    {
+                    ?>
+                    <li><a href="login.php">Profile</a></li>
+                <?php }
+                else {
+                    echo '<li><a href="profile.php">Profile</a></li>';                    
+                } ?>
                     <li><a href="contactus.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+                        if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
                        echo ' <li><a href="logout.php">Logout</a></li>';    
                     ?>
                 <?php } 

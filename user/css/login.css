@@ -86,7 +86,7 @@ ul{
     color:rgba(0, 0, 0, 0.74);
     font-family: sans-serif;
 }
-.left-content input[type=email], input[type=password]{
+.left-content input[type=text], input[type=password]{
     width: 100%;
     border: 1px rgba(0, 0, 0, 0.28) solid;
     outline-color: rgba(255, 128, 0, 0.67);

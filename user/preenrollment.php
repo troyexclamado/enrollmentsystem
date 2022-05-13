@@ -21,7 +21,7 @@
         $course = $_POST['course'];
         $year = $_POST['year'];
         $semester = $_POST['semester'];
-        $accountID = $_SESSION['ID'];
+        $accountID = $_SESSION['studentnum'];
         $dateOfEnrollment = date("Y-m-d");
 
         //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
@@ -40,7 +40,7 @@
         //     $enrollsubject = "INSERT INTO tblenrolledsubjects(studentnumber)"
         // }
 
-        $preenrollment = "INSERT INTO tblstudents(accountID, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme, studentType, dateOfEnrollment) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1, 'REGULAR', '$dateOfEnrollment')";
+        $preenrollment = "INSERT INTO tblstudents(studentNumber, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme, studentType, dateOfEnrollment) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1, 'REGULAR', '$dateOfEnrollment')";
         $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
@@ -69,7 +69,7 @@
         $course = $_POST['course'];
         $year = $_POST['year'];
         $semester = $_POST['semester'];
-        $accountID = $_SESSION['ID'];
+        $accountID = $_SESSION['studentnum'];
         $dateOfEnrollment = date("Y-m-d");
 
         $upperaddress = strtoupper($address);
@@ -95,7 +95,7 @@
         while($row = mysqli_fetch_array($result)){
             $subjectCode = $row['subjectCode'];
 
-            $sql3 = "INSERT INTO tblbacksubjects(subjectCode, accountID, status) VALUES('".$subjectCode."', '".$accountID."', 'Save')";
+            $sql3 = "INSERT INTO tblbacksubjects(subjectCode, studentNumber, status) VALUES('".$subjectCode."', '".$accountID."', 'Save')";
             $insert = mysqli_query($conn, $sql3);
         }
 
@@ -111,7 +111,7 @@
       }  
         if($number == $i){
             // $preenrollment = "INSERT INTO tblstudents(accountID, firstname, middlename, lastname, birthday, birthplace, emailAddress, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, course, year, semester, position, status) VALUES('$accountID','$firstname','$middlename','$lastname','$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$course', '$year', '$semester', 'IRREGULAR', 'PRE-ENROLLED')";
-            $preenrollment = "INSERT INTO tblstudents(accountID, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme, studentType, dateOfEnrollment) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1, 'IRREGULAR', '$dateOfEnrollment')";
+            $preenrollment = "INSERT INTO tblstudents(studentNumber, birthday, birthplace, email, contactNumber, address, lastSchoolAttended, lastSchoolYearAttended, lastSchoolAddress, courseID, statusID, scheme, studentType, dateOfEnrollment) VALUES('$accountID', '$birthday','$birthplace','$email','$contactnumber','$address', '$lastschoolattended', '$lastschoolyear', '$lastschooladdress', '$courseID','0', 1, 'IRREGULAR', '$dateOfEnrollment')";
             $sqlPreEnroll = mysqli_query($conn, $preenrollment);
 
         if($sqlPreEnroll)
@@ -127,11 +127,11 @@
 
      if(isset($_GET['action'])){
 
-        $accountID = $_SESSION['ID'];
+        $accountID = $_SESSION['studentnum'];
         $subject_code = $_GET['action'];
         $subject_code = str_replace("%20"," ","$subject_code");
 
-        $sql = "UPDATE tblbacksubjects SET status = 'Taken' WHERE accountID = $accountID AND subjectCode = '$subject_code'";
+        $sql = "UPDATE tblbacksubjects SET status = 'Taken' WHERE studentNumber = $accountID AND subjectCode = '$subject_code'";
         // $sql = "INSERT INTO tblbacksubjects(subjectCode, accountID, status) VALUES('$subject_code', $accountID, 'Save')";
         $res = mysqli_query($conn, $sql);
         if($res){

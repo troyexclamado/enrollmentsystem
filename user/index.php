@@ -4,12 +4,12 @@
 
     /* CHECK IF ACCOUNTID IS ALREADY ENROLLED*/
 
-    if(isset($_SESSION['ID'])){
-          $accountID = $_SESSION['ID'];
-            $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+    if(isset($_SESSION['studentnum'])){
+          $accountID = $_SESSION['studentnum'];
+            $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
             $res = mysqli_query($conn, $sql1);
             if($row = mysqli_fetch_array($res)){
-                $_SESSION['enrolled'] = $row['accountID'];
+                $_SESSION['enrolled'] = $row['studentNumber'];
                 $_SESSION['position'] = $row['studentType'];
             }
     }
@@ -35,7 +35,7 @@
 
                  <!-- Button trigger modal & checking if ID and account ID exist -->
                       <?php
-                      if(!isset($_SESSION['ID'])){
+                      if(!isset($_SESSION['studentnum'])){
                       ?>     
                     <li><a href="login.php">Enroll</a></li>
                     <?php }  ?>
@@ -51,20 +51,27 @@
 
                     /*CHECK IF POSITION = REGULAR*/
 
-                    elseif(isset($_SESSION['enrolled']) && $_SESSION['position'] == 'REGULAR'){
+                    else if(isset($_SESSION['enrolled']) && $_SESSION['position'] == 'REGULAR'){
                         echo '<li><a href="enroll.php#subject-container">Enroll</a></li>';
                     }
 
                     /*CHECK IF STUDENT = IS NOT ENROLLED*/
 
-                    elseif(isset($_SESSION['ID']) && !isset($_SESSION['enrolled'])) {
+                    else if(isset($_SESSION['studentnum']) && !isset($_SESSION['enrolled'])) {
                           echo '<li><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Enroll</a></li>';   
                     }?>
-
-                    <li><a href="profile.php">Profile</a></li>
+                    <?php
+                    if(!isset($_SESSION['studentnum']))
+                    {
+                    ?>
+                    <li><a href="login.php">Profile</a></li>
+                <?php }
+                else {
+                    echo '<li><a href="profile.php">Profile</a></li>';                    
+                } ?>
                     <li><a href="contactus.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+                        if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
                        echo ' <li><a href="logout.php">Logout</a></li>';    
                     ?>
                 <?php } 
@@ -84,7 +91,7 @@
 
             /*CHECK IF ACCOUNT IS ALREADY ENROLLED*/
 
-            if(!isset($_SESSION['ID'])){
+            if(!isset($_SESSION['studentnum'])){
             ?>
              <a href="login.php" class="enroll-button">Enroll Now</a>
         <?php } ?>
@@ -100,7 +107,7 @@
         echo '<a href="irregular_enroll.php#subject-container" class="enroll-button">Enroll Now</a>';
         }
 
-        elseif(isset($_SESSION['ID']) && !isset($_SESSION['enrolled'])) {
+        elseif(isset($_SESSION['studentnum']) && !isset($_SESSION['enrolled'])) {
         echo '<a href="" class="enroll-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Enroll Now</a>';
         }?>
         </div>
@@ -177,7 +184,7 @@
 
             /*CHECK IF ACCOUNT IS ALREADY ENROLLED*/
 
-             if(!isset($_SESSION['ID'])){
+             if(!isset($_SESSION['studentnum'])){
                 ?>
                  <a href="login.php" class="enroll-button">Enroll Now</a>
             <?php } ?>
@@ -193,7 +200,7 @@
             echo '<a href="irregular_enroll.php#subject-container" class="enroll-button">Enroll Now</a>';
              }
 
-             elseif(isset($_SESSION['ID']) && !isset($_SESSION['enrolled'])) {
+             elseif(isset($_SESSION['studentnum']) && !isset($_SESSION['enrolled'])) {
             echo '<a href="" class="enroll-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Enroll Now</a>';
         }?>
     </section>

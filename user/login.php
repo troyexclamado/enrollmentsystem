@@ -21,21 +21,21 @@ require_once"includes/login_inc.php";
         <h2>Log In</h2>
             </div>
         <form method="post" action="login.php">
-        <p>Email</p>
+        <p>Student Number</p>
         <?php
-        if(isset($_POST['email'])){
-            echo '  <input type="email" name="email" placeholder="you@example.com" value="'.$Email.'" required> ';
+        if(isset($_POST['studentnum'])){
+            echo '  <input type="text" name="studentnum" placeholder="Enter your Student Number" value="'.$studentnum.'" required> ';
         }
         else{
-            echo '<input type="email" name="email" placeholder="you@example.com" required> ';
+            echo '<input type="text" name="studentnum" placeholder="Enter your Student Number" required> ';
         }
         ?>
     
         <?php
-        if(isset($_SESSION['email_notexist'])){
+        if(isset($_SESSION['student_notexist'])){
         ?>
         <div class="error">
-            <p><?php echo $_SESSION['email_notexist'];?></p>
+            <p><?php echo $_SESSION['student_notexist'];?></p>
         </div>
     <?php }
     else{
@@ -45,11 +45,10 @@ require_once"includes/login_inc.php";
                 <p>Password</p>
                 <a href="">Forgot password?</a>
                 </div>
-        <input type="password" name="pass" placeholder="Enter 6 character or more" required>
+        <input type="password" name="pass" placeholder="Enter your password" required>
             <button class="button1" name="submit">LOG IN</button>
         </form>
             <div class="bottom-content">
-                <span>Not a member yet?</span><a href="register.php">Sign Up</a>
             </div>
             </div>
       </div>
@@ -82,12 +81,12 @@ require_once"includes/login_inc.php";
          </script>
                 <?php } ?>
                   <?php 
-      if(isset($_SESSION['email_notexist'])){ ?>
+      if(isset($_SESSION['student_notexist'])){ ?>
 
        <p class="failed"></p>
        <div class="failed hide">
           <i class="fa fa-times-circle" aria-hidden="true"></i>
-         <span class="msg"><?php echo $_SESSION['email_notexist'];?></span>
+         <span class="msg"><?php echo $_SESSION['student_notexist'];?></span>
          <div id="close-btn">
             <i class="fa fa-times" aria-hidden="true"></i>
          </div>
@@ -137,7 +136,7 @@ require_once"includes/login_inc.php";
     <?php } ?>
                 <?php
                 unset($_SESSION['failed']);
-                unset($_SESSION['email_notexist']);
+                unset($_SESSION['student_notexist']);
                  unset($_SESSION['register']);
                 ?>
           <div class="ucc-logo">

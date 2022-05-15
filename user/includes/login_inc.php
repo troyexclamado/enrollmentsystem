@@ -3,33 +3,32 @@
 	session_start();
 
 	if(isset($_POST['submit'])){
-		$Email = $_POST['email'];
+		$studentnum = $_POST['studentnum'];
 		$Pass = $_POST['pass'];
-		$Password = md5($Pass);
 
-		$sql = "SELECT * FROM tblaccounts WHERE email = '".$Email."' AND password = '".$Password."'";
+		//$Password = md5($Pass);
+
+		$sql = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '".$studentnum."' AND password = '".$Pass."'";
 		$result = mysqli_query($conn, $sql);
 
 		if(mysqli_num_rows($result) == 1){
 			$row = mysqli_fetch_assoc($result);
-			if($row['email'] === $Email && $row['password'] == $Password){
-				$_SESSION['ID'] = $row['accountID'];
-				$_SESSION['Email'] = $row['email'];
-				$_SESSION['Password'] = $row['password'];
+			if($row['studentNumber'] === $studentnum && $row['password'] == $Pass){
+				$_SESSION['studentnum'] = $row['studentNumber'];
 				
 				header('location: index.php');
             	die();
 			}
 		}
 		else{
-				$_SESSION['failed'] = "Wrong password or email";
+				$_SESSION['failed'] = "Wrong student number or password";
 			}
 
-		$sql1 = "SELECT * FROM tblaccounts WHERE email = '".$Email."'";
+		$sql1 = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '".$studentnum."'";
 		$success = mysqli_query($conn, $sql1);
 
 		if(mysqli_num_rows($success) == 0){
-			$_SESSION['email_notexist'] = "Email does not exist";
+			$_SESSION['student_notexist'] = "Student number does not exist";
 			return;
 		}
 	}

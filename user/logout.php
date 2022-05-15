@@ -9,7 +9,8 @@
     unset($_SESSION['position']);
     unset($_SESSION['exist']);
 
-    // session_unset();
+    session_destroy();
+     session_unset();
 
     echo '<script>window.location.href="index.php"</script>';
 ?>

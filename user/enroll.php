@@ -4,16 +4,16 @@
 
     $_SESSION['course'] = "";
 
-    if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+    if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
 
-        $accountID = $_SESSION['ID'];
+        $accountID = $_SESSION['studentnum'];
 
         #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
-        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
         $sqlCheckID = mysqli_query($conn, $checkID);
         if($row = mysqli_fetch_array($sqlCheckID))
         {
-            $_SESSION['exist'] = $row['accountID'];
+            $_SESSION['exist'] = $row['studentNumber'];
             $_SESSION['position'] = $row['studentType'];
         }
     }
@@ -66,14 +66,14 @@
 
                     /*CHECK IF STUDENT = IS NOT ENROLLED*/
 
-                    elseif(isset($_SESSION['ID']) && !isset($_SESSION['enrolled'])) {
+                    elseif(isset($_SESSION['studentnum']) && !isset($_SESSION['enrolled'])) {
                           echo '<li><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Enroll</a></li>';   
                     }?>
 
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="contactus.php">Contact</a></li>
                     <?php
-                        if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+                        if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
                        echo ' <li><a href="logout.php">Logout</a></li>';    
                     ?>
                 <?php } 
@@ -105,7 +105,7 @@
                     </div>
                 <div class="row">
                     <?php 
-                        $getNames = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                        $getNames = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $accountID";
                         $sqlGetNames = mysqli_query($conn, $getNames);
                         while($names = mysqli_fetch_array($sqlGetNames)){
                     ?>
@@ -149,12 +149,12 @@
                 <div class="row">
                     <div class="inputbox">
                           <label for="name">Email Address</label>
-                        <input type="text" id="email" name = "email" placeholder="Enter your Address" required>
+                        <input type="email" id="email" name = "email" placeholder="Enter your Address" required>
                       
                     </div>
                     <div class="inputbox">
                          <label for="name">Contact Number</label>
-                        <input type="text" id="contactnumber" name = "contactnumber" placeholder="Enter your Contact Number" required>
+                        <input type="text" id="contactnumber" onkeypress="inputnumber(event)" name = "contactnumber" placeholder="Enter your Contact Number" required>
                        
                     </div>
                 </div>
@@ -290,7 +290,7 @@
 
                 <?php
 
-                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
                     // $course = $row['course'];
@@ -341,6 +341,16 @@
         }
         function hideMenu(){
             navLinks.style.right = "-200px";
+        }
+
+            function inputnumber(evt){
+
+            var char = String.fromCharCode(evt.which);
+
+            if(!(/[0-9]/.test(char))){
+                evt.preventDefault();
+
+            }
         }
     </script>
 </body>

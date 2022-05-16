@@ -201,6 +201,14 @@ input[type=text], select, textarea {
   resize: vertical;
 }
 
+input[type=date] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
 label {
   padding: 12px 12px 12px 0;
   display: inline-block;
@@ -216,6 +224,7 @@ input[type=submit] {
   float: right;
   margin-top: 10px;
 }
+
 
 input[type=submit]:hover {
   background-color: #FFC55C;

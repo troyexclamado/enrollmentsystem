@@ -2,19 +2,20 @@
     session_start();
     include('dbconnection.php');
     
-    $record_per_page = 15;
+    // $record_per_page = 15;
 
-    $page = '';
+    // $page = '';
 
-    if(isset($_GET['page'])){
-        $page = $_GET['page'];
-    } else {
-        $page = 1;
-    }
+    // if(isset($_GET['page'])){
+    //     $page = $_GET['page'];
+    // } else {
+    //     $page = 1;
+    // }
 
-    $start_from = ($page - 1) * $record_per_page;
+    // $start_from = ($page - 1) * $record_per_page;
 
-    $query = "SELECT * FROM tblsubjects ORDER BY  courseID ASC LIMIT $start_from, $record_per_page";
+    // $query = "SELECT * FROM tblsubjects ORDER BY  courseID ASC LIMIT $start_from, $record_per_page";
+    $query = "SELECT * FROM tblsubjects ORDER BY courseID ASC";
     $result = mysqli_query($conn, $query);
  ?>
 <!DOCTYPE html>
@@ -22,9 +23,9 @@
    <head>
       <meta charset="utf-8">
       <title>Enrollment System </title>
-      <link rel="stylesheet" href="Subjects.css?<?php echo time(); ?>">
-      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+      
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+      <link rel="stylesheet" href="Subjects.css?<?php echo time();?>">
    </head>
    <body>
       <nav class="sidebar">
@@ -65,7 +66,7 @@
     <a href="addsub.php" class="sub">Add Subject</a>
     <div class="search">
         <div class="search-box">
-          <input type="text" placeholder="Type here...">
+          <input type="text" id = "search" autocomplete="off" placeholder="Type here...">
           <button for="check" class="icon">
             <i class="fas fa-search"></i>
           </button>
@@ -79,14 +80,6 @@
         <option value="2">BSIT</option>
         <option value="3">BSEMC</option>
         <option value="4">BSIS</option>
-        <option value="5">BSM</option>
-        <option value="6">BSP</option>
-        <option value="7">BPA</option>
-        <option value="8">ABCOMM</option>
-        <option value="9">ABPS</option>
-        <option value="10">ABBS</option>
-        <option value="11">BSAT</option>
-        <option value="12">BSA</option>
       </select>
         <select>
         <option value="0">Year:</option>
@@ -108,9 +101,11 @@
         <option value="2">2nd</option>
       </select>
     </div>
-    
-    
-<table class="content-table">
+
+    <div id="searchresult">
+    </div>
+<div id="subjectstable" class="subjectstable">
+<table id="myTable" class="content-table">
     <thead>
         <tr>
             <th>SUBJECT CODE</th>
@@ -138,8 +133,16 @@
                 ?>
             </td>
             <td>
-            <button id="myBtn">EDIT</button>
-            <button id="myBtn1">DELETE</button>
+            <form method="POST" action="editsubject.php" onsubmit="return confirm('Do you want to edit this?')">
+                <input type="hidden" name="subjectID" value ="<?php echo $subjects['id']?>">
+                <button type="submit" name="edit">EDIT</button>
+            </form>
+            <form method="POST" action="editsubject.php" onsubmit="return confirm('Are you sure you want to delete this?')">
+                <input type="hidden" name="subjectID" value ="<?php echo $subjects['id']?>">
+                <button type="submit" name="delete" id="myBtn1">DELETE</button>
+            </form>
+            
+
                 <!-- The Modal -->
                 <div id="myModal" class="modal">
                     <!-- Modal content -->
@@ -197,84 +200,13 @@
         </tr>
         <?php } ?>
 </table>
-        <div class="paginationbar">
+</div>
+        <!-- <div id="pagination" class="paginationbar">
             <p>Pages</p>
-            <?php
-                $page_query = "SELECT * FROM tblsubjects ORDER BY courseID ASC";
-                $page_result = mysqli_query($conn, $page_query);
-                $total_records = mysqli_num_rows($page_result);
-                $total_pages = ceil($total_records/$record_per_page);
-                for($i = 1; $i <= $total_pages; $i++){
-                    echo "<a style='color: black; padding-left: 10px;' href='Subjects.php?page=".$i."'>".$i.""."</a>";
-                }
-            ?>
-        </div>
-<script>
-var datamap = new Map([
-            [document.getElementById("myBtn"), document.getElementById("myModal")],
-            [document.getElementById("myBtn1"), document.getElementById("myModal1")],
-            [document.getElementById("myBtn2"), document.getElementById("myModal2")], 
-            [document.getElementById("myBtn3"), document.getElementById("myModal3")], 
-                   
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-var datamap = new Map([
-            [document.getElementById("myBtn4"), document.getElementById("myModal4")],
-            [document.getElementById("myBtn5"), document.getElementById("myModal5")],
-            [document.getElementById("myBtn6"), document.getElementById("myModal6")], 
-            [document.getElementById("myBtn7"), document.getElementById("myModal7")], 
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-
-</script>
-
-<script>
+            
+        </div> -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script>
           $('.btn').click(function(){
            $(this).toggleClass("click");
            $('.sidebar').toggleClass("show");
@@ -287,5 +219,32 @@ var datamap = new Map([
              $(this).addClass("active").siblings().removeClass("active");
            }); 
       </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#search").keyup(function(){
+                    var input = $(this).val();
+                    //alert(input);
+                    if(input != null){
+                        $("#searchresult").show();
+                        $("#subjectstable").hide();
+                        //$("#pagination").hide();
+                        $.ajax({
+                            url: "livesearch.php",
+                            method: "POST",
+                            data: {input:input},
+
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#myTable").show();
+                        //$("#pagination").show();
+                    }
+                });
+            });
+        </script>
    </body>
 </html>

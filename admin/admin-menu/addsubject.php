@@ -26,7 +26,7 @@
         } else {
             //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
             $courseID = "";
-            $sqlGetCourseDetails = "SELECT courseID FROM tblcoursedetails WHERE courseDescription = '$course' AND year = $year AND semester = $semester AND section = $section";
+            $sqlGetCourseDetails = "SELECT courseID FROM tblcoursedetails WHERE courseDescription = '$course' AND year = $year AND semester = $semester AND section = '$section'";
             $getCourseDetails = mysqli_query($conn, $sqlGetCourseDetails);
             while($coursedetails = mysqli_fetch_array($getCourseDetails)){
                 $courseID = $coursedetails['courseID'];

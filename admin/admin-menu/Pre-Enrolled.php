@@ -182,14 +182,6 @@
     <option value="2">BSIT</option>
     <option value="3">BSEMC</option>
     <option value="4">BSIS</option>
-    <option value="5">BSM</option>
-    <option value="6">BSP</option>
-    <option value="7">BPA</option>
-    <option value="8">ABCOMM</option>
-    <option value="9">ABPS</option>
-    <option value="10">ABBS</option>
-    <option value="11">BSAT</option>
-    <option value="12">BSA</option>
   </select>
     <select>
     <option value="0">Year:</option>
@@ -210,10 +202,12 @@
             <table class="content-table">
                 <thead>
                     <tr>
+                        <th>STUDENT NUMBER</th>
                         <th>NAME</th>
                         <th>EMAIL</th>
-                        <th>DATE OF APPLICATION</th>
-                        <th>VIEW INFORMATION</th>
+                        <th>DATE OF<br>APPLICATION</th>
+                        <th>VIEW<br>INFORMATION</th>
+                        <th>PAYMENT<br>INFORMATION</th>
                         <th>COMMAND</th>
                     </tr>
                 </thead>
@@ -228,6 +222,9 @@
                  ?>
                             <tr>
                                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                    <td>
+                                        <p><?=$row['studentNumber']?></p>
+                                    </td>
                                     <td>
                                         <p><?php 
                                             //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
@@ -249,11 +246,36 @@
                                         <p><?=$row['dateOfEnrollment']?></p>
                                     </td>
                                     <td>
-                                        <button id="myBtn" class="myBtn" type="submit" name="myBtn" value="<?=$row['accountID']?>" >View Details</button> 
+                                        <button id="myBtn" class="myBtn" type="submit" name="myBtn" value="<?=$row['accountID']?>" >View Details</button>
                                     </td>
+                                    </form>
                                     <td>
-                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['accountID']?>">Accept</button>
-                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['accountID']?>">Reject</button>
+                                        <?php 
+                                            $studentNumber = $row['studentNumber'];
+                                            $query = "SELECT * FROM tblstudenttransactions WHERE studentNumber = $studentNumber";
+                                            $sqlquery = mysqli_query($conn, $query);
+                                            if(mysqli_num_rows($sqlquery) > 0){
+                                                ?>
+                                                <form method="POST" action="studenttransaction.php">
+                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
+                                                    <input type ="submit" name="update" value="Update/View Transaction">
+                                                </form>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <form method="POST" action="studenttransaction.php">
+                                                <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
+                                                <input type ="submit" name="add" value="Add Transaction">
+                                                </form>
+                                                <?php
+                                            }
+                                        ?>
+                                        
+                                    </td>
+                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                    <td>
+                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>">Accept</button>
+                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>">Reject</button>
                                     </td>
                                 </form>
                             </tr>
@@ -264,67 +286,76 @@
                 $preID ="";
                 $max = "";
                 if(isset($_POST['btncmdAccept'])){
-                    $preID  = $_POST['btncmdAccept'];
-                    $isOldStudent = "SELECT * FROM tblaccounts WHERE accountID=$preID";
-                    $sqlIsOldStudent = mysqli_query($conn, $isOldStudent);
-                    $results = mysqli_fetch_array($sqlIsOldStudent);
-                    if ($results['studentNumber'] != 0){
-                        $studentNumber = $results['studentNumber'];
-                        insertSql($studentNumber, $preID);
+                    $studentNumber = $_POST['btncmdAccept'];
+                    $query = "SELECT * FROM tblstudenttransactions WHERE studentNumber = $studentNumber";
+                    $sqlquery = mysqli_query($conn, $query);
+                    if(mysqli_num_rows($sqlquery) > 0){
+                        insertSql($studentNumber);
                     } else {
-                    $yearNow = date("Y");
-                   // echo $_POST['btncmdAccept'];
-                    $maxStudentNum = "SELECT RIGHT(max(studentNumber) ,6) as mnum FROM tblstudents";
-                    $result = $conn->query($maxStudentNum);
-                    if(mysqli_num_rows($result) > 0){
-                        while($row = $result->fetch_assoc()) {
-                            if($row['mnum'] == NULL){
-                                $max =  $row['mnum'];
-                                $maxinc = $max+1;
-                                $format = str_pad($maxinc,6,"0",STR_PAD_LEFT);
-                                $studentNum = $yearNow.$format;
-                                insertSql($studentNum,$preID);
-                                //echo "<script>alert($studentNum)</script>";
-                                // DO SQL INSERT
-                            }else{
-                                $maxyear = "SELECT LEFT(max(studentNumber) ,4) as myear, RIGHT(max(studentNumber) ,4) as maxnum FROM tblstudents";
-                                $result = $conn->query($maxyear);
-                                if(mysqli_num_rows($result) > 0){
-                                    while($row = $result->fetch_assoc()) {
-                                        if($yearNow == $row['myear']){
-                                            $max =  $row['maxnum'];
-                                            $yearNow = date("Y");
-                                            $maxinc = $max+1;
-                                            $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
-                                            $studentNum = $yearNow.$format;
-                                            //echo "<script>alert($studentNum)</script>";
-                                            // DO SQL INSERT   
-                                            insertSql($studentNum,$preID); 
-                                        }else{
-                                            $max =  $row['maxnum'];
-                                            $yearNow = date("Y");
-                                            $maxinc = $max+1;
-                                            $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
-                                            $studentNum = $yearNow.$format;
-                                            //echo "<script>alert($studentNum)</script>";
-                                            // DO SQL INSERT
-                                            insertSql($studentNum,$preID);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        echo '<script>alert("Student does not have payment yet. Enrollment failed.")</script>';         
                     }
+                    
+                //     $preID  = $_POST['btncmdAccept'];
+                //     $isOldStudent = "SELECT * FROM tblaccounts WHERE accountID=$preID";
+                //     $sqlIsOldStudent = mysqli_query($conn, $isOldStudent);
+                //     $results = mysqli_fetch_array($sqlIsOldStudent);
+                //     if ($results['studentNumber'] != 0){
+                //         $studentNumber = $results['studentNumber'];
+                //         insertSql($studentNumber, $preID);
+                //     } else {
+                //     $yearNow = date("Y");
+                //    // echo $_POST['btncmdAccept'];
+                //     $maxStudentNum = "SELECT RIGHT(max(studentNumber) ,6) as mnum FROM tblstudents";
+                //     $result = $conn->query($maxStudentNum);
+                //     if(mysqli_num_rows($result) > 0){
+                //         while($row = $result->fetch_assoc()) {
+                //             if($row['mnum'] == NULL){
+                //                 $max =  $row['mnum'];
+                //                 $maxinc = $max+1;
+                //                 $format = str_pad($maxinc,6,"0",STR_PAD_LEFT);
+                //                 $studentNum = $yearNow.$format;
+                //                 insertSql($studentNum,$preID);
+                //                 //echo "<script>alert($studentNum)</script>";
+                //                 // DO SQL INSERT
+                //             }else{
+                //                 $maxyear = "SELECT LEFT(max(studentNumber) ,4) as myear, RIGHT(max(studentNumber) ,4) as maxnum FROM tblstudents";
+                //                 $result = $conn->query($maxyear);
+                //                 if(mysqli_num_rows($result) > 0){
+                //                     while($row = $result->fetch_assoc()) {
+                //                         if($yearNow == $row['myear']){
+                //                             $max =  $row['maxnum'];
+                //                             $yearNow = date("Y");
+                //                             $maxinc = $max+1;
+                //                             $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
+                //                             $studentNum = $yearNow.$format;
+                //                             //echo "<script>alert($studentNum)</script>";
+                //                             // DO SQL INSERT   
+                //                             insertSql($studentNum,$preID); 
+                //                         }else{
+                //                             $max =  $row['maxnum'];
+                //                             $yearNow = date("Y");
+                //                             $maxinc = $max+1;
+                //                             $format = str_pad($maxinc,4,"0",STR_PAD_LEFT);
+                //                             $studentNum = $yearNow.$format;
+                //                             //echo "<script>alert($studentNum)</script>";
+                //                             // DO SQL INSERT
+                //                             insertSql($studentNum,$preID);
+                //                         }
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //     }
 
-                    }
+                //     }
                 }
 
 
                 if(isset($_POST['btnreject'])){
-                    $preID  = $_POST['btnreject'];
+                    $studentNumber  = $_POST['btnreject'];
                     //echo $preID;
                     //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
-                    $rejectinfo = "update tblstudentinfo set statusID='3' where accountID = '$preID'";
+                    $rejectinfo = "update tblstudentinfo set statusID='3' where accountID = $studentNumber";
                     $resultrejectinfo = $conn->query($rejectinfo);
                     if($resultrejectinfo){
                         echo "deleted";
@@ -335,10 +366,10 @@
                 }
 
 
-                function insertSql($studentNum,$preID){
+                function insertSql($studentNum){
                     //echo $preID;
                     include('dbconnection.php');
-                    $update = "update tblstudents set statusID='1' where accountID = '$preID'";
+                    $update = "UPDATE tblstudents set statusID='1' where studentNumber = '$studentNum'";
                     $resultupdate = $conn->query($update);
                     if($resultupdate){
                         $datenow = date('Y-m-d');
@@ -347,7 +378,7 @@
                         
                         //kukunin yung courseID para makuha yung mga subject at ienroll
                         
-                        $getCourseID = "SELECT * FROM tblstudents WHERE accountID = $preID";
+                        $getCourseID = "SELECT * FROM tblstudents WHERE studentNumber = $studentNum";
                         $sqlGetCourseID = $conn->query($getCourseID);
                         if($sqlGetCourseID){
                             if(mysqli_num_rows($sqlGetCourseID) > 0){
@@ -365,7 +396,7 @@
                                     $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
                                 }
                                 } else if ($studentType = "IRREGULAR"){
-                                    $getSubjects = "SELECT * FROM tblbacksubjects WHERE accountID = $preID AND (status = 'Required' OR status = 'Taken')";
+                                    $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
                                     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
                                     while($subjects = mysqli_fetch_array($sqlGetSubjects)){
                                         $subjectCode = $subjects['subjectCode'];
@@ -380,17 +411,17 @@
                         }
 
 
-                        $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', studentNumber = $studentNum WHERE accountID = '$preID'";
+                        $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow' WHERE studentNumber = $studentNum";
                         $resultsqlinsert = $conn->query($sqlinsert);
 
                         if($sqlinsert){
-                            echo "<script>window.location.href='Pre-Enrolled.php';</script>";
+                            //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                         }else{
                             echo "<script>alert('Failed to Insert Data')</script>";
-                            echo "<script>window.location.href='Pre-Enrolled.php';</script>";
+                            //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                         }
                     }else{
-                        echo "<script>alert('UNABLE TO ACCEPT')</script>";
+                        //echo "<script>alert('UNABLE TO ACCEPT')</script>";
                     }
                     
                 }

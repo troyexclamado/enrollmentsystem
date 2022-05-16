@@ -43,11 +43,11 @@
                     <li><a href="index.php">Home</a></li>
 
                  <!-- Button trigger modal & checking if ID and account ID exist -->
-                      <?php
+                      <!-- <?php
                       if(!isset($_SESSION['ID'])){
                       ?>     
                     <li><a href="login.php">Enroll</a></li>
-                    <?php }  ?>
+                    <?php }  ?> -->
 
                     <?php
 

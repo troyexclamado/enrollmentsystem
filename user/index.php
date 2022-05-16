@@ -84,7 +84,7 @@
             <i class="fa fa-bars" onclick="showMenu()"></i>
         </nav>
         <div class="textbox">
-            <h1>University of Caloocan City</h1>
+            <h1>University of Caloocan City</h1><h3>Computer Studies Department</h3>
             <p>To maintain and support an adequate system of tertiary education that will help promote the economic growth of the country, strengthen the character and well-being of its graduates as productive members of the community.</p>
 
             <?php 
@@ -161,20 +161,22 @@
 
         <div class="row">
             <div class="course-col">
-                <h3>College of Education</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione modi molestiae distinctio aperiam facere, amet cupiditate quo nobis repudiandae incidunt cum! Non deleniti consequuntur, provident ullam dicta quidem nam quo.</p>
+                <h3>Bachelor of Science in Computer Science</h3>
+                <p>The Bachelor of Science in Computer Science combines a core of Computer Science subjects with substantial depth in other required minor subjects. This will ensuresthat students have the required tools to remain updated as technologies and trendschange. The program is design mainly to maintaining the technical knowledge of the students starting from first year up to the last semester of the year of their stay.The curriculum is packed with all the basic and advanced programming skills and necessary supporting computing science fundamentals.</p>
             </div>
             <div class="course-col">
-                <h3>College of Business Administration</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione modi molestiae distinctio aperiam facere, amet cupiditate quo nobis repudiandae incidunt cum! Non deleniti consequuntur, provident ullam dicta quidem nam quo.</p>
+                <h3>Bachelor of Science in Information System</h3>
+                <p>This 4-year program is a hybrid course combining the fundamentals of Computing Science with the basics of business courses like management, accounting, finance and other officemanagement essentials. Students are being honed to designing, developing systems and managing information system setups like transaction processing system, automation system,and other enterprise-based systems.</p>
             </div>
             <div class="course-col">
-                <h3>College of Liberal Arts and Sciences</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione modi molestiae distinctio aperiam facere, amet cupiditate quo nobis repudiandae incidunt cum! Non deleniti consequuntur, provident ullam dicta quidem nam quo.</p>
+                <h3>Bachelor of Science in Information Technology</h3>
+                <p>The Bachelor of Science in Information Technology (BS IT) is a four-year degree program that equips students with the basic ability to conceptualize, design and implement software applications. It prepares students to be IT professionals who are able to perform installation, operation, development, maintenance, and administration of computer applications. The goal of the program is to produce information technologists who can assist individuals and organizations in solving problems using information technology techniques and processes. 
+
+</p>
             </div>
             <div class="course-col">
-                <h3>College of Criminology</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione modi molestiae distinctio aperiam facere, amet cupiditate quo nobis repudiandae incidunt cum! Non deleniti consequuntur, provident ullam dicta quidem nam quo.</p>
+                <h3>Bachelor of Science in Entertainment and Multimedia Computing</h3>
+                <p>The Bachelor of Science in Entertainment and Multimedia Computing (BSEMC) program is the study and use of concepts, principles, and techniques of computing in the design and development of multimedia products and solutions. It includes various applications such as in science, entertainment, education, simulations, games and advertising.</p>
             </div>
         </div>
     </section>

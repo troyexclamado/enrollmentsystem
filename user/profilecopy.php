@@ -120,9 +120,9 @@
         <div class="row">
             <div class="profile-col">
                 <?php
-                if(!empty($_SESSION['ID'])){
-                    $ID = $_SESSION['ID'];
-                    $sql = "SELECT * FROM tblaccounts WHERE accountID = '$ID'";
+                if(!empty($_SESSION['studentnum'])){
+                    $ID = $_SESSION['studentnum'];
+                    $sql = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$ID'";
                     $res = mysqli_query($conn, $sql);
                     if($row = mysqli_fetch_array($res)){
                         $lastname = $row['lastname'];
@@ -136,18 +136,18 @@
                 else {
                     echo 'LOG IN FIRST';
                 }
-                if(isset($_SESSION['ID']) && !empty($_SESSION['ID'])){
+                if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
 
-                    $accountID = $_SESSION['ID'];
+                    $accountID = $_SESSION['studentnum'];
             
                     #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
-                    $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 0";
+                    $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 0";
                     $sqlCheckID = mysqli_query($conn, $checkID);
                     if($row = mysqli_fetch_array($sqlCheckID))
                     {
                         ?> <h3>APPLICATION STATUS: PENDING</h3> <?php
                     } else {
-                        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 1 AND studentType = 'REGULAR'";
+                        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 1 AND studentType = 'REGULAR'";
                         $sqlCheckID = mysqli_query($conn, $checkID);
                         if($row = mysqli_fetch_array($sqlCheckID)){
                             ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
@@ -167,7 +167,7 @@
 
                 <?php
 
-                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
                     // $course = $row['course'];
@@ -200,7 +200,7 @@
     <?php } ?>
                         <?php   
                         }
-                        $checkID = "SELECT * FROM tblstudents WHERE accountID = '$accountID' AND statusID = 1 AND studentType = 'IRREGULAR'";
+                        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 1 AND studentType = 'IRREGULAR'";
                         $sqlCheckID = mysqli_query($conn, $checkID);
                         if($row = mysqli_fetch_array($sqlCheckID)){
                             ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
@@ -220,7 +220,7 @@
 
                 <?php
 
-                $sql1 = "SELECT * FROM tblstudents WHERE accountID = '$accountID'";
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
                 $result = mysqli_query($conn, $sql1);
                 while($row = mysqli_fetch_array($result)){
                     // $course = $row['course'];

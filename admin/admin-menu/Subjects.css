@@ -6,6 +6,10 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+body, html {
+  height: 100%;
+  overflow: hidden;
+}
 
 .sidebar{
   position: absolute;
@@ -146,10 +150,13 @@ nav ul li a span.rotate{
   background: #fff;
 }
 
-
-
-
-
+.subjectstable{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  margin-right: 10px;
+  margin-top: 15px;
+}
 .content-table {
   border-collapse: collapse;
   font-size: 0.9em;
@@ -157,15 +164,22 @@ nav ul li a span.rotate{
   min-height: 75vh;
   max-height: 75vh;
   border-radius: 5px 5px 0 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, .19); */
   margin: auto;
-  margin-top: 10px;}
+  padding-right: 0px;
+}
+.content-table thead{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
 
 .content-table thead tr {
   background-color: orange;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
+  position: static;
 }
 
 .content-table th,
@@ -433,5 +447,8 @@ h1 {
   color:rgb(0, 0, 0);
   display: inline-block;
   padding-left: 10px;
+}
+.searchresult{
+  display: block;
 }
 

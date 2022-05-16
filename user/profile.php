@@ -117,7 +117,7 @@
     </div>
 
     <section class="profile">
-        <div class="row">
+        <!-- <div class="row">
             <div class="profile-col">
                 <?php
                 $sql = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$accountID'";
@@ -134,6 +134,158 @@
             </div>
             <div class="profile-col-image">
                 <img src="./img/person1.jpg">
+            </div>
+        </div> -->
+        <div class="row">
+            <div class="profile-col">
+                <?php
+                if(!empty($_SESSION['studentnum'])){
+                    $ID = $_SESSION['studentnum'];
+                    $sql = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$ID'";
+                    $res = mysqli_query($conn, $sql);
+                    if($row = mysqli_fetch_array($res)){
+                        $lastname = $row['lastname'];
+                        $firstname = $row['firstname'];
+                
+                    ?>
+                <h1><?php echo strtoupper($lastname). " " .strtoupper($firstname);?></h1>
+                <?php 
+                    }//$row closing 
+                }   //if empty session closing
+                else {
+                    echo 'LOG IN FIRST';
+                }
+                if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){
+
+                    $accountID = $_SESSION['studentnum'];
+            
+                    #titignan kung yung id ay nakapag pre-enroll na, pag nakapre-enroll na, di na magreredirect sa pre enroll page
+                    $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 0";
+                    $sqlCheckID = mysqli_query($conn, $checkID);
+                    if($row = mysqli_fetch_array($sqlCheckID))
+                    {
+                        ?> <h3>APPLICATION STATUS: PENDING</h3> <?php
+                    } else {
+                        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 1 AND studentType = 'REGULAR'";
+                        $sqlCheckID = mysqli_query($conn, $checkID);
+                        if($row = mysqli_fetch_array($sqlCheckID)){
+                            ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
+                        <div id="subject-container" class="subject-title">
+                    <h2>Subjects</h2>
+                </div>
+            <div class="subject-container">
+            <div class="subject">
+            <table>
+                <thead>
+                    <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Subject Units</th>
+                    </tr>
+                </thead>
+
+                <?php
+
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
+                $result = mysqli_query($conn, $sql1);
+                while($row = mysqli_fetch_array($result)){
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
+                }
+
+                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                $res = mysqli_query($conn, $sql);
+
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
+                    $subject_code = $row_course['subjectCode'];
+                    $subject_name = $row_course['subjectDescription'];
+                    $subject_units = $row_course['subjectUnits'];
+            ?>
+
+                <tbody>
+                <tr>
+                    <td><?php echo $subject_code;?></td>
+                    <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
+                    </tr>
+                      <?php } ?>
+                </tbody>
+                </table>
+            </div>
+                </div>
+    <?php } ?>
+                        <?php   
+                        }
+                        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 1 AND studentType = 'IRREGULAR'";
+                        $sqlCheckID = mysqli_query($conn, $checkID);
+                        if($row = mysqli_fetch_array($sqlCheckID)){
+                            ?> <h3>APPLICATION STATUS: ACCEPTED</h3>
+                        <div id="subject-container" class="subject-title">
+                    <h2>Subjects</h2>
+                </div>
+            <div class="subject-container">
+            <div class="subject">
+            <table>
+                <thead>
+                    <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Subject Units</th>
+                    </tr>
+                </thead>
+
+                <?php
+
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
+                $result = mysqli_query($conn, $sql1);
+                while($row = mysqli_fetch_array($result)){
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
+                }
+
+                $sql = "SELECT * FROM tblbacksubjects WHERE accountID='$accountID' AND (status = 'Taken' OR status = 'Required')";
+                $res = mysqli_query($conn, $sql);
+
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
+                    $subject_code = $row_course['subjectCode'];
+                    $getSubjectDetails = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code'";
+                    $subject_name = "";
+                    $subject_units = "";
+                    $sqlGetSubjectDetails = mysqli_query($conn, $getSubjectDetails);
+                    while($subjectsresult = mysqli_fetch_array($sqlGetSubjectDetails)){
+                        $subject_name = $subjectsresult['subjectDescription'];
+                        $subject_units = $subjectsresult['subjectUnits'];
+                    }
+            ?>
+
+                <tbody>
+                <tr>
+                    <td><?php echo $subject_code;?></td>
+                    <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
+                    </tr>
+                      <?php }
+                        ?>
+                </tbody>
+                </table>
+            </div>
+                </div>
+                        
+                        
+                <?php
+                    }
+                
+                else {
+                    echo "";
+                }
+            }
+            ?>
             </div>
         </div>
     </section>

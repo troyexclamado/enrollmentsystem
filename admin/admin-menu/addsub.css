@@ -264,3 +264,10 @@ h2 {
   z-index: 1;
   font-family: 'Poppins', sans-serif;
 }
+.subject table{
+  width: 100%;
+  text-align: center;
+}
+.subject table tbody tr{
+  margin: auto;
+}

@@ -169,14 +169,6 @@
     <option value="2">BSIT</option>
     <option value="3">BSEMC</option>
     <option value="4">BSIS</option>
-    <option value="5">BSM</option>
-    <option value="6">BSP</option>
-    <option value="7">BPA</option>
-    <option value="8">ABCOMM</option>
-    <option value="9">ABPS</option>
-    <option value="10">ABBS</option>
-    <option value="11">BSAT</option>
-    <option value="12">BSA</option>
   </select>
     <select>
     <option value="0">Year:</option>
@@ -212,15 +204,15 @@
                         {
                  ?>
                             <tr>
-                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" > -->
                                     <td>
                                         <p><?=$row['studentNumber']?></p>
                                     </td>
                                     <td>
                                     <?php 
                                         //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
-                                        $accountID = $row['accountID'];
-                                        $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                        $studentNumber = $row['studentNumber'];
+                                        $getFullname = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $studentNumber";
                                         $sqlGetName = mysqli_query($conn, $getFullname);
 
                                         while($name_result = mysqli_fetch_array($sqlGetName)) {
@@ -234,7 +226,9 @@
                                         <p><?=$row['dateOfEnrollment']?></p>
                                     </td>
                                     <td>
-                                        <button id="myBtn" class="myBtn" type="submit" name="myBtn" value="<?=$row['accountID']?>" >View Details</button> 
+                                        <form method="POST" action="seedetailsenrolled.php">
+                                        <button type="submit" name="viewDetails" value="<?=$row['studentNumber']?>" >View Details</button>
+                                        </form>
                                     </td>
                                 </form>
                             </tr>

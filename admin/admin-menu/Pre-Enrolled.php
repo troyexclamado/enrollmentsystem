@@ -377,7 +377,6 @@
                         // $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
                         
                         //kukunin yung courseID para makuha yung mga subject at ienroll
-                        
                         $getCourseID = "SELECT * FROM tblstudents WHERE studentNumber = $studentNum";
                         $sqlGetCourseID = $conn->query($getCourseID);
                         if($sqlGetCourseID){

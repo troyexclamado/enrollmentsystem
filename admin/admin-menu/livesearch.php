@@ -1,20 +1,9 @@
 <?php
     include("dbconnection.php");
-    // $record_per_page = 15;
-
-    // $page = '';
-
-    // if(isset($_GET['page'])){
-    //     $page = $_GET['page'];
-    // } else {
-    //     $page = 1;
-    // }
-
-    // $start_from = ($page - 1) * $record_per_page;
 
     if(isset($_POST['input'])){
         $input = $_POST['input'];
-        $query = "SELECT * FROM tblsubjects WHERE subjectDescription LIKE '{$input}%'";
+        $query = "SELECT * FROM tblsubjects WHERE subjectDescription LIKE '{$input}%' OR subjectCode LIKE '{$input}%'";
         $result = mysqli_query($conn, $query);
 
         if(mysqli_num_rows($result) > 0){?>

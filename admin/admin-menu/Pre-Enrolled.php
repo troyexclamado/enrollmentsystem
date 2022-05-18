@@ -228,8 +228,8 @@
                                     <td>
                                         <p><?php 
                                             //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
-                                            $accountID = $row['accountID'];
-                                            $getFullname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                                            $studentNumber = $row['studentNumber'];
+                                            $getFullname = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $studentNumber";
                                             $sqlGetName = mysqli_query($conn, $getFullname);
 
                                             while($name_result = mysqli_fetch_array($sqlGetName)) {
@@ -369,62 +369,133 @@
                 function insertSql($studentNum){
                     //echo $preID;
                     include('dbconnection.php');
-                    $update = "UPDATE tblstudents set statusID='1' where studentNumber = '$studentNum'";
-                    $resultupdate = $conn->query($update);
-                    if($resultupdate){
                         $datenow = date('Y-m-d');
-                        //echo $datenow  ;
-                        // $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
-                        
-                        //kukunin yung courseID para makuha yung mga subject at ienroll
                         $getCourseID = "SELECT * FROM tblstudents WHERE studentNumber = $studentNum";
-                        $sqlGetCourseID = $conn->query($getCourseID);
-                        if($sqlGetCourseID){
-                            if(mysqli_num_rows($sqlGetCourseID) > 0){
-                                while($courseID = $sqlGetCourseID->fetch_assoc()) {
-                                $data_courseID = $courseID['courseID'];
-                                $studentType = $courseID['studentType'];
-                                
-                                if($studentType = "REGULAR"){
-                                $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
-                                $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                    $subjectCode = $subjects['subjectCode'];
+                        $sqlGetCourseID = mysqli_query($conn, $getCourseID);
+                        if(mysqli_num_rows($sqlGetCourseID) > 0){
+                            $courseID = mysqli_fetch_array($sqlGetCourseID);
+                            
+                            $data_courseID = $courseID['courseID'];
+                            $studentType = $courseID['studentType'];
 
-                                    $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                    $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                            $availablestudents = 0;
+                            $tries = 3;
+                            while(($availablestudents <= 0) AND ($tries > 0)){
+                                $sectioning = "SELECT * FROM tblcoursedetails WHERE courseID = $data_courseID";
+                                $sqlsectioning = mysqli_query($conn, $sectioning);
+                                if(mysqli_num_rows($sqlsectioning) > 0){
+                                    $rows = mysqli_fetch_array($sqlsectioning);
+                                    $availableslots = $rows['availableslots'];
+                                    if($availableslots > 0){
+                                        $availablestudents = $availableslots;
+                                    } else {
+                                        $data_courseID = $data_courseID + 1;
+                                        $tries = $tries - 1;
+                                    }
                                 }
-                                } else if ($studentType = "IRREGULAR"){
+                            }
+                            if($tries <= 0){
+                                echo "<script>alert('No available sections')</script>";
+                            } else {
+                                $updateavailableslots = "UPDATE tblcoursedetails SET availableslots = ($availablestudents-1) WHERE courseID = $data_courseID";
+                                $sqlupdate1 = mysqli_query($conn, $updateavailableslots);
+                                if($sqlupdate1){
+                                    echo 'yey';
+                                }
+                                $updatecouseID = "UPDATE tblstudents SET courseID = $data_courseID WHERE studentNumber = $studentNum";
+                                $sqlupdate = mysqli_query($conn, $updatecouseID);
+                                if($sqlupdate){
+                                    echo 'yey';
+                                }
+
+                                if($studentType == "REGULAR"){
+                                    $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
+                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                            $subjectCode = $subjects['subjectCode'];
+                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                        }
+                                    }
+                                }else if ($studentType = "IRREGULAR"){
                                     $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
                                     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                    while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                        $subjectCode = $subjects['subjectCode'];
-
-                                        $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                        $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                            $subjectCode = $subjects['subjectCode'];
+                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                        }
                                     }
-
+                
                                 }
+
+                                $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', statusID = 1 WHERE studentNumber = $studentNum";
+                                $updatedate = mysqli_query($conn, $sqlinsert);
+                                if($updatedate){
+                                    echo "<script>window.location.href='Pre-Enrolled.php';</script>";
+                                }else {
+                                    echo "<script>alert('Failed to Insert Data')</script>";
+                                    echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                                 }
-                            } 
+                            }
                         }
+                    // $resultupdate = $conn->query($update);
+                    // if($resultupdate){
+                    //     $datenow = date('Y-m-d');
+                    //     //echo $datenow  ;
+                    //     // $sqlinsert = "INSERT INTO tblstudents(studentNumber,dateOfEnrollment,accountID) VALUE('$studentNum','$datenow',(SELECT accountID   FROM tblaccounts WHERE accountID = '$preID'))";
+                        
+                    //     //kukunin yung courseID para makuha yung mga subject at ienroll
+                    //     $getCourseID = "SELECT * FROM tblstudents WHERE studentNumber = $studentNum";
+                    //     $sqlGetCourseID = $conn->query($getCourseID);
+                    //     if($sqlGetCourseID){
+                    //         if(mysqli_num_rows($sqlGetCourseID) > 0){
+                    //             while($courseID = $sqlGetCourseID->fetch_assoc()) {
+                    //             $data_courseID = $courseID['courseID'];
+                    //             $studentType = $courseID['studentType'];
+                                
+                    //             if($studentType = "REGULAR"){
+                    //             $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
+                    //             $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                    //             while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                    //                 $subjectCode = $subjects['subjectCode'];
+
+                    //                 $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                    //                 $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                    //             }
+                    //             } else if ($studentType = "IRREGULAR"){
+                    //                 $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
+                    //                 $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                    //                 while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                    //                     $subjectCode = $subjects['subjectCode'];
+
+                    //                     $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                    //                     $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                    //                 }
+
+                    //             }
+                    //             }
+                    //         } 
+                    //     }
 
 
-                        $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow' WHERE studentNumber = $studentNum";
-                        $resultsqlinsert = $conn->query($sqlinsert);
+                    //     $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow' WHERE studentNumber = $studentNum";
+                    //     $resultsqlinsert = $conn->query($sqlinsert);
 
-                        if($sqlinsert){
-                            //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
-                        }else{
-                            echo "<script>alert('Failed to Insert Data')</script>";
-                            //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
-                        }
-                    }else{
-                        //echo "<script>alert('UNABLE TO ACCEPT')</script>";
-                    }
+                    //     if($sqlinsert){
+                    //         //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
+                    //     }else{
+                    //         echo "<script>alert('Failed to Insert Data')</script>";
+                    //         //echo "<script>window.location.href='Pre-Enrolled.php';</script>";
+                    //     }
+                    // }else{
+                    //     //echo "<script>alert('UNABLE TO ACCEPT')</script>";
+                    // }
                     
                 }
-                $conn->close();
+                // $conn->close();
             ?>
             </table>
         </div>

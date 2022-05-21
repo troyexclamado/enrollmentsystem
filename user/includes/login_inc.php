@@ -15,7 +15,7 @@
 			$row = mysqli_fetch_assoc($result);
 			if($row['studentNumber'] === $studentnum && $row['password'] == $Pass){
 				$_SESSION['studentnum'] = $row['studentNumber'];
-				
+				$_SESSION["email"] = $row['email'];
 				header('location: index.php');
             	die();
 			}

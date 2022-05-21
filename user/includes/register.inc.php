@@ -24,7 +24,6 @@ if(isset($_POST['submit_info'])){
 	if(mysqli_num_rows($result) > 0){
 		$_SESSION['email_exist'] = "Email already exist"; 
 		return;
-
 	}
 	if($count < 6){
 		$_SESSION['pass_count'] = "Password must be 6 or more";

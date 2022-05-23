@@ -37,7 +37,7 @@
 <body>
     <section class="header">
         <nav>
-            <a href="index.html"><img src="img/logo-orange2.png"></a>
+            <a href="index.php"><img src="img/logo-orange2.png"></a>
             <div class="nav-links" id="navLinks">
                 <i class="fa fa-times" onclick="hideMenu()"></i>
                 <ul>

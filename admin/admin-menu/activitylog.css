@@ -41,7 +41,7 @@ nav ul li a{
   color: white;
   text-decoration: none;
   font-size: 18px;
-  padding-left: 40px;
+  padding-left: 30px;
   font-weight: 500;
   display: block;
   width: 100%;
@@ -149,6 +149,13 @@ nav ul li a span.rotate{
   margin-top: 50px;
 }
 
+.activitylogtable{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  margin-right: 10px;
+  margin-top: 50px;
+}
 
 .content-table {
   border-collapse: collapse;

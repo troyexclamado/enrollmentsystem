@@ -41,14 +41,16 @@
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
+            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav><div class="container">
 
 
 <div class="container">
   <h1> ACTIVITY LOG</h1>
+  <div class="activitylogtable">
 <table class="content-table">
   <thead>
     <tr>
@@ -58,27 +60,25 @@
     <th>Date</th>
   </tr>
 </thead>
-  <tr>
-    <td>01</td>
-    <td>Accepted A Pending Enrollment</td>
-    <td>Juan Dela Cruz (Administrator)</td>
-    <td>January 10,2022</td>
-  </tr>
-
-  <tr>
-    <td>01</td>
-    <td>Accepted A Pending Enrollment</td>
-    <td>Juan Dela Cruz (Administrator)</td>
-    <td>January 10,2022</td>
-  </tr>
-
-  <tr>
-    <td>01</td>
-    <td>Accepted A Pending Enrollment</td>
-    <td>Juan Dela Cruz (Administrator)</td>
-    <td>January 10,2022</td>
-  </tr>
+  <?php 
+    $query = "SELECT * FROM tblactivitylog ORDER BY date DESC";
+    $result = mysqli_query($conn, $query);
+    if(mysqli_num_rows($result) > 0){
+      while($row = mysqli_fetch_array($result)){
+      ?>
+        <tr>
+          <td><?php echo $row['activityID']?></td>
+          <td><?php echo $row['activity']?></td>
+          <td><?php echo $row['incharge']?></td>
+          <td><?php echo $row['date']?></td>
+        </tr>
+      <?php
+      }
+    }
+  ?>
+  
 </table>
+  </div>
 </div>
 
 

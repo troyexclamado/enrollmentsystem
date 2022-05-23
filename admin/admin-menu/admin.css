@@ -41,7 +41,7 @@ nav ul li a{
   color: white;
   text-decoration: none;
   font-size: 18px;
-  padding-left: 40px;
+  padding-left: 30px;
   font-weight: 500;
   display: block;
   width: 100%;
@@ -76,7 +76,7 @@ nav ul ul li a{
   padding-left: 80px;
 }
 nav ul li.active ul li a{
-  color: #cyan;
+  color: white;
   background: #FFB52E;
   border-left-color: transparent;
 }
@@ -112,22 +112,22 @@ nav ul li a span.rotate{
 
 }
 .container .content .cards{
-   padding: 20px 15px;
+   margin-top: 30px;
    display: flex;
    align-items: center;
    justify-content: space-between;
    flex-wrap: wrap;
 }
 .container .content .cards .card{
-   width: 300px;
-   height: 150px;
+   width: 250px;
+   height: 100px;
    background: white;
-   margin: 20px 1px;
+   margin: 10px 10px 10px 10px;
    display: flex;
    align-items: center;
    justify-content: space-around;
-   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, .19);
-   border-radius: 10px;
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, .19);
+   border-radius: 5px;
 }
 
 
@@ -199,3 +199,65 @@ nav ul li a span.rotate{
       display: none;
    }
 
+}
+
+.enrolled{
+   overflow-y: scroll;
+   overflow-x: hidden;
+   height: 300px;
+   margin-right: 10px;
+   margin-top: 10px;
+ }
+ 
+ 
+ .content-table {
+   border-collapse: collapse;
+   font-size: 0.9em;
+   min-width: 76.5vw;
+   min-height: 15vh;
+   border-radius: 5px 5px 0 0;
+   margin: auto;
+ }
+ 
+ .content-table thead tr {
+   background-color: orange;
+   color: #ffffff;
+   text-align: center;
+   font-weight: bold;
+ }
+ 
+ 
+ .content-table thead{
+   position: sticky;
+   top: 0;
+   z-index: 9999;
+ }
+ 
+ .content-table th,
+ .content-table td {
+   text-align: center;
+ }
+ 
+ .content-table tbody tr {
+   border-bottom: 1px solid #dddddd;
+ }
+ 
+ .content-table tbody tr:nth-of-type(even) {
+   background-color: #f3f3f3;
+ }
+ 
+ .content-table tbody tr:last-of-type {
+   border-bottom: 2px solid orange;
+ }
+ 
+ .content-table tbody tr.active-row {
+   font-weight: bold;
+   color: #009879;
+ }
+ form button{
+   background-color: rgb(35, 201, 118);
+   border: none;
+   color: white;
+   padding: 5px 5px 5px 5px;
+ }
+ 

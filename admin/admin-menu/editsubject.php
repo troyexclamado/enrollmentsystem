@@ -21,6 +21,13 @@
 
             $updateSubject = "UPDATE tblsubjects SET subjectCode = '$subjectCode', subjectDescription = '$subjectDescription', subjectUnits = $subjectUnits, courseID = $courseID WHERE id = $subjectID";
             $sqlUpdate = mysqli_query($conn, $updateSubject);
+
+            //activity log
+            $name = $_SESSION['NAME'];
+            $activity = 'EDITED SUBJECT '.$subjectCode;
+            $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+            $activityresult = mysqli_query($conn, $activityquery);
+
             header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
         } else {
             echo '<script>alert("Updating subject failed!");</script>';
@@ -33,6 +40,12 @@
         $query = "DELETE FROM tblsubjects WHERE id = $subjectID";
         $sql = mysqli_query($conn, $query);
         if($sql){
+            //activity log
+            $name = $_SESSION['NAME'];
+            $activity = 'DELETED SUBJECT ID='.$subjectID;
+            $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+            $activityresult = mysqli_query($conn, $activityquery);
+
             header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
         }
     }
@@ -76,8 +89,9 @@
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
+            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
 </nav>
 <br>

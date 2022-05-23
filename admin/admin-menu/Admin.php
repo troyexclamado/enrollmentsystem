@@ -1,6 +1,7 @@
 <?php
     require('dbconnection.php');
     session_start();
+    $datenow = date('Y-m-d');
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -43,7 +44,7 @@
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav><div class="container">
     
@@ -67,21 +68,21 @@
                     ?>
                 </div>
                 <div class="icon-case">
-                    <img src="course.png" alt=" "  style="width:110px;height:110px;">
+                    <img src="course.png" alt=" "  style="width: 70px;height:70px;">
                 </div>
             </div>
-
+            
             <div class="card">
                 <div class="box">
                     <h1></h1>
-                    <h3  style="font-size:25px;">Professors</h3>
+                    <h3 style="font-size:25px;" >Subjects</h3>
                     <?php 
-                        $countProfessor = "SELECT COUNT(DISTINCT professorID) AS professor FROM tblprofessors";
-                        $sqlCountProfessor = mysqli_query($conn, $countProfessor);
-                        if(mysqli_num_rows($sqlCountProfessor) > 0){
-                            $professorResult = mysqli_fetch_array($sqlCountProfessor);
+                        $countSubjects = "SELECT COUNT(DISTINCT subjectCode) AS subjects FROM tblsubjects";
+                        $sqlCountSubjects = mysqli_query($conn, $countSubjects);
+                        if(mysqli_num_rows($sqlCountSubjects) > 0){
+                            $subjectResult = mysqli_fetch_array($sqlCountSubjects);
                     ?>
-                    <h3><?php echo $professorResult['professor']?></h3>
+                    <h3><?php echo $subjectResult['subjects']?></h3>
                     <?php 
                         } else {
                             echo '0';
@@ -89,10 +90,11 @@
                     ?>
                 </div>
                 <div class="icon-case">
-                    <img src="student.png" alt="" style="width: 110px;height:110px;">
+                    <img src="course.png" alt=" "  style="width: 70px;height:70px;">
                 </div>
             </div>
 
+            
             <div class="card">
                 <div class="box">
                     <h1></h1>
@@ -111,7 +113,7 @@
                     ?>
                 </div>
                 <div class="icon-case">
-                    <img src="preenrolled.png" alt="" style="width: 100px;height:100px;">
+                    <img src="preenrolled.png" alt="" style="width: 70px;height:70px;">
                 </div>
             </div>
 
@@ -133,53 +135,199 @@
                     ?>
                 </div>
                 <div class="icon-case">
-                    <img src="enrolled.png" alt="" style="width: 110px;height:110px;">
+                    <img src="enrolled.png" alt="" style="width: 70px;height:70px;">
                 </div>
             </div>
 
             <div class="card">
                 <div class="box">
                     <h1></h1>
-                    <h3 style="font-size:25px;" >Subjects</h3>
+                    <h3  style="font-size:20px;">BSCS (TODAY)</h3>
                     <?php 
-                        $countSubjects = "SELECT COUNT(DISTINCT subjectCode) AS subjects FROM tblsubjects";
-                        $sqlCountSubjects = mysqli_query($conn, $countSubjects);
-                        if(mysqli_num_rows($sqlCountSubjects) > 0){
-                            $subjectResult = mysqli_fetch_array($sqlCountSubjects);
-                    ?>
-                    <h3><?php echo $subjectResult['subjects']?></h3>
-                    <?php 
-                        } else {
-                            echo '0';
+                        $bscsnumber = 0;
+                        $bscsquery = "SELECT * FROM tblcoursedetails WHERE courseAbbr = 'BSCS'";
+                        $resultbscs = mysqli_query($conn, $bscsquery);
+                        if(mysqli_num_rows($resultbscs) > 0){
+                            while($bscsrows = mysqli_fetch_array($resultbscs)){
+                                $courseID = $bscsrows['courseID'];
+                                $countBSCS = "SELECT * FROM tblstudents WHERE dateOfEnrollment = '$datenow' AND courseID = $courseID AND statusID = 1";
+                                $sqlCountBSCS = mysqli_query($conn, $countBSCS);
+                                if(mysqli_num_rows($sqlCountBSCS) > 0){
+                                    while($BSCSresult = mysqli_fetch_array($sqlCountBSCS)){
+                                        $bscsnumber = $bscsnumber + 1;
+                                    }
+                                }
+                            }
+
                         }
                     ?>
+                    <h3><?php echo $bscsnumber?></h3>
                 </div>
                 <div class="icon-case">
-                    <img src="course.png" alt=" "  style="width:110px;height:110px;">
+                    <img src="student.png" alt="" style="width: 70px;height:70px;">
                 </div>
             </div>
 
             <div class="card">
                 <div class="box">
                     <h1></h1>
-                    <h3 style="font-size:25px;" >Accounts</h3>
+                    <h3  style="font-size:20px;">BSEMC (TODAY)</h3>
                     <?php 
-                        $countAccounts = "SELECT COUNT(accountID) AS accounts FROM tblaccounts";
-                        $sqlCountAccounts = mysqli_query($conn, $countAccounts);
-                        if(mysqli_num_rows($sqlCountAccounts) > 0){
-                            $accountsResult = mysqli_fetch_array($sqlCountAccounts);
-                    ?>
-                    <h3><?php echo $accountsResult['accounts']?></h3>
-                    <?php 
-                        } else {
-                            echo '0';
+                        $bsemcnumber = 0;
+                        $bsemcquery = "SELECT * FROM tblcoursedetails WHERE courseAbbr = 'BSEMC'";
+                        $resultbsemc = mysqli_query($conn, $bsemcquery);
+                        if(mysqli_num_rows($resultbsemc) > 0){
+                            while($bsemcrows = mysqli_fetch_array($resultbsemc)){
+                                $courseID = $bsemcrows['courseID'];
+                                $countBSEMC = "SELECT * FROM tblstudents WHERE dateOfEnrollment = '$datenow' AND courseID = $courseID AND statusID = 1";
+                                $sqlCountBSEMC = mysqli_query($conn, $countBSEMC);
+                                if(mysqli_num_rows($sqlCountBSEMC) > 0){
+                                    while($BSEMCresult = mysqli_fetch_array($sqlCountBSEMC)){
+                                        $bsemcnumber = $bsemcnumber + 1;
+                                    }
+                                }
+                            }
+
                         }
                     ?>
+                    <h3><?php echo $bsemcnumber?></h3>
                 </div>
                 <div class="icon-case">
-                    <img src="student.png" alt="" style="width: 110px;height:110px;">
+                    <img src="student.png" alt="" style="width: 70px;height:70px;">
                 </div>
             </div>
+
+            <div class="card">
+                <div class="box">
+                    <h1></h1>
+                    <h3  style="font-size:20px;">BSIS (TODAY)</h3>
+                    <?php 
+                        $bsisnumber = 0;
+                        $bsisquery = "SELECT * FROM tblcoursedetails WHERE courseAbbr = 'BSIS'";
+                        $resultbsis = mysqli_query($conn, $bsisquery);
+                        if(mysqli_num_rows($resultbsis) > 0){
+                            while($bsisrows = mysqli_fetch_array($resultbsis)){
+                                $courseID = $bsisrows['courseID'];
+                                $countBSIS = "SELECT * FROM tblstudents WHERE dateOfEnrollment = '$datenow' AND courseID = $courseID AND statusID = 1";
+                                $sqlCountBSIS = mysqli_query($conn, $countBSIS);
+                                if(mysqli_num_rows($sqlCountBSIS) > 0){
+                                    while($BSISresult = mysqli_fetch_array($sqlCountBSIS)){
+                                        $bsisnumber = $bsisnumber + 1;
+                                    }
+                                }
+                            }
+
+                        }
+                    ?>
+                    <h3><?php echo $bsisnumber?></h3>
+                </div>
+                <div class="icon-case">
+                    <img src="student.png" alt="" style="width: 70px;height:70px;">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="box">
+                    <h1></h1>
+                    <h3  style="font-size:20px;">BSIT (TODAY)</h3>
+                    <?php 
+                        $bsitnumber = 0;
+                        $bsitquery = "SELECT * FROM tblcoursedetails WHERE courseAbbr = 'BSIT'";
+                        $resultbsit = mysqli_query($conn, $bsitquery);
+                        if(mysqli_num_rows($resultbsit) > 0){
+                            while($bsitrows = mysqli_fetch_array($resultbsit)){
+                                $courseID = $bsitrows['courseID'];
+                                $countBSIT = "SELECT * FROM tblstudents WHERE dateOfEnrollment = '$datenow' AND courseID = $courseID AND statusID = 1";
+                                $sqlCountBSIT = mysqli_query($conn, $countBSIT);
+                                if(mysqli_num_rows($sqlCountBSIT) > 0){
+                                    while($BSITresult = mysqli_fetch_array($sqlCountBSIT)){
+                                        $bsitnumber = $bsitnumber + 1;
+                                    }
+                                }
+                            }
+
+                        }
+                    ?>
+                    <h3><?php echo $bsitnumber?></h3>
+                </div>
+                <div class="icon-case">
+                    <img src="student.png" alt="" style="width: 70px;height:70px;">
+                </div>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+        <h2 style="margin-left: 10px; margin-top: 10px">ENROLLED STUDENTS</h2>  
+        <div class="enrolled" id="enrolledtable">
+        
+            <table id="enrolled" class="content-table">
+                <thead>
+                    <tr>
+                        <th>STUDENT NUMBER</th>
+                        <th>NAME</th>
+                        <th>COURSE, YEAR AND SECTION</th>
+                        <th>DATE ENROLLED</th>
+                        <th>VIEW INFORMATION</th>
+                    </tr>
+                </thead>
+            <!-- PHP CODE TO FETCH DATA FROM ROWS-->
+                <?php
+                    $withstudentnum = "SELECT * FROM tblstudents WHERE statusID = '1' LIMIT 5";
+                    $resultwithstudentnum = $conn->query($withstudentnum);
+                    if ($resultwithstudentnum->num_rows > 0) 
+                    {
+                        while($row = $resultwithstudentnum->fetch_assoc()) 
+                        {
+                 ?>
+                            <tr>
+                                <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" > -->
+                                    <td>
+                                        <p><?=$row['studentNumber']?></p>
+                                    </td>
+                                    <td>
+                                    <?php 
+                                        //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                        $studentNumber = $row['studentNumber'];
+                                        $getFullname = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $studentNumber";
+                                        $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                        while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                        ?>
+                                        <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td><p><?php
+                                        $courseID = $row['courseID'];
+                                        $query = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                                        $results = mysqli_query($conn, $query);
+                                        if(mysqli_num_rows($results) > 0){
+                                            $rows = mysqli_fetch_array($results);
+                                            echo $rows['courseAbbr'].' '.$rows['year'].$rows['section'];
+                                        }
+
+                                        ?>
+                                    </p>
+                                    </td>
+                                    <td>
+                                        <p><?=$row['dateOfEnrollment']?></p>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="seedetailsenrolled.php">
+                                        <button type="submit" name="viewDetails" value="<?=$row['studentNumber']?>" >View Details</button>
+                                        </form>
+                                    </td>
+                                </form>
+                            </tr>
+            <?php
+                        }
+                     }
+                $conn->close();
+            ?>
+            </table>
+                </div>
         </div>
 
 

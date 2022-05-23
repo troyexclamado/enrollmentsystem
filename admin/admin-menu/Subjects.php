@@ -57,8 +57,9 @@
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
+            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav><div class="container">
 <div class="container">
@@ -74,29 +75,29 @@
       </div>
     <h4 id="filter"> FILTER BY : </h4>
     <div class="custom-select" style="width:200px;">
-      <select>
-        <option value="0">Course:</option>
+      <select id="course-drop-down">
+        <option value="">Course:</option>
         <option value="1">BSCS</option>
         <option value="2">BSIT</option>
         <option value="3">BSEMC</option>
         <option value="4">BSIS</option>
       </select>
-        <select>
-        <option value="0">Year:</option>
+        <select id="year-drop-down">
+        <option value="">Year:</option>
         <option value="1">1st</option>
         <option value="2">2nd</option>
         <option value="3">3rd</option>
         <option value="4">4th</option>
         
       </select>
-        <select>
-        <option value="0">Units:</option>
+        <select id="unit-drop-down">
+        <option value="">Units:</option>
         <option value="1">Ascending</option>
         <option value="2">Descending</option>
         
       </select>
-        <select>
-        <option value="0">Semester:</option>
+        <select id="semester-drop-down">
+        <option>Semester:</option>
         <option value="1">1st</option>
         <option value="2">2nd</option>
       </select>
@@ -135,11 +136,11 @@
             <td>
             <form method="POST" action="editsubject.php" onsubmit="return confirm('Do you want to edit this?')">
                 <input type="hidden" name="subjectID" value ="<?php echo $subjects['id']?>">
-                <button type="submit" name="edit">EDIT</button>
+                <button class="accept" type="submit" name="edit">EDIT</button>
             </form>
             <form method="POST" action="editsubject.php" onsubmit="return confirm('Are you sure you want to delete this?')">
                 <input type="hidden" name="subjectID" value ="<?php echo $subjects['id']?>">
-                <button type="submit" name="delete" id="myBtn1">DELETE</button>
+                <button class="reject" type="submit" name="delete" id="myBtn1">DELETE</button>
             </form>
             
 
@@ -233,6 +234,72 @@
                             url: "livesearch.php",
                             method: "POST",
                             data: {input:input},
+
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#myTable").show();
+                        //$("#pagination").show();
+                    }
+                });
+                $('#course-drop-down').change(function(){
+                    var input2 = $("#course-drop-down option:selected").text();
+                    //alert(input2);
+                    if(input2 != null){
+                        $("#searchresult").show();
+                        $("#subjectstable").hide();
+                        //$("#pagination").hide();
+                        $.ajax({
+                            url: "livesearch.php",
+                            method: "POST",
+                            data: {input2:input2},
+
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#myTable").show();
+                        //$("#pagination").show();
+                    }
+                });
+                $('#year-drop-down').change(function(){
+                    var input3 = $(this).val();
+                    //alert(input2);
+                    if(input3 != null){
+                        $("#searchresult").show();
+                        $("#subjectstable").hide();
+                        //$("#pagination").hide();
+                        $.ajax({
+                            url: "livesearch.php",
+                            method: "POST",
+                            data: {input3:input3},
+
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#myTable").show();
+                        //$("#pagination").show();
+                    }
+                });
+                $('#semester-drop-down').change(function(){
+                    var input4 = $(this).val();
+                    //alert(input2);
+                    if(input4 != null && input4 != ""){
+                        $("#searchresult").show();
+                        $("#subjectstable").hide();
+                        //$("#pagination").hide();
+                        $.ajax({
+                            url: "livesearch.php",
+                            method: "POST",
+                            data: {input4:input4},
 
                             success:function(data){
                                 $("#searchresult").html(data);

@@ -1,25 +1,6 @@
 <?php 
     session_start();
     include('dbconnection.php');
-
-    // if(isset($_POST['addtransaction'])){
-    //     $studentNumber = $_POST['studentNumber'];
-    //     $OR_NUMBER = $_POST['OR_NUMBER'];
-    //     $OR_DATE = $_POST['OR_DATE'];
-    //     $TF_AMOUNT = $_POST['TF_AMOUNT'];
-    //     $MF_AMOUNT = $_POST['MF_AMOUNT'];
-    //     $totalAmount = $_POST['totalAmount'];
-    //     $balance = $_POST['balance'];
-    //     $penalty = $_POST['penalty'];
-    //     $TNC = $_POST['TNC'];
-
-    //     $query = "INSERT INTO tblstudenttransactions(studentNumber, OR_NUMBER, OR_DATE, TF_AMOUNT, MF_AMOUNT, totalAmount, balance, penalty, TNC) VALUES($studentNumber, $OR_NUMBER, '$OR_DATE', $TF_AMOUNT, $MF_AMOUNT, $totalAmount, $balance, $penalty, $TNC)";
-    //     $sql = mysqli_query($conn, $query);
-
-    //     if($sql){
-    //         echo 'yey';
-    //     }
-    // }
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -78,7 +59,7 @@
 <h2 style="margin-left: 20px;">STUDENT DETAILS(<?php echo $studentNumber?>)</h2>
 <div class="container">
     
-  <form method = "post" action="generatepdf.php">
+  <form method = "post" action="#">
       <input type="hidden" name="studentNumber" value = "<?php echo $studentNumber ?>">
       <div id="myModal" class="modal" style="display: block;">
             <div class="modal-content">
@@ -174,8 +155,8 @@
             </table>
         </div>
     <div class="row">
-      <input type="submit" name="addtransaction" value="Generate E-Registration Form" formtarget="_blank">
-      <a href="Admin.php"><input type="button" name="addtransaction" value="Back"></a>
+      <input type="submit" name="addtransaction" value="Generate E-Registration Form">
+      <a href="Pre-Enrolled.php"><input type="button" name="addtransaction" value="Back"></a>
     </div>
   </form>
   <?php

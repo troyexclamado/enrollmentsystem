@@ -216,7 +216,21 @@
                 </table>
             </div>
                 </div>
-    <?php } ?>
+    <?php }
+        $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 3 AND studentType = 'REGULAR'";
+        $sqlCheckID = mysqli_query($conn, $checkID);
+        if($row = mysqli_fetch_array($sqlCheckID)){
+        ?>
+        <h3>APPLICATION STATUS: REJECTED</h3>
+        <div style="width: 100%;flex-basis: 100%;">
+        <form method="POST" action="enrollagain.php">
+            <input type="hidden" name="studentNumber" value="<?php echo $row['studentNumber']?>">
+            <input type="submit" name="submit" value="ENROLL AGAIN">    
+        </form>
+        </div>
+        <?php
+        }
+    ?>
                         <?php   
                         }
                         $checkID = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID' AND statusID = 1 AND studentType = 'IRREGULAR'";

@@ -7,7 +7,7 @@
    <head>
       <meta charset="utf-8">
       <title>Enrollment System </title>
-      <link rel="stylesheet" href="ENROLLED.css">
+      <link rel="stylesheet" href="ENROLLED.css?<?php echo time();?>">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
    </head>
@@ -47,8 +47,9 @@
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
+            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav>
       
@@ -157,7 +158,7 @@
             <h1> ENROLLED STUDENTS</h1>
             <div class="search">
                 <div class="search-box">
-                    <input type="text" placeholder="Type here...">
+                    <input type="text" id="search" placeholder="Type here...">
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
@@ -185,11 +186,14 @@
     
   </select>
 </div>
-            <table class="content-table">
+<div id="searchresult"> </div>
+        <div class="enrolled" id="enrolledtable">
+            <table id="enrolled" class="content-table">
                 <thead>
                     <tr>
                         <th>STUDENT NUMBER</th>
                         <th>NAME</th>
+                        <th>COURSE, YEAR AND SECTION</th>
                         <th>DATE ENROLLED</th>
                         <th>VIEW INFORMATION</th>
                     </tr>
@@ -221,6 +225,18 @@
                                         <?php
                                         }
                                         ?>
+                                    </td>
+                                    <td><p><?php
+                                        $courseID = $row['courseID'];
+                                        $query = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                                        $results = mysqli_query($conn, $query);
+                                        if(mysqli_num_rows($results) > 0){
+                                            $rows = mysqli_fetch_array($results);
+                                            echo $rows['courseAbbr'].' '.$rows['year'].$rows['section'];
+                                        }
+
+                                        ?>
+                                    </p>
                                     </td>
                                     <td>
                                         <p><?=$row['dateOfEnrollment']?></p>
@@ -329,6 +345,7 @@
                 $conn->close();
             ?>
             </table>
+                </div>
         </div>
 
 
@@ -383,6 +400,33 @@ var datamap = new Map([
              $(this).addClass("active").siblings().removeClass("active");
            });
       </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#search").keyup(function(){
+                    var input = $(this).val();
+                    //alert(input);
+                    if(input != null){
+                        $("#searchresult").show();
+                        $("#enrolled").hide();
+                        $("#enrolledtable").hide();
+                        $.ajax({
+                            url: "enrolledlivesearch.php",
+                            method: "POST",
+                            data: {input:input},
 
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#enrolled").show();
+                        $("#enrolledtable").show();
+                        //$("#accountstable").show();
+                    }
+                });
+            });
+        </script>
    </body>
 </html>

@@ -9,8 +9,11 @@
     unset($_SESSION['position']);
     unset($_SESSION['exist']);
 
-    session_destroy();
-     session_unset();
+    unset($_SESSION['studentnum']);
+    unset($_SESSION['email']);
+
+    // session_destroy();
+    //  session_unset();
 
     echo '<script>window.location.href="index.php"</script>';
 ?>

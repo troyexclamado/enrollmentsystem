@@ -7,7 +7,7 @@
    <head>
       <meta charset="utf-8">
       <title>Enrollment System </title>
-      <link rel="stylesheet" href="PRE-ENROLLED.css">
+      <link rel="stylesheet" href="PRE-ENROLLED.css?<?php echo time();?>">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
    </head>
@@ -58,10 +58,9 @@
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
-            <li>
-                <a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a>
-            </li>
-            <li><a href="/enrollmentsystem/admin/admin-login/index.html">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav>
 
@@ -170,7 +169,7 @@
             <h1> PRE-ENROLLED STUDENTS</h1>
             <div class="search">
                 <div class="search-box">
-                    <input type="text" placeholder="Type here...">
+                    <input type="text" id="search" placeholder="Type here...">
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
@@ -198,13 +197,14 @@
     
   </select>
 </div>
-    
-            <table class="content-table">
+<div id="searchresult"></div>
+    <div id="divpreenrolled"class="preenrolled">
+            <table id="preenrolled" class="content-table">
                 <thead>
                     <tr>
                         <th>STUDENT NUMBER</th>
                         <th>NAME</th>
-                        <th>EMAIL</th>
+                        <th>COURSE AND YEAR</th>
                         <th>DATE OF<br>APPLICATION</th>
                         <th>VIEW<br>INFORMATION</th>
                         <th>PAYMENT<br>INFORMATION</th>
@@ -221,7 +221,7 @@
                         {
                  ?>
                             <tr>
-                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                
                                     <td>
                                         <p><?=$row['studentNumber']?></p>
                                     </td>
@@ -240,15 +240,26 @@
                                             ?></p>
                                     </td>
                                     <td>
-                                        <p><?=$row['email']?></p>
+                                    <p><?php 
+                                        $courseID = $row['courseID'];
+                                        $query1 = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                                        $result1 = mysqli_query($conn, $query1);
+                                        if(mysqli_num_rows($result1) > 0){
+                                            $row1 = mysqli_fetch_array($result1);
+                                            echo $row1['courseAbbr'].' '.$row1['year'];
+                                        }
+                                        ?></p>
                                     </td>
                                     <td>
                                         <p><?=$row['dateOfEnrollment']?></p>
                                     </td>
                                     <td>
-                                        <button id="myBtn" class="myBtn" type="submit" name="myBtn" value="<?=$row['accountID']?>" >View Details</button>
+                                    <form method="POST" action="seedetailspreenrolled.php">
+                                        <button type="submit" name="viewDetails" value="<?=$row['studentNumber']?>" >View Details</button>
+                                        </form>
                                     </td>
                                     </form>
+                                    <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" > -->
                                     <td>
                                         <?php 
                                             $studentNumber = $row['studentNumber'];
@@ -256,26 +267,26 @@
                                             $sqlquery = mysqli_query($conn, $query);
                                             if(mysqli_num_rows($sqlquery) > 0){
                                                 ?>
-                                                <form method="POST" action="studenttransaction.php">
-                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
-                                                    <input type ="submit" name="update" value="Update/View Transaction">
+                                                <form method="POST" action="updatestudenttransaction.php">
+                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>" >
+                                                    <input type ="submit" name="view" value="Update/View Transaction" class="okay">
                                                 </form>
                                                 <?php
                                             } else {
                                                 ?>
                                                 <form method="POST" action="studenttransaction.php">
                                                 <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
-                                                <input type ="submit" name="add" value="Add Transaction">
+                                                <input type ="submit" name="add" value="Add Transaction" class="pending">
                                                 </form>
                                                 <?php
                                             }
                                         ?>
                                         
                                     </td>
-                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " onsubmit="return confirm('Do you want to accept/reject this?')">
                                     <td>
-                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>">Accept</button>
-                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>">Reject</button>
+                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>" class="accept">Accept</button>
+                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>" class="reject">Reject</button>
                                     </td>
                                 </form>
                             </tr>
@@ -291,6 +302,7 @@
                     $sqlquery = mysqli_query($conn, $query);
                     if(mysqli_num_rows($sqlquery) > 0){
                         insertSql($studentNumber);
+
                     } else {
                         echo '<script>alert("Student does not have payment yet. Enrollment failed.")</script>';         
                     }
@@ -355,10 +367,15 @@
                     $studentNumber  = $_POST['btnreject'];
                     //echo $preID;
                     //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
-                    $rejectinfo = "update tblstudentinfo set statusID='3' where accountID = $studentNumber";
+                    $rejectinfo = "update tblstudents set statusID='3' where studentNumber = $studentNumber";
                     $resultrejectinfo = $conn->query($rejectinfo);
                     if($resultrejectinfo){
-                        echo "deleted";
+                         //activity log
+                         $name = $_SESSION['NAME'];
+                         $activity = 'REJECTED STUDENT '.$studentNumber;
+                         $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+                         $activityresult = mysqli_query($conn, $activityquery);
+
                         echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                     }else{
                         echo "invalid";
@@ -434,6 +451,13 @@
                                 $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', statusID = 1 WHERE studentNumber = $studentNum";
                                 $updatedate = mysqli_query($conn, $sqlinsert);
                                 if($updatedate){
+
+                                    //activity log
+                                    $name = $_SESSION['NAME'];
+                                    $activity = 'ACCEPTED STUDENT '.$studentNum;
+                                    $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+                                    $activityresult = mysqli_query($conn, $activityquery);
+
                                     echo "<script>window.location.href='Pre-Enrolled.php';</script>";
                                 }else {
                                     echo "<script>alert('Failed to Insert Data')</script>";
@@ -498,6 +522,7 @@
                 // $conn->close();
             ?>
             </table>
+            </div>
         </div>
 
 
@@ -552,6 +577,32 @@ var datamap = new Map([
              $(this).addClass("active").siblings().removeClass("active");
            });
       </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#search").keyup(function(){
+                    var input = $(this).val();
+                    //alert(input);
+                    if(input != null){
+                        $("#searchresult").show();
+                        $("#preenrolled").hide();
+                        $("#divpreenrolled").hide();
+                        $.ajax({
+                            url: "preenrolledlivesearch.php",
+                            method: "POST",
+                            data: {input:input},
 
+                            success:function(data){
+                                $("#searchresult").html(data);
+                            }
+                        })
+                    } else {
+                        $("#searchresult").hide();
+                        $("#preenrolled").show();
+                        //$("#accountstable").show();
+                    }
+                });
+            });
+        </script>
    </body>
 </html>

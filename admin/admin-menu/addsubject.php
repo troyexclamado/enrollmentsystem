@@ -1,5 +1,6 @@
 <?php 
     include('dbconnection.php');
+    session_start();
 
     if(!isset($_POST['submit'])){
         $subjectCode = $_POST['subjectCode'];
@@ -20,7 +21,14 @@
 
                 $addSubject = "INSERT INTO tblsubjects(subjectCode, subjectDescription, subjectUnits, courseID) VALUES('$subjectCode', '$subjectDescription', $subjectUnits,$courseID)";
                 $sqlAddSubject = mysqli_query($conn, $addSubject);
+
             }
+            //activity log
+            $name = $_SESSION['NAME'];
+            $activity = 'ADDED SUBJECT '.$subjectCode;
+            $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+            $activityresult = mysqli_query($conn, $activityquery);
+            
             header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
             exit();
         } else {
@@ -34,6 +42,12 @@
             
             $addSubject = "INSERT INTO tblsubjects(subjectCode, subjectDescription, subjectUnits, courseID) VALUES('$subjectCode', '$subjectDescription', $subjectUnits, $courseID)";
             $sqlAddSubject = mysqli_query($conn, $addSubject);
+
+            //activity log
+            $name = $_SESSION['NAME'];
+            $activity = 'ADDED SUBJECT '.$subjectCode;
+            $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
+            $activityresult = mysqli_query($conn, $activityquery);
 
             header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
             echo 'why?';

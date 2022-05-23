@@ -20,6 +20,12 @@
                 $resultsProfessorID = mysqli_fetch_array($sqlGetProfessorID);
                 $_SESSION['PROFESSOR_ID'] = $resultsProfessorID['professorID'];
             }
+            $name = $results['firstname'].' '.$results['middlename'].' '.$results['lastname'];
+            $_SESSION['NAME'] = $name;
+            //activity log
+            $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('LOGGED IN', '$name')";
+            $activityresult = mysqli_query($connection, $activityquery);
+
             echo '<script>alert("Welcome to admin!")</script>';
             echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/Admin.php"</script>';
         } else {

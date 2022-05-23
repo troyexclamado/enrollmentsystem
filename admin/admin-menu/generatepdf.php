@@ -56,7 +56,7 @@ if(isset($_POST['addtransaction'])){
             if($row['studentType'] == 'REGULAR'){
                 $querysubjects = "SELECT * FROM tblsubjects WHERE courseID = $courseID";
                 $sql4 = mysqli_query($conn, $querysubjects);
-                if(mysqli_fetch_array($sql4) > 0){
+                if(mysqli_num_rows($sql4) > 0){
                     while($subjects = mysqli_fetch_array($sql4)){
                         $pdf->Cell(30,5,$subjects['subjectCode'],1,0);
                         $pdf->Cell(9,5,$subjects['subjectUnits'],1,0);

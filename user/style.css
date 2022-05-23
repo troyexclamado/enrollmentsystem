@@ -748,6 +748,20 @@ td {
     flex-basis: 100%;
     padding: 0px 2px;
 }
+.profile-col form{
+    width: 100%;
+    flex-basis: 100%;
+    padding: 0px 2px;
+    text-align: center;
+}
+.profile-col form input{
+    color: white;
+    background-color: rgb(43, 231, 137);
+    border: none;
+    width: 20%;
+    padding: 10px 2px;
+}
+
 
 .profile-col-image {
     padding: 0;

@@ -7,6 +7,7 @@
     $name = $_SESSION['NAME'];
     $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('LOGGED OUT', '$name')";
     $activityresult = mysqli_query($conn, $activityquery);
+    
     if($activityresult){
         unset($_SESSION['POSITION']);
         unset($_SESSION['PROFESSOR_ID']);

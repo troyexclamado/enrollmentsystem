@@ -106,9 +106,9 @@
         </tr>
     </thead>
   <?php 
-        $strcourse = "select * from tblcoursedetails where del='0'";
+        $strcourse = "select * from tblcoursedetails";
         $result = $conn->query($strcourse);
-        if($result->num_rows > 0){
+        if($result !== false && $result->num_rows > 0){
             while($row = $result->fetch_assoc()) 
             {
                 ?>

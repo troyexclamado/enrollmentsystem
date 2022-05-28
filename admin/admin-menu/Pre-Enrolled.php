@@ -173,29 +173,31 @@
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-            <h4 id="filter"> FILTER BY : </h4>
-<div class="custom-select" style="width:200px;">
-  <select>
-    <option value="0">Course:</option>
-    <option value="1">BSCS</option>
-    <option value="2">BSIT</option>
-    <option value="3">BSEMC</option>
-    <option value="4">BSIS</option>
+            
+<div class="custom-select">
+<h4 id="filter"> FILTER BY : </h4>
+  <select id="course">
+    <option value="">Course:</option>
+    <option value="BSCS">BSCS</option>
+    <option value="BSIT">BSIT</option>
+    <option value="BSEMC">BSEMC</option>
+    <option value="BSIS">BSIS</option>
   </select>
-    <select>
-    <option value="0">Year:</option>
+    <select id="year">
+    <option value="">Year:</option>
     <option value="1">1st</option>
     <option value="2">2nd</option>
     <option value="3">3rd</option>
     <option value="4">4th</option>
     
   </select>
-    <select>
-    <option value="0">Date of Enrollment:</option>
+    <select id="date">
+    <option value="">Date of Enrollment:</option>
     <option value="1">Ascending</option>
     <option value="2">Descending</option>
-    
   </select>
+    <input type="button" name="filter" id="filterdata" value="Filter Data">
+    <a href="Pre-Enrolled.php"><input type="button" value="Reset"></a>
 </div>
 <div id="searchresult"></div>
     <div id="divpreenrolled"class="preenrolled">
@@ -580,27 +582,68 @@ var datamap = new Map([
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#search").keyup(function(){
-                    var input = $(this).val();
-                    //alert(input);
-                    if(input != null){
-                        $("#searchresult").show();
-                        $("#preenrolled").hide();
-                        $("#divpreenrolled").hide();
-                        $.ajax({
-                            url: "preenrolledlivesearch.php",
-                            method: "POST",
-                            data: {input:input},
+                //$("#search").keyup(function(){
+                $("#search").keypress(function(e){
+                    if(e.which == 13){
+                        var input = $(this).val();
+                        //alert(input);
+                        if(input != null){
+                            $("#searchresult").show();
+                            $("#preenrolled").hide();
+                            $("#divpreenrolled").hide();
+                            $.ajax({
+                                url: "preenrolledlivesearch.php",
+                                method: "POST",
+                                data: {input:input},
 
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#preenrolled").show();
-                        //$("#accountstable").show();
+                                success:function(data){
+                                    $("#searchresult").html(data);
+                                }
+                            })
+                        } else {
+                            $("#searchresult").hide();
+                            $("#preenrolled").show();
+                            //$("#accountstable").show();
+                        }
                     }
+                });
+                $("#filterdata").click(function(){
+                    var course = $("#course").val();
+                    var year = $("#year").val();
+                    var date = $("#date").val();
+                    alert(course + year + date);
+                    $("#searchresult").show();
+                    $("#preenrolled").hide();
+                    $("#divpreenrolled").hide();
+                    $.ajax({
+                        url: "preenrolledlivesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, date:date},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                    // var input = $(this).val();
+                    // //alert(input);
+                    // if(input != null){
+                    //     $("#searchresult").show();
+                    //     $("#subjectstable").hide();
+                    //     //$("#pagination").hide();
+                    //     $.ajax({
+                    //         url: "livesearch.php",
+                    //         method: "POST",
+                    //         data: {input:input},
+
+                    //         success:function(data){
+                    //             $("#searchresult").html(data);
+                    //         }
+                    //     })
+                    // } else {
+                    //     $("#searchresult").hide();
+                    //     $("#myTable").show();
+                    //     //$("#pagination").show();
+                    // }
                 });
             });
         </script>

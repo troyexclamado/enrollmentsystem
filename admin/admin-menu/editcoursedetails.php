@@ -1,6 +1,19 @@
 <?php 
     session_start();
     include('dbconnection.php');
+
+    if(isset($_POST['btndel'])){
+      $courseID = $_POST['courseID'];
+      $strupdatetblcourse = "UPDATE tblcoursedetails SET del='1' WHERE courseID = $courseID ";
+      $updateresult = $conn->query($strupdatetblcourse);
+      if($updateresult){
+           echo("<script>location.href = 'Course.php';</script>");
+      }
+    }
+    if(isset($_POST['btnedit'])){
+      $courseID = $_POST['courseID'];
+      $query = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+      $result = mysqli_query($conn, $query);
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -14,15 +27,14 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-        <!--  <?php
+        <?php
                 if($_SESSION['POSITION']== "PROFESSOR"){
                     ?> <p>PROFESSOR</p>
                     <?php
                 } else {
                     ?> <p>Admin </p><?php
                 }
-            ?> -->
-            <p>Admin </p>
+            ?>
            </div>
          <ul>
             <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
@@ -52,15 +64,10 @@
   <form method = "post" action="c.php">
 
     <?php 
-      $selectpick = "SELECT * from tblcoursedetails where pick = '1'";
-      $selectresult = $conn->query($selectpick);
-      if($selectresult->num_rows > 0){
-        while($row = $selectresult->fetch_assoc()) 
-            {
-
+      if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_array($result);
+      
     ?>
-   
-
     <div class="row">
       <div class="col-25">
         <label for="fname">Course Abbreviation</label>
@@ -142,14 +149,15 @@
     </div> -->
       
     <div class="row">
-      <input style="margin-right:800px; float: left;" type="submit" name="back" value="Back">
+      <a href="Courses.php"><input type="button" name="addtransaction" value="Back"></a>
+      <input type="hidden" name="courseID" value = <?php echo $courseID?>>
       <input type="submit" name="updatepick" value="Update Course Details">
       
     </div>
 
      <?php
-            }//end if while
-      }//end ef selectpick
+      }
+    }//end if while
     ?>
   </form>
 </div>

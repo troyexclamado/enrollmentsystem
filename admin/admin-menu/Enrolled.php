@@ -162,29 +162,31 @@
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-            <h4 id="filter"> FILTER BY : </h4>
-<div class="custom-select" style="width:200px;">
-  <select>
-    <option value="0">Course:</option>
-    <option value="1">BSCS</option>
-    <option value="2">BSIT</option>
-    <option value="3">BSEMC</option>
-    <option value="4">BSIS</option>
+            
+            <div class="custom-select">
+<h4 id="filter"> FILTER BY : </h4>
+  <select id="course">
+    <option value="">Course:</option>
+    <option value="BSCS">BSCS</option>
+    <option value="BSIT">BSIT</option>
+    <option value="BSEMC">BSEMC</option>
+    <option value="BSIS">BSIS</option>
   </select>
-    <select>
-    <option value="0">Year:</option>
+    <select id="year">
+    <option value="">Year:</option>
     <option value="1">1st</option>
     <option value="2">2nd</option>
     <option value="3">3rd</option>
     <option value="4">4th</option>
     
   </select>
-    <select>
-    <option value="0">Date of Enrollment:</option>
+    <select id="date">
+    <option value="">Date of Enrollment:</option>
     <option value="1">Ascending</option>
     <option value="2">Descending</option>
-    
   </select>
+    <input type="button" name="filter" id="filterdata" value="Filter Data">
+    <a href="Enrolled.php"><input type="button" value="Reset"></a>
 </div>
 <div id="searchresult"> </div>
         <div class="enrolled" id="enrolledtable">
@@ -426,6 +428,25 @@ var datamap = new Map([
                         //$("#accountstable").show();
                     }
                 });
+                $("#filterdata").click(function(){
+                    var course = $("#course").val();
+                    var year = $("#year").val();
+                    var date = $("#date").val();
+                    alert(course + year + date);
+                    $("#searchresult").show();
+                    $("#enrolled").hide();
+                    $("#enrolledtable").hide();
+                    $.ajax({
+                        url: "enrolledlivesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, date:date},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                });
+
             });
         </script>
    </body>

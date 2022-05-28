@@ -1,20 +1,6 @@
 <?php 
     session_start();
     include('dbconnection.php');
-    
-    // $record_per_page = 15;
-
-    // $page = '';
-
-    // if(isset($_GET['page'])){
-    //     $page = $_GET['page'];
-    // } else {
-    //     $page = 1;
-    // }
-
-    // $start_from = ($page - 1) * $record_per_page;
-
-    // $query = "SELECT * FROM tblsubjects ORDER BY  courseID ASC LIMIT $start_from, $record_per_page";
     $query = "SELECT * FROM tblsubjects ORDER BY courseID ASC";
     $result = mysqli_query($conn, $query);
  ?>
@@ -73,16 +59,16 @@
           </button>
         </div>
       </div>
+    <div class="custom-select">
     <h4 id="filter"> FILTER BY : </h4>
-    <div class="custom-select" style="width:200px;">
-      <select id="course-drop-down">
+      <select id="course-drop-down" name="course">
         <option value="">Course:</option>
-        <option value="1">BSCS</option>
-        <option value="2">BSIT</option>
-        <option value="3">BSEMC</option>
-        <option value="4">BSIS</option>
+        <option value="BSCS">BSCS</option>
+        <option value="BSIT">BSIT</option>
+        <option value="BSEMC">BSEMC</option>
+        <option value="BSIS">BSIS</option>
       </select>
-        <select id="year-drop-down">
+        <select id="year-drop-down" name="year">
         <option value="">Year:</option>
         <option value="1">1st</option>
         <option value="2">2nd</option>
@@ -90,17 +76,13 @@
         <option value="4">4th</option>
         
       </select>
-        <select id="unit-drop-down">
-        <option value="">Units:</option>
-        <option value="1">Ascending</option>
-        <option value="2">Descending</option>
-        
-      </select>
-        <select id="semester-drop-down">
-        <option>Semester:</option>
+        <select id="semester-drop-down" name="semester">
+        <option value="">Semester:</option>
         <option value="1">1st</option>
         <option value="2">2nd</option>
       </select>
+      <input type="button" name="filter" id="filterdata" value="Filter Data">
+      <a href="Subjects.php"><input type="button" value="Reset"></a>
     </div>
 
     <div id="searchresult">
@@ -223,93 +205,67 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#search").keyup(function(){
-                    var input = $(this).val();
-                    //alert(input);
-                    if(input != null){
-                        $("#searchresult").show();
-                        $("#subjectstable").hide();
-                        //$("#pagination").hide();
-                        $.ajax({
-                            url: "livesearch.php",
-                            method: "POST",
-                            data: {input:input},
+                $("#search").keypress(function(e){
+                    if(e.which == 13){
+                        var input = $(this).val();
+                        //alert(input);
+                        if(input != null){
+                            $("#searchresult").show();
+                            $("#subjectstable").hide();
+                            //$("#pagination").hide();
+                            $.ajax({
+                                url: "livesearch.php",
+                                method: "POST",
+                                data: {input:input},
 
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#myTable").show();
-                        //$("#pagination").show();
+                                success:function(data){
+                                    $("#searchresult").html(data);
+                                }
+                            })
+                        } else {
+                            $("#searchresult").hide();
+                            $("#myTable").show();
+                            //$("#pagination").show();
+                        }
                     }
+                    
                 });
-                $('#course-drop-down').change(function(){
-                    var input2 = $("#course-drop-down option:selected").text();
-                    //alert(input2);
-                    if(input2 != null){
-                        $("#searchresult").show();
-                        $("#subjectstable").hide();
-                        //$("#pagination").hide();
-                        $.ajax({
-                            url: "livesearch.php",
-                            method: "POST",
-                            data: {input2:input2},
+                $("#filterdata").click(function(){
+                    var course = $("#course-drop-down").val();
+                    var year = $("#year-drop-down").val();
+                    var semester = $("#semester-drop-down").val();
+                    alert(course + year + semester);
+                    $("#searchresult").show();
+                    $("#subjectstable").hide();
+                    $.ajax({
+                        url: "livesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, semester:semester},
 
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#myTable").show();
-                        //$("#pagination").show();
-                    }
-                });
-                $('#year-drop-down').change(function(){
-                    var input3 = $(this).val();
-                    //alert(input2);
-                    if(input3 != null){
-                        $("#searchresult").show();
-                        $("#subjectstable").hide();
-                        //$("#pagination").hide();
-                        $.ajax({
-                            url: "livesearch.php",
-                            method: "POST",
-                            data: {input3:input3},
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                    // var input = $(this).val();
+                    // //alert(input);
+                    // if(input != null){
+                    //     $("#searchresult").show();
+                    //     $("#subjectstable").hide();
+                    //     //$("#pagination").hide();
+                    //     $.ajax({
+                    //         url: "livesearch.php",
+                    //         method: "POST",
+                    //         data: {input:input},
 
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#myTable").show();
-                        //$("#pagination").show();
-                    }
-                });
-                $('#semester-drop-down').change(function(){
-                    var input4 = $(this).val();
-                    //alert(input2);
-                    if(input4 != null && input4 != ""){
-                        $("#searchresult").show();
-                        $("#subjectstable").hide();
-                        //$("#pagination").hide();
-                        $.ajax({
-                            url: "livesearch.php",
-                            method: "POST",
-                            data: {input4:input4},
-
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#myTable").show();
-                        //$("#pagination").show();
-                    }
+                    //         success:function(data){
+                    //             $("#searchresult").html(data);
+                    //         }
+                    //     })
+                    // } else {
+                    //     $("#searchresult").hide();
+                    //     $("#myTable").show();
+                    //     //$("#pagination").show();
+                    // }
                 });
             });
         </script>

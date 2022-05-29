@@ -53,17 +53,23 @@ if(isset($_POST['addtransaction'])){
             
             $pdf->Cell(189,5,'SUBJECTS',1,1);
             //subjects
-            if($row['studentType'] == 'REGULAR'){
-                $querysubjects = "SELECT * FROM tblsubjects WHERE courseID = $courseID";
-                $sql4 = mysqli_query($conn, $querysubjects);
-                if(mysqli_num_rows($sql4) > 0){
-                    while($subjects = mysqli_fetch_array($sql4)){
-                        $pdf->Cell(30,5,$subjects['subjectCode'],1,0);
-                        $pdf->Cell(9,5,$subjects['subjectUnits'],1,0);
-                        $pdf->Cell(150,5,$subjects['subjectDescription'],1,1);
+                $subjects1 = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND courseID = $courseID";
+                $result = mysqli_query($conn, $subjects1);
+                if(mysqli_num_rows($result) > 0){
+                    while($row1 = mysqli_fetch_array($result)){
+                        $subjectCode = $row1['subjectCode'];
+                        $querysubjects = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
+                        $sql4 = mysqli_query($conn, $querysubjects);
+                        if(mysqli_num_rows($sql4) > 0){
+                            $subjects = mysqli_fetch_array($sql4);
+                            $pdf->Cell(30,5,$subjects['subjectCode'],1,0);
+                            $pdf->Cell(9,5,$subjects['subjectUnits'],1,0);
+                            $pdf->Cell(150,5,$subjects['subjectDescription'],1,1);
+                        }
                     }
                 }
-            }
+                
+
             $pdf->Cell(139,5,'REMARS/PAYMENT',1,0,'C');
             $pdf->Cell(50,5,'MIS',1,1,'C');
             

@@ -180,11 +180,7 @@
     <option value="4">4th</option>
     
   </select>
-    <select id="date">
-    <option value="">Date of Enrollment:</option>
-    <option value="1">Ascending</option>
-    <option value="2">Descending</option>
-  </select>
+    <input type="date" id="date">
     <input type="button" name="filter" id="filterdata" value="Filter Data">
     <a href="Enrolled.php"><input type="button" value="Reset"></a>
 </div>

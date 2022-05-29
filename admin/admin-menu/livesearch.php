@@ -3,7 +3,7 @@
 
     if(isset($_POST['input'])){
         $input = $_POST['input'];
-        $query = "SELECT id,courseID,subjectCode,subjectDescription,subjectUnits FROM tblsubjects WHERE subjectDescription LIKE '{$input}%' UNION ALL SELECT id,courseID,subjectCode,subjectDescription,subjectUnits FROM tblsubjects WHERE subjectCode LIKE '{$input}%'";
+        $query = "SELECT id,courseID,subjectCode,subjectDescription,subjectUnits FROM tblsubjects WHERE subjectDescription LIKE '%{$input}%' UNION ALL SELECT id,courseID,subjectCode,subjectDescription,subjectUnits FROM tblsubjects WHERE subjectCode LIKE '%{$input}%'";
         // $query = "SELECT * FROM tblsubjects WHERE subjectDescription LIKE '{$input}%' OR subjectCode LIKE '{$input}%'";
         $result = mysqli_query($conn, $query);
 
@@ -74,8 +74,42 @@
         $year = $_POST['year'];
         $semester = $_POST['semester'];
 
-        $query12 = "SELECT courseID FROM tblcoursedetails".(empty($course) ? (empty($year) ? (empty($semester) ? "" : " WHERE semester = $semester") : " WHERE year = '$year'") : " WHERE courseAbbr = '$course'". (empty($year) ? " AND semester = $semester" : " AND year = $year"). (empty($semester) ? "" : " AND semester = $semester"));
-        $result12 = mysqli_query($conn, $query12);
+        // $query12 = "SELECT courseID FROM tblcoursedetails".(empty($course) ? (empty($year) ? (empty($semester) ? " " : " WHERE semester = $semester") : " WHERE year = $year") : " WHERE courseAbbr = '$course'". (empty($year) ? " AND semester = $semester" : " AND year = $year"). (empty($semester) ? " " : " AND semester = $semester"));
+
+        $stringquery = "SELECT courseID FROM tblcoursedetails";
+        if(empty($course)){
+            if(empty($year)){
+                if(empty($semester)){
+                    $stringquery .= "";
+                } else {
+                    $stringquery .= " WHERE semester = $semester";
+                }
+            } else {
+                $stringquery .= " WHERE year = $year";
+                if(empty($semester)){
+                    $stringquery .= "";
+                } else {
+                    $stringquery .= " AND semester = $semester";
+                }
+            }
+        } else {
+            $stringquery .= " WHERE courseAbbr = '$course'";
+            if(empty($year)){
+                if(empty($semester)){
+                    $stringquery .= "";
+                } else {
+                    $stringquery .= " AND semester = $semester";
+                }
+            } else {
+                $stringquery .= " AND year = $year";
+                if(empty($semester)){
+                    $stringquery .= "";
+                } else {
+                    $stringquery .= " AND semester = $semester";
+                }
+            }
+        }
+        $result12 = mysqli_query($conn, $stringquery);
         if(mysqli_num_rows($result12) > 0){
             ?>
             <div class="subjectstable">

@@ -217,9 +217,25 @@
         $course = $_POST['course'];
         $year = $_POST['year'];
         $date = $_POST['date'];
-
-        $query12 = "SELECT courseID FROM tblcoursedetails".(empty($course) ? (empty($year) ? : " WHERE year = $year") : " WHERE courseAbbr = '$course'"). (empty($year) ? "": " AND year = $year");
+        //echo '<script>alert('.$date.')</script>';
+        // $query12 = "SELECT courseID FROM tblcoursedetails".(empty($course) ? (empty($year) ? : " WHERE year = $year") : " WHERE courseAbbr = '$course'"). (empty($year) ? "": " AND year = $year");
+        $query12 = "SELECT courseID FROM tblcoursedetails";
+        if(empty($course)){
+            if(empty($year)){
+                $query12 .= "";
+            } else {
+                $query12 .= " WHERE year = $year";
+            }
+        } else {
+            $query12 .= " WHERE courseAbbr = '$course'";
+            if(empty($year)){
+                $query12 .= "";
+            } else {
+                $query12 .= " AND year = $year";
+            }
+        }
         $result12 = mysqli_query($conn, $query12);
+        
         if(mysqli_num_rows($result12) > 0){
         ?>
             <div class="preenrolled">
@@ -238,7 +254,7 @@
                 <?php
                 while($row12 = mysqli_fetch_array($result12)){
                 $courseID = $row12['courseID'];
-                    $query = "SELECT * from tblstudents WHERE statusID = 0 AND courseID = $courseID";
+                    $query = "SELECT * from tblstudents WHERE statusID = 0 AND courseID = $courseID".(empty($date) ? "" : " AND dateOfEnrollment = '$date'");
                     $result = mysqli_query($conn, $query);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
@@ -298,7 +314,7 @@
                                                 ?>
                                                 <form method="POST" action="studenttransaction.php">
                                                 <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
-                                                <input type ="submit" name="add" value="Add Transaction">
+                                                <input type ="submit" name="add" value="Add Transaction" class="pending">
                                                 </form>
                                                 <?php
                                             }

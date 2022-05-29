@@ -191,11 +191,7 @@
     <option value="4">4th</option>
     
   </select>
-    <select id="date">
-    <option value="">Date of Enrollment:</option>
-    <option value="1">Ascending</option>
-    <option value="2">Descending</option>
-  </select>
+    <input type="date" id="date">
     <input type="button" name="filter" id="filterdata" value="Filter Data">
     <a href="Pre-Enrolled.php"><input type="button" value="Reset"></a>
 </div>
@@ -367,11 +363,20 @@
 
                 if(isset($_POST['btnreject'])){
                     $studentNumber  = $_POST['btnreject'];
+                    $courseDetails;
+                    $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = $studentNumber";
+                    $result = mysqli_query($conn, $sql1);
+                    while($row = mysqli_fetch_array($result)){
+                        $courseDetails = $row['courseID'];
+                    }
                     //echo $preID;
                     //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
                     $rejectinfo = "update tblstudents set statusID='3' where studentNumber = $studentNumber";
                     $resultrejectinfo = $conn->query($rejectinfo);
                     if($resultrejectinfo){
+                        $querydeletesub = "DELETE FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND courseID = $courseDetails";
+                        $resultdeletesub = mysqli_query($conn, $querydeletesub);
+
                          //activity log
                          $name = $_SESSION['NAME'];
                          $activity = 'REJECTED STUDENT '.$studentNumber;
@@ -427,28 +432,29 @@
                                     echo 'yey';
                                 }
 
-                                if($studentType == "REGULAR"){
-                                    $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
-                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
-                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                            $subjectCode = $subjects['subjectCode'];
-                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
-                                        }
-                                    }
-                                }else if ($studentType = "IRREGULAR"){
-                                    $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
-                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
-                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                            $subjectCode = $subjects['subjectCode'];
-                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
-                                        }
-                                    }
+                                // if($studentType == "REGULAR"){
+                                //     $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
+                                //     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                //     if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                //         while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                //             $subjectCode = $subjects['subjectCode'];
+                                //             $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                //             $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                //         }
+                                //     }
+                                // }else
+                                // if ($studentType = "IRREGULAR"){
+                                //     $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
+                                //     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                //     if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                //         while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                //             $subjectCode = $subjects['subjectCode'];
+                                //             $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                //             $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                //         }
+                                //     }
                 
-                                }
+                                // }
 
                                 $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', statusID = 1 WHERE studentNumber = $studentNum";
                                 $updatedate = mysqli_query($conn, $sqlinsert);

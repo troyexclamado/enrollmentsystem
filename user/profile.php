@@ -195,14 +195,19 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $accountID";
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){
+                    $subjectCode = $row_course['subjectCode'];
+                    $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' AND courseID = $courseDetails";
+                    $result = mysqli_query($conn, $subjectsquery);
+                    if(mysqli_num_rows($result) > 0){
+                        while($row = mysqli_fetch_array($result)){
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
                     // $subject_id = $row_course['subj_id'];
-                    $subject_code = $row_course['subjectCode'];
-                    $subject_name = $row_course['subjectDescription'];
-                    $subject_units = $row_course['subjectUnits'];
             ?>
 
                 <tbody>
@@ -211,7 +216,10 @@
                     <td><?php echo $subject_name;?></td>
                     <td><?php echo $subject_units;?></td>
                     </tr>
-                      <?php } ?>
+                      <?php
+                            }
+                        }
+                    }?>
                 </tbody>
                 </table>
             </div>
@@ -262,7 +270,7 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblbacksubjects WHERE accountID='$accountID' AND (status = 'Taken' OR status = 'Required')";
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber='$accountID' AND courseID = $courseDetails";
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){

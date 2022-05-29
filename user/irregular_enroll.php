@@ -294,7 +294,7 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql3 = "SELECT * FROM tblbacksubjects WHERE studentNumber = $accountID AND status = 'Save'";
+                $sql3 = "SELECT * FROM tblbacksubjects WHERE accountID = $accountID AND status = 'Save'";
                 $res = mysqli_query($conn, $sql3);
                 while($row_subjects = mysqli_fetch_array($res)){
                     $subject_id =   $row_subjects['backsubjectID'];
@@ -317,7 +317,7 @@
                     <?php } ?>
                 <?php } ?>
                     <?php
-                 $sql = "SELECT subjectCode FROM tblbacksubjects WHERE studentNumber = '$accountID' AND status = 'Required'";
+                 $sql = "SELECT subjectCode FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'Required'";
                 $result = mysqli_query($conn, $sql);
                 while($row = mysqli_fetch_array($result)){
                     $subjectCode = $row['subjectCode'];
@@ -325,9 +325,9 @@
 
                 $getsubject = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
                 $res = mysqli_query($conn, $getsubject);
-                while($subjectrow = mysqli_fetch_array($res)){
-                    $subjectName = $subjectrow['subjectDescription'];
-            
+                if(mysqli_num_rows($res) > 0){
+                    $subjectrow = mysqli_fetch_array($res);
+                    $subjectName = $subjectrow['subjectDescription'];    
                     ?>
                     <tr>
                     <td><?php echo $subjectCode;?></td>
@@ -337,7 +337,7 @@
                   <?php } ?>
                 <?php } ?>
                    <?php
-                   $sql5 = "SELECT * FROM tblbacksubjects WHERE studentNumber = '$accountID' AND status = 'Taken'";
+                   $sql5 = "SELECT * FROM tblbacksubjects WHERE accountID = '$accountID' AND status = 'Taken'";
                    $res = mysqli_query($conn, $sql5);
                 
                    if($res == true){

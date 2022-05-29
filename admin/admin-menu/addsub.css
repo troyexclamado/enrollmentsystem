@@ -234,7 +234,14 @@ input[type=button] {
   float: left;
   margin-top: 10px;
 }
-
+.deletebutton {
+  border-radius: 4px;
+  color: white;
+  padding: 5px 5px 5px 5px;
+  border: none;
+  background-color: tomato;
+  position: inherit;
+}
 
 input[type=submit]:hover {
   background-color: #FFC55C;

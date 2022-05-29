@@ -181,10 +181,17 @@
             </table>
         </div>
     <div class="row">
-      <input type="submit" name="addtransaction" value="Generate E-Registration Form" formtarget="_blank">
+      <input type="submit" name="addtransaction" value="See E-Registration Form" formtarget="_blank">
       <a href="Admin.php"><input type="button" name="addtransaction" value="Back"></a>
     </div>
-  </form>
+    </form>
+    <form method="POST" action="senderf.php">
+    <div class="row">
+        <input type="hidden" name="studentNumber" value = "<?php echo $studentNumber ?>">
+        <input type="submit" name="sendemail" value="Generate and Send E-Registration Form to Student">
+    </div>
+    </form>
+  
   <?php
                 }
             }

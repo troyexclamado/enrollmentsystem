@@ -1,6 +1,5 @@
 <?php
  require_once "includes/insert_email.php";
-
     /* CHECK IF ACCOUNTID IS ALREADY ENROLLED*/
 
     if(isset($_SESSION['studentnum'])){
@@ -128,7 +127,7 @@
     </section>
 
     <?php
-    if($_SESSION['email'] == '' && isset($_SESSION['studentnum'])){
+        if(isset($_SESSION['email']) ? $_SESSION['email'] == '' && isset($_SESSION['studentnum']) : ""){
     ?>
     <!-- Modal Email -->
     <div class="modal fade" id="exampleModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

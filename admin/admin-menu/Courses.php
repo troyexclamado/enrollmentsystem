@@ -44,6 +44,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
@@ -61,6 +62,32 @@
       </button>
     </div>
   </div> -->
+  <div class="custom-select">
+    <h4 id="filter"> FILTER BY : </h4>
+      <select id="course-drop-down" name="course">
+        <option value="">Course:</option>
+        <option value="BSCS">BSCS</option>
+        <option value="BSIT">BSIT</option>
+        <option value="BSEMC">BSEMC</option>
+        <option value="BSIS">BSIS</option>
+      </select>
+        <select id="year-drop-down" name="year">
+        <option value="">Year:</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        
+      </select>
+        <select id="semester-drop-down" name="semester">
+        <option value="">Section</option>
+        <option value="A">A</option>
+        <option value="A">B</option>
+        <option value="A">C</option>
+      </select>
+      <input type="button" name="filter" id="filterdata" value="Filter Data">
+      <a href="Courses.php"><input type="button" value="Reset"></a>
+    </div>
 <div class="coursestable">
 <table class="content-table">
   <thead>

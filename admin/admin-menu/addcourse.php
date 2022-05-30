@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include('dbconnection.php');
+    $datenow = date('Y-m-d');
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -14,15 +15,12 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-         <?php
-                if($_SESSION['POSITION']== "PROFESSOR"){
-                    ?> <p>PROFESSOR</p>
-                    <?php
-                } else {
-                    ?> <p>Admin </p><?php
-                }
+         <p>
+            <?php
+                echo $_SESSION['NAME'];
             ?>
-            
+            </p>
+            <p><?php echo $datenow?></p>
            </div>
          <ul>
             <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
@@ -42,6 +40,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>

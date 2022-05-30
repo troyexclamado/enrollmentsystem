@@ -28,10 +28,10 @@
             $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
             $activityresult = mysqli_query($conn, $activityquery);
 
-            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            header("Location: ../admin-menu/Subjects.php", true, 301);
         } else {
             echo '<script>alert("Updating subject failed!");</script>';
-            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            header("Location: ../admin-menu/Subjects.php", true, 301);
         }
     }
     if(isset($_POST['delete'])){
@@ -46,7 +46,7 @@
             $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
             $activityresult = mysqli_query($conn, $activityquery);
 
-            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            header("Location: ../admin-menu/Subjects.php", true, 301);
         }
     }
  ?>
@@ -90,6 +90,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>

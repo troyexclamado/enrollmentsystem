@@ -141,14 +141,21 @@ nav ul li a span.rotate{
 }
 
 
-.coursestable{
+.accountstable{
   overflow-y: scroll;
   overflow-x: hidden;
   height: 400px;
   margin-right: 10px;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 
+.activitylogtable{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  margin-right: 10px;
+  margin-top: 50px;
+}
 
 .content-table {
   border-collapse: collapse;
@@ -160,17 +167,17 @@ nav ul li a span.rotate{
   margin: auto;
 }
 
+.content-table thead{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
 .content-table thead tr {
   background-color: orange;
   color: #ffffff;
   text-align: center;
   font-weight: bold;
-}
-
-.content-table thead{
-  position: sticky;
-  top: 0;
-  z-index: 9999;
+  position: static;
 }
 
 .content-table th,
@@ -200,10 +207,18 @@ nav ul li a span.rotate{
   border-radius: 5px;
 }
 
-.search{
-  max-width: 400px;
-  width: 100%;
-
+h1 {
+ margin: 15px;
+}
+.import{
+  float: right;
+  margin-right: 20px;
+}
+.importfile{
+  float: left;
+}
+.importbutton{
+  float: right;
 }
 .search .search-box{
   position: relative;
@@ -239,149 +254,6 @@ nav ul li a span.rotate{
     cursor: pointer;
     border: none;
 }
-#check{
-  display: none;
+.searchresult{
+  display: block;
 }
-h1 {
- margin: 15px;
-}
-
-.modal {
-            display: none;
-            /* Hidden by default */
-            position: fixed;
-            /* Stay in place */
-            z-index: 1;
-            /* Sit on top */
-            padding-top: 80px;
-            /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%;
-            /* Full width */
-            height: 100%;
-            /* Full height */
-            overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
-            background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
-            overflow: auto;
-        }
-
-        /* Modal Content */
-        .modal-content {
-            max-height: 80%;
-            overflow: auto;
-            position: relative;
-            background-color: #fefefe;
-            margin: auto;
-            padding: 0;
-            border-radius: 10px;
-            border: 1px solid #888;
-            width: 80%;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            -webkit-animation-name: animatetop;
-            -webkit-animation-duration: 0.4s;
-            animation-name: animatetop;
-            animation-duration: 0.4s
-        }
-
-        /* Add Animation */
-        @-webkit-keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        @keyframes animatetop {
-            from {
-                top: -300px;
-                opacity: 0
-            }
-
-            to {
-                top: 0;
-                opacity: 1
-            }
-        }
-
-        /* The Close Button */
-        .close {
-            color: white;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal-header {
-            padding: 2px 16px;
-            background-color: orange;
-            color: white;
-        }
-
-        .modal-body {
-            padding: 2px 16px;
-        }
-
-        .modal-footer {
-            padding: 2px 16px;
-            background-color: orange;
-            color: white;
-        }.modal_popup .popup .popup_foot .popup_cancel_btn{
-	background: orange;
-}
-.sub {
-  background-color: #FFC55C;
-  border: none;
-  color: white; 
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  position: absolute;
-  left: 890px;
-  top: 70px;
-  border-radius: 15px;
-  height: 50px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, .19);
-  z-index: 1000;
-}
-form button{
-  background-color: rgb(35, 201, 118);
-  border: none;
-  color: white;
-  padding: 5px 5px 5px 5px;
-}
-
-.custom-select {
-  position: relative;
-  font-family: Arial;
-}
-.custom-select select{
-  width: 150px;
-}
-.custom-select select, h4, input {
-  display: inline-block;
-  margin-left: 10px;
-  border-radius: 5px;
-  padding: 10px 10px 10px 10px;
-}
-

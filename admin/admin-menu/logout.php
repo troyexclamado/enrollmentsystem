@@ -12,7 +12,7 @@
         unset($_SESSION['POSITION']);
         unset($_SESSION['PROFESSOR_ID']);
         unset($_SESSION['NAME']);
-        echo '<script>window.location.href="/enrollmentsystem/admin/admin-login/index.html"</script>';
+        echo '<script>window.location.href="../admin-login/index.html"</script>';
     }
 
     

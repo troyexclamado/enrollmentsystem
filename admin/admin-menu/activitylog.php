@@ -62,8 +62,10 @@
       <input type="button" name="filter" id="filterdata" value="Filter Data">
       <a href="activitylog.php"><input type="button" value="Reset"></a>
     </div>
-  <div class="activitylogtable">
-<table class="content-table">
+  <div id="searchresult">
+  </div>
+<div id="activitylogtable" class="activitylogtable">
+<table id="content-table" class="content-table">
   <thead>
     <tr>
     <th>Activity Number</th>
@@ -106,5 +108,29 @@
              $(this).addClass("active").siblings().removeClass("active");
            });
       </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#filterdata").click(function(){
+                    var date = $("#date").val();
+                    var startTime = $("#startTime").val();
+                    var endTime = $("#endTime").val();
+                    alert(date + startTime + endTime);
+                    $("#searchresult").show();
+                    $("#activitylogtable").hide();
+                    //$("#enrolledtable").hide();
+                    $.ajax({
+                        url: "activityloglivesearch.php",
+                        method: "POST",
+                        data: {date:date, startTime:startTime, endTime:endTime},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                });
+
+            });
+        </script>
    </body>
 </html>

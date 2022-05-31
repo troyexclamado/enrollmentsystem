@@ -54,11 +54,12 @@
                 $studentNumber = $_POST['studentNumber'];
                 $subjectCode = $_POST['subjectCode'];
                 $courseID = $_POST['courseID'];
+                $id = $_POST['id'];
 
                 $updatesubject = "UPDATE tblbacksubjects SET status = 'Save' WHERE accountID = $studentNumber AND subjectCode = '$subjectCode'";
                 $sqlupdatesubject = mysqli_query($conn, $updatesubject);
 
-                $removequery = "DELETE FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND subjectCode = '$subjectCode' AND courseID = $courseID";
+                $removequery = "DELETE FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND subjectCode = '$subjectCode' AND courseID = $courseID AND id = $id";
                 $sqlremovequery = mysqli_query($conn, $removequery);
 
             }
@@ -147,7 +148,7 @@
                         $courseDetails = $row['courseID'];
                     }
 
-                    $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $studentNumber";
+                    $sql = "SELECT id,subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $studentNumber";
                     $res = mysqli_query($conn, $sql);
 
                     while($row_course = mysqli_fetch_array($res)){
@@ -167,6 +168,7 @@
                         <td><?php echo $subject_name;?></td>
                         <td><?php echo $subject_units;?></td>
                         <form method="POST" action="seedetailspreenrolled.php" onsubmit="return confirm('Do you want to remove this subject?')" >
+                        <input type="hidden" name="id" value="<?php echo $row_course['id']?>">
                         <input type="hidden" name="studentNumber" value="<?php echo $studentNumber?>">
                         <input type="hidden" name="subjectCode" value="<?php echo $subject_code?>">
                         <input type="hidden" name="courseID" value="<?php echo $courseDetails?>">

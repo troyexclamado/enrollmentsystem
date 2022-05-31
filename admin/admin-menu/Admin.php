@@ -278,7 +278,7 @@
                 </thead>
             <!-- PHP CODE TO FETCH DATA FROM ROWS-->
                 <?php
-                    $withstudentnum = "SELECT * FROM tblstudents WHERE statusID = '1' LIMIT 5";
+                    $withstudentnum = "SELECT * FROM tblstudents WHERE statusID = '1' LIMIT 10";
                     $resultwithstudentnum = $conn->query($withstudentnum);
                     if ($resultwithstudentnum->num_rows > 0) 
                     {

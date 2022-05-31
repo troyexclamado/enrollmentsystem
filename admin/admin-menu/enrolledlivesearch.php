@@ -93,6 +93,7 @@
                     <tr>
                         <th>STUDENT NUMBER</th>
                         <th>NAME</th>
+                        <th>COURSE, YEAR AND SECTION</th>
                         <th>DATE ENROLLED</th>
                         <th>VIEW INFORMATION</th>
                     </tr>
@@ -124,6 +125,18 @@
                                         <?php
                                         }
                                         ?>
+                                    </td>
+                                    <td><p><?php
+                                        $courseID = $row['courseID'];
+                                        $query = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                                        $results = mysqli_query($conn, $query);
+                                        if(mysqli_num_rows($results) > 0){
+                                            $rows = mysqli_fetch_array($results);
+                                            echo $rows['courseAbbr'].' '.$rows['year'].$rows['section'];
+                                        }
+
+                                        ?>
+                                    </p>
                                     </td>
                                     <td>
                                         <p><?=$row['dateOfEnrollment']?></p>

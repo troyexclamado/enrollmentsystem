@@ -79,17 +79,19 @@
         <option value="4">4th</option>
         
       </select>
-        <select id="semester-drop-down" name="semester">
+        <select id="section-drop-down" name="section">
         <option value="">Section</option>
         <option value="A">A</option>
-        <option value="A">B</option>
-        <option value="A">C</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
       </select>
       <input type="button" name="filter" id="filterdata" value="Filter Data">
       <a href="Courses.php"><input type="button" value="Reset"></a>
     </div>
-<div class="coursestable">
-<table class="content-table">
+    <div id="searchresult">
+    </div>
+<div id="coursestable" class="coursestable">
+<table id="content-table" class="content-table">
   <thead>
     <tr>
             <th>COURSE ABBREVIATION</th>
@@ -126,131 +128,6 @@
 </div>
 </table>
 </div>
-
-
-<script>
-         var datamap = new Map([
-            [document.getElementById("myBtn"), document.getElementById("myModal")],
-            [document.getElementById("myBtn1"), document.getElementById("myModal1")],
-            [document.getElementById("myBtn2"), document.getElementById("myModal2")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
- var datamap = new Map([
-            [document.getElementById("myBtn3"), document.getElementById("myModal3")],
-            [document.getElementById("myBtn4"), document.getElementById("myModal4")],
-            [document.getElementById("myBtn5"), document.getElementById("myModal5")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-
- var datamap = new Map([
-            [document.getElementById("myBtn6"), document.getElementById("myModal6")],
-            [document.getElementById("myBtn7"), document.getElementById("myModal7")],
-            [document.getElementById("myBtn8"), document.getElementById("myModal8")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
- var datamap = new Map([
-            [document.getElementById("myBtn9"), document.getElementById("myModal9")],
-            [document.getElementById("myBtn10"), document.getElementById("myModal10")],
-            [document.getElementById("myBtn11"), document.getElementById("myModal11")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-        </script>
         <script>
 
          $('.btn').click(function(){
@@ -266,5 +143,29 @@
            });
            	var cancel_btn = document.querySelector(".cancel_btn");
 	      </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#filterdata").click(function(){
+                    var course = $("#course-drop-down").val();
+                    var year = $("#year-drop-down").val();
+                    var section = $("#section-drop-down").val();
+                    alert(course + year + section);
+                    $("#searchresult").show();
+                    $("#coursestable").hide();
+                    //$("#enrolledtable").hide();
+                    $.ajax({
+                        url: "courseslivesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, section:section},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                });
+
+            });
+        </script>
    </body>
 </html>

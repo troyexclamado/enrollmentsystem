@@ -1,48 +1,49 @@
 <?php 
     session_start();
     include('dbconnection.php');
-    $datenow = date('Y-m-d');
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
       <title>Enrollment System </title>
-      <link rel="stylesheet" href="addsub.css">
+      <link rel="stylesheet" href="addsub.css?<?php echo time();?>">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
    </head>
    <body>
       <nav class="sidebar">
          <div class="text">
-         <p>
-            <?php
-                echo $_SESSION['NAME'];
+         <?php
+                if($_SESSION['POSITION']== "PROFESSOR"){
+                    ?> <p>PROFESSOR</p>
+                    <?php
+                } else {
+                    ?> <p>Admin </p><?php
+                }
             ?>
-            </p>
-            <p><?php echo $datenow?></p>
-           </div>
+          </div>
          <ul>
-            <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
+            <li class="active"><a href="Admin.php">DASHBOARD<img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
             <li>
-               <a href="#" class="feat-btn">STUDENTS  <img src="stud.png" alt="" style="width: 20px;height:20px;">
+               <a href="#" class="feat-btn">STUDENTS<img src="stud.png" alt="" style="width: 20px;height:20px;">
                <span class="fas fa-caret-down first"></span>
                </a>
                <ul class="feat-show">
-                  <li><a href="Pre-Enrolled.php">PRE ENROLLED <img src="pending.png" alt="" style="width: 20px;height:20px;"></a></li>
-                  <li><a href="Enrolled.php">ENROLLED  <img src="enrlld.png" alt="" style="width: 20px;height:20px;"></a></li>
+                  <li><a href="Pre-Enrolled.php">PRE ENROLLED<img src="pending.png" alt="" style="width: 20px;height:20px;"></a></li>
+                  <li><a href="Enrolled.php">ENROLLED<img src="enrlld.png" alt="" style="width: 20px;height:20px;"></a></li>
                </ul>
             </li>
             
-            <li><a href="Courses.php">COURSE <img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="Courses.php">COURSE<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="Subjects.php">SUBJECTS<img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
-            <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="schedule.php">SCHEDULE<img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="activitylog.php">ACTIVITY LOG<img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php">LOG OUT<img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
 </nav>
 <br>

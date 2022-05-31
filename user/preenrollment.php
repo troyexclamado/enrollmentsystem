@@ -105,7 +105,7 @@
       {  
            if(trim($_POST["name"][$i] != ''))  
            {  
-                $sql = "INSERT INTO tblbacksubjects(subjectCode , accountID, status) VALUES('".mysqli_real_escape_string($conn, $_POST["name"][$i])."','".$accountID."','Required')";  
+                $sql = "INSERT INTO tblbacksubjects(subjectCode , studentNumber, status) VALUES('".mysqli_real_escape_string($conn, $_POST["name"][$i])."','".$accountID."','Required')";  
                 $res = mysqli_query($conn, $sql);          
            }  
       }  
@@ -136,6 +136,22 @@
         $res = mysqli_query($conn, $sql);
         if($res){
             echo "<script>window.open('irregular_enroll.php#subject-container', 'self')</script>";
+        die();
+        }
+
+
+     }   
+     if(isset($_GET['act'])){
+
+        $accountID = $_SESSION['studentnum'];
+        $subject_code = $_GET['act'];
+        $subject_code = str_replace("%20"," ","$subject_code");
+
+        $sql = "UPDATE tblbacksubjects SET status = 'Taken' WHERE studentNumber = $accountID AND subjectCode = '$subject_code'";
+        // $sql = "INSERT INTO tblbacksubjects(subjectCode, accountID, status) VALUES('$subject_code', $accountID, 'Save')";
+        $res = mysqli_query($conn, $sql);
+        if($res){
+            echo "<script>window.open('profile_subject.php#subject-container', 'self')</script>";
         die();
         }
 

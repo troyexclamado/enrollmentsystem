@@ -51,7 +51,7 @@ if(isset($_POST["submit"])){
         $mail->isHTML(true);
         
         // Mail subject
-        $mail->Subject = 'Email from local host to test';
+        $mail->Subject = 'Verify Your Account';
         
         // Mail body content
         $bodyContent = '<p>Hi '.$fname.', '.$lname.',</p>';

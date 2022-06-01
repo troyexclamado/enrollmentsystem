@@ -61,6 +61,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
@@ -153,31 +154,45 @@
                         $courseDetails = $row['courseID'];
                     }
 
-                    $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                    $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $studentNumber";
                     $res = mysqli_query($conn, $sql);
 
                     while($row_course = mysqli_fetch_array($res)){
+                        $subjectCode = $row_course['subjectCode'];
+                        $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
+                        $result = mysqli_query($conn, $subjectsquery);
+                        if(mysqli_num_rows($result) > 0){
+                            $row = mysqli_fetch_array($result);
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
                         // $subject_id = $row_course['subj_id'];
-                        $subject_code = $row_course['subjectCode'];
-                        $subject_name = $row_course['subjectDescription'];
-                        $subject_units = $row_course['subjectUnits'];
-                ?>
-
-                <tbody>
-                    <tr>
-                        <td><?php echo $subject_code;?></td>
-                        <td><?php echo $subject_name;?></td>
-                        <td><?php echo $subject_units;?></td>
-                    </tr>
-                <?php } ?>
+                        ?>
+                        <tbody>
+                            <tr>
+                                <td><?php echo $subject_code;?></td>
+                                <td><?php echo $subject_name;?></td>
+                                <td><?php echo $subject_units;?></td>
+                            </tr>
+                        <?php 
+                            
+                        }
+                    } ?>
                 </tbody>
             </table>
         </div>
     <div class="row">
-      <input type="submit" name="addtransaction" value="Generate E-Registration Form" formtarget="_blank">
+      <input type="submit" name="addtransaction" value="See E-Registration Form" formtarget="_blank">
       <a href="Admin.php"><input type="button" name="addtransaction" value="Back"></a>
     </div>
-  </form>
+    </form>
+    <form method="POST" action="senderf.php">
+    <div class="row">
+        <input type="hidden" name="studentNumber" value = "<?php echo $studentNumber ?>">
+        <input type="submit" name="sendemail" value="Generate and Send E-Registration Form to Student">
+    </div>
+    </form>
+  
   <?php
                 }
             }

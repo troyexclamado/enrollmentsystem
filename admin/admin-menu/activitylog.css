@@ -154,7 +154,7 @@ nav ul li a span.rotate{
   overflow-x: hidden;
   height: 400px;
   margin-right: 10px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .content-table {
@@ -256,4 +256,18 @@ h1 {
 }
 .searchresult{
   display: block;
+}
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+.custom-select select{
+  width: 150px;
+}
+.custom-select select, h4, input {
+  display: inline-block;
+  margin-left: 10px;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
 }

@@ -42,6 +42,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
@@ -50,8 +51,21 @@
 
 <div class="container">
   <h1> ACTIVITY LOG</h1>
-  <div class="activitylogtable">
-<table class="content-table">
+  <div class="custom-select">
+    <h4 id="filter"> FILTER BY : </h4>
+    <h4>Date</h4>
+    <input type="date" id="date">
+    <h4>Start Time</h4>
+    <input type="time" id="startTime" name="startTime" required>
+    <h4>End Time</h4>
+    <input type="time" id="endTime" name="endTime" required>
+      <input type="button" name="filter" id="filterdata" value="Filter Data">
+      <a href="activitylog.php"><input type="button" value="Reset"></a>
+    </div>
+  <div id="searchresult">
+  </div>
+<div id="activitylogtable" class="activitylogtable">
+<table id="content-table" class="content-table">
   <thead>
     <tr>
     <th>Activity Number</th>
@@ -76,7 +90,6 @@
       }
     }
   ?>
-  
 </table>
   </div>
 </div>
@@ -95,5 +108,29 @@
              $(this).addClass("active").siblings().removeClass("active");
            });
       </script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#filterdata").click(function(){
+                    var date = $("#date").val();
+                    var startTime = $("#startTime").val();
+                    var endTime = $("#endTime").val();
+                    alert(date + startTime + endTime);
+                    $("#searchresult").show();
+                    $("#activitylogtable").hide();
+                    //$("#enrolledtable").hide();
+                    $.ajax({
+                        url: "activityloglivesearch.php",
+                        method: "POST",
+                        data: {date:date, startTime:startTime, endTime:endTime},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                });
+
+            });
+        </script>
    </body>
 </html>

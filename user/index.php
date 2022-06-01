@@ -1,6 +1,5 @@
 <?php
  require_once "includes/insert_email.php";
-
     /* CHECK IF ACCOUNTID IS ALREADY ENROLLED*/
 
     if(isset($_SESSION['studentnum'])){
@@ -19,6 +18,7 @@
 <head>
     <meta name="viewport" content="with=device-width, initial-scale=1.0">
     <title>Enrollment Management Website</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
@@ -131,6 +131,7 @@
 
     <?php
     if(isset($_SESSION["email"]) && $_SESSION['email'] == '' && isset($_SESSION['studentnum'])){
+        if(isset($_SESSION['email']) ? $_SESSION['email'] == '' && isset($_SESSION['studentnum']) : ""){
     ?>
     <!-- Modal Email -->
     <div class="modal fade" id="exampleModalCenter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

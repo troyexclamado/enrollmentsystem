@@ -1,6 +1,8 @@
 <?php 
     session_start();
     include('dbconnection.php');
+
+    
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -42,6 +44,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
@@ -59,243 +62,72 @@
       </button>
     </div>
   </div> -->
-
-<table class="content-table">
+  <div class="custom-select">
+    <h4 id="filter"> FILTER BY : </h4>
+      <select id="course-drop-down" name="course">
+        <option value="">Course:</option>
+        <option value="BSCS">BSCS</option>
+        <option value="BSIT">BSIT</option>
+        <option value="BSEMC">BSEMC</option>
+        <option value="BSIS">BSIS</option>
+      </select>
+        <select id="year-drop-down" name="year">
+        <option value="">Year:</option>
+        <option value="1">1st</option>
+        <option value="2">2nd</option>
+        <option value="3">3rd</option>
+        <option value="4">4th</option>
+        
+      </select>
+        <select id="section-drop-down" name="section">
+        <option value="">Section</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+      <input type="button" name="filter" id="filterdata" value="Filter Data">
+      <a href="Courses.php"><input type="button" value="Reset"></a>
+    </div>
+    <div id="searchresult">
+    </div>
+<div id="coursestable" class="coursestable">
+<table id="content-table" class="content-table">
   <thead>
     <tr>
-    <th>COURSE ABBREVIATION</th>
-    <th>COURSE DESCRIPTION</th>
-    <th>NUMBER OF SECTIONS</th>
-    <th>ACTIONS</th>
+            <th>COURSE ABBREVIATION</th>
+            <th>COURSE DESCRIPTION</th>
+            <th>YEAR</th>
+            <th>SECTION</th>
+            <th>AVAILABLE<br>SLOT</th>
+            <th>SEMESTER</th>
+            <th>ACTION</th>
   </tr>
 </thead>
   <tr>
     <?php
-        $getCourses = "SELECT DISTINCT courseDescription, courseAbbr FROM tblcoursedetails";
+        $getCourses = "SELECT * from tblcoursedetails WHERE del = 0";
         $sqlGetCourses = mysqli_query($conn, $getCourses);
 
         while($courses = mysqli_fetch_array($sqlGetCourses)){
     ?>
     <td><?php echo $courses['courseAbbr']?></td>
     <td><?php echo $courses['courseDescription']?></td>
-    <td><?php
-        $courseAbbr = $courses['courseAbbr'];
-        $countCourse = "SELECT COUNT(courseDescription) AS numberofsections FROM tblcoursedetails WHERE courseAbbr = '$courseAbbr' AND semester = $SEMESTER";
-        $sqlCountCourse = mysqli_query($conn, $countCourse);
-
-        while($numberofsections = mysqli_fetch_array($sqlCountCourse)){
-            echo $numberofsections['numberofsections'];
-        }
-    ?></td>
+    <td><?php echo $courses['year']?></td>
+    <td><?php echo $courses['section']?></td>
+    <td><?php echo $courses['availableslots']?></td>
+    <td><?php echo $courses['semester']?></td>
     <td>
-      <button id="myBtn">VIEW DETAILS</button>
-      <button id="myBtn1">EDIT</button>
-      <button id="myBtn2">DELETE</button>
-<!-- The Modal -->
-    <div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 1 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus aspernatur perferendis ad sunt.
-                    Eius, possimus? Quae at eum repudiandae obcaecati vitae accusantium, perferendis sapiente
-                    temporibus, necessitatibus voluptatem iste cumque et?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-</div>
-
-    <!-- The Modal -->
-    <div id="myModal1" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 2 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores voluptatum ipsa cum aliquid, ex
-                    inventore, culpa obcaecati modi deleniti enim consequuntur tenetur. Earum numquam sit ratione eum
-                    sequi praesentium, unde maxime ullam iure rem mollitia perferendis eos possimus neque, nisi dicta.
-                    Obcaecati dignissimos, dolores labore rerum quisquam non explicabo repellat!</p>
-            </div>
-            <div class="modal-footer">
-                 <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- The Modal -->
-    <div id="myModal2" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">	
-            <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>Button 3 Clicked</h2>
-            </div>
-            <div class="modal-body">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit laudantium quia non laborum
-                    ea, similique ex iusto minus obcaecati optio sapiente aut eveniet porro odio veniam excepturi
-                    facilis iste fuga? Porro atque odio, fuga blanditiis voluptate ducimus veritatis id ea possimus?
-                    Facilis tempore officiis quos assumenda dolorem placeat sed veniam dolor eveniet magnam. Iure ullam
-                    odit qui, magni suscipit pariatur nesciunt temporibus aspernatur doloribus quis nobis quas esse
-                    perspiciatis, asperiores eum quidem placeat minus alias veniam molestias sit. Ipsam numquam,
-                    sapiente facere voluptatem eum, maiores blanditiis cupiditate corporis quos ratione, quia
-                    praesentium dolore nihil voluptatum impedit quae consequatur sit pariatur.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="popup_btn popup_cancel_btn">Cancel</button>
-				<button class="popup_btn popup_confirm_btn">Confirm</button>
-
-            </div>
-        </div>
-
-    </div>
-
-
+      <form action="editcoursedetails.php" method="POST" onsubmit="return confirm('Do you want to edit/delete this?')">
+        <input type="hidden" name="courseID" value="<?php echo $courses['courseID']?>">
+        <button name= "btnedit" id="myBtn1">EDIT</button>
+        <button name= "btndel" id="myBtn2">DELETE</button>
+      </form>
     </td>
   </tr>
   <?php }?>
 </div>
-
-
-<script>
-         var datamap = new Map([
-            [document.getElementById("myBtn"), document.getElementById("myModal")],
-            [document.getElementById("myBtn1"), document.getElementById("myModal1")],
-            [document.getElementById("myBtn2"), document.getElementById("myModal2")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
- var datamap = new Map([
-            [document.getElementById("myBtn3"), document.getElementById("myModal3")],
-            [document.getElementById("myBtn4"), document.getElementById("myModal4")],
-            [document.getElementById("myBtn5"), document.getElementById("myModal5")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-
- var datamap = new Map([
-            [document.getElementById("myBtn6"), document.getElementById("myModal6")],
-            [document.getElementById("myBtn7"), document.getElementById("myModal7")],
-            [document.getElementById("myBtn8"), document.getElementById("myModal8")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
- var datamap = new Map([
-            [document.getElementById("myBtn9"), document.getElementById("myModal9")],
-            [document.getElementById("myBtn10"), document.getElementById("myModal10")],
-            [document.getElementById("myBtn11"), document.getElementById("myModal11")]
-           
-  ]);
-
-        datamap.forEach((value, key) => {
-            doModal(key, value);
-        });
-
-        function doModal(anchor, popupbox) {
-
-            // Get the <span> element that closes the modal
-            var span = popupbox.getElementsByClassName("close")[0];
-
-            anchor.addEventListener("click", function (event) {
-                popupbox.style.display = "block";
-            });
-
-            span.addEventListener("click", function (event) {
-                popupbox.style.display = "none";
-            });
-
-            window.addEventListener("click", function (event) {
-                if (event.target == popupbox) {
-                    popupbox.style.display = "none";
-                }
-            });
-        }
-        </script>
+</table>
+</div>
         <script>
 
          $('.btn').click(function(){
@@ -311,5 +143,29 @@
            });
            	var cancel_btn = document.querySelector(".cancel_btn");
 	      </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#filterdata").click(function(){
+                    var course = $("#course-drop-down").val();
+                    var year = $("#year-drop-down").val();
+                    var section = $("#section-drop-down").val();
+                    alert(course + year + section);
+                    $("#searchresult").show();
+                    $("#coursestable").hide();
+                    //$("#enrolledtable").hide();
+                    $.ajax({
+                        url: "courseslivesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, section:section},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                });
+
+            });
+        </script>
    </body>
 </html>

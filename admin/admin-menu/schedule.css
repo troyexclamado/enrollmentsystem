@@ -15,10 +15,10 @@
   
 }
 .sidebar .text{
+  padding-top: 20px;
   color: white;
-  font-size: 25px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 65px;
   text-align: center;
   background: #FFC55C;
   letter-spacing: 1px;
@@ -140,16 +140,21 @@ nav ul li a span.rotate{
   background: #fff;
 }
 
+.enrolled{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  margin-right: 10px;
+  margin-top: 50px;
+}
+
 .content-table {
   border-collapse: collapse;
   font-size: 0.9em;
-  min-width: 64vw;
-  min-height: 50vh;
+  min-width: 76.5vw;
+  min-height: 10vh;
   border-radius: 5px 5px 0 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, .19);
   margin: auto;
-  margin-left: 200px;
-  margin-top: 100px;
 }
 
 .content-table thead tr {
@@ -159,8 +164,16 @@ nav ul li a span.rotate{
   font-weight: bold;
 }
 
+.content-table thead{
+  height: 10vh;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
 .content-table th,
 .content-table td {
+  padding: 5px 5px 5px 5px;
   text-align: center;
 }
 
@@ -232,20 +245,21 @@ h1 {
  margin: 15px;
 }
 .custom-select {
-  position: absolute;
+  position: relative;
   font-family: Arial;
-  right: 960px;
-  top: 160px;
- 
 }
-
-.custom-select select {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 85px;
-    border-radius: 5px;
-    min-width: 150px;
-    width: auto;
+.custom-select select{
+  width: 200px;
+}
+.custom-select select, h4, input {
+  display: inline-block;
+  margin-left: 10px;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+}
+#filter {
+  left: 20px;
+  right: 0;
 }
 
 .select-selected {
@@ -286,18 +300,13 @@ h1 {
 }
 
 
+
 .select-hide {
   display: none;
 }
 
 .select-items div:hover, .same-as-selected {
   background-color: #e6e6e6;
-}
-#filter {
-  position: absolute;
-  left: 20px;
-  right: 0;
-  top: 120px;
 }
 .space {
   height: auto;
@@ -451,4 +460,17 @@ border-radius:0.5em;
 @keyframes animatetop {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
+}
+
+.reject{
+  background-color:tomato;
+  border: none;
+  color: white;
+  padding: 5px 5px 5px 5px;
+}
+.accept{
+  background-color: rgb(35, 201, 118);
+  border: none;
+  color: white;
+  padding: 5px 5px 5px 5px;
 }

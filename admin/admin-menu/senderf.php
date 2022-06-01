@@ -1,0 +1,160 @@
+<?php
+    include('dbconnection.php');
+
+    //include phpmailer files
+    require 'PHPMailer/PHPMailer.php';
+    require 'PHPMailer/SMTP.php';
+    require 'PHPMailer/Exception.php';
+    //define name spaces
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
+    //create instance of phpmailer
+    $mail = new PHPMailer();
+    //set mailer to use smtp
+    $mail->isSMTP();
+    //define smtp host
+    $mail->Host = "smtp.gmail.com";
+    //enable smtp authentication
+    $mail->SMTPAuth = "true";
+    //set type of encryption (ssl/tls)
+    $mail->SMTPSecure = "tls";
+    //set port to connect smtp
+    $mail->Port = "587";
+    //set gmail username
+    $mail->Username = "ucc.enrollment.management2022@gmail.com";
+    //set gmail password 
+    $mail->Password = "sample0001";
+    //set email subject
+    $mail->Subject = "Your E-Registration Form";
+    if(isset($_POST['sendemail'])){
+        $studentNumber = $_POST['studentNumber'];
+        require('fpdf184/fpdf.php');
+        $querystudentdetails = "SELECT * FROM tblstudents WHERE studentNumber = $studentNumber";
+        $sql = mysqli_query($conn, $querystudentdetails);
+        if(mysqli_num_rows($sql) > 0){
+            $row = mysqli_fetch_array($sql);
+            $queryname = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $studentNumber";
+            $sql2 = mysqli_query($conn, $queryname);
+            if(mysqli_num_rows($sql2) > 0){
+                $name = mysqli_fetch_array($sql2);
+
+                //A4 WIDTH: 219mm
+                //DEFAULT MARGIN: 10mm each side
+                //WRITE HORIZONTAL: 219 (10*2)=189mm
+
+                //cell (width, height, text, border, endline, [align])
+                $pdf = new FPDF('p','mm','A4');
+
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 14);
+
+                //header part
+                $pdf->Cell(130,10,'UNIVERSITY OF CALOOCAN CITY',1,0);
+                $pdf->Cell(59,10,'CAMPUS: CONGRESS',1,1);
+
+                //DETAILS
+                $pdf->Cell(89,5,'NAME',1,0,'C');
+                $pdf->Cell(50,5,'STUDENT NUMBER',1,0,'C');
+                $pdf->Cell(50,5,'DATE',1,1,'C');
+                $pdf->Cell(89,5,$name['lastname'].' '.$name['firstname'].' '.$name['middlename'],1,0,'C');
+                $pdf->Cell(50,5,$studentNumber,1,0,'C');
+                $pdf->Cell(50,5,$row['dateOfEnrollment'],1,1,'C');
+                
+                $courseID = $row['courseID'];
+                $querycourse = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                $sql3 = mysqli_query($conn, $querycourse);
+                if(mysqli_num_rows($sql3) > 0){
+                    $courseDetails = mysqli_fetch_array($sql3);
+
+                    $pdf->Cell(70,5,'COURSE/YEAR/SECTION',1,0,'C');
+                    $pdf->Cell(39.66,5,'SEMESTER',1,0,'C');
+                    $pdf->Cell(39.66,5,'SCHOOL YEAR',1,0,'C');
+                    $pdf->Cell(39.66,5,'SCHEME',1,1,'C');
+                    $pdf->Cell(70,5,$courseDetails['courseAbbr'].' '.$courseDetails['year'].'-'.$courseDetails['section'],1,0,'C');
+                    $pdf->Cell(39.66,5,$courseDetails['semester'],1,0,'C');
+                    $pdf->Cell(39.66,5,$courseDetails['schoolYear'],1,0,'C');
+                    $pdf->Cell(39.66,5,$row['scheme'],1,1,'C');
+                }
+                
+                $pdf->Cell(189,5,'SUBJECTS',1,1);
+                //subjects
+                    $subjects1 = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND courseID = $courseID";
+                    $result = mysqli_query($conn, $subjects1);
+                    if(mysqli_num_rows($result) > 0){
+                        while($row1 = mysqli_fetch_array($result)){
+                            $subjectCode = $row1['subjectCode'];
+                            $querysubjects = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
+                            $sql4 = mysqli_query($conn, $querysubjects);
+                            if(mysqli_num_rows($sql4) > 0){
+                                $subjects = mysqli_fetch_array($sql4);
+                                $pdf->Cell(30,5,$subjects['subjectCode'],1,0);
+                                $pdf->Cell(9,5,$subjects['subjectUnits'],1,0);
+                                $pdf->Cell(150,5,$subjects['subjectDescription'],1,1);
+                            }
+                        }
+                    }
+                    
+
+                $pdf->Cell(139,5,'REMARS/PAYMENT',1,0,'C');
+                $pdf->Cell(50,5,'MIS',1,1,'C');
+                
+                $querytransaction = "SELECT * FROM tblstudenttransactions WHERE studentNumber = $studentNumber";
+                $sql5 = mysqli_query($conn, $querytransaction);
+                if(mysqli_num_rows($sql5) > 0){
+                    $transaction = mysqli_fetch_array($sql5);
+
+                    $pdf->Cell(100,5,'TF OR# '.$transaction['OR_NUMBER'],1,0,'L');
+                    $pdf->Cell(39,5,$transaction['TF_AMOUNT'],1,0,'C');
+                    $pdf->Cell(50,5,'TROY',1,1,'C');
+                    $pdf->Cell(100,5,'MF OR# '.$transaction['OR_NUMBER'],1,0,'L');
+                    $pdf->Cell(39,5,$transaction['MF_AMOUNT'],1,0,'C');
+                    $pdf->Cell(50,5,'PC',1,1,'C');
+                    $pdf->Cell(100,5,'TOTAL PAYMENT',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['totalAmount'],1,0,'C');
+                    $pdf->Cell(50,5,$row['dateOfEnrollment'],1,1,'C');
+                    $pdf->Cell(100,5,'OR DATE',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['OR_DATE'],1,0,'C');
+                    $pdf->Cell(50,5,'',1,1,'C');
+                    $pdf->Cell(100,5,'AMOUNT DUE',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['totalAmount'],1,0,'C');
+                    $pdf->Cell(50,5,'',1,1,'C');
+                    $pdf->Cell(100,5,'BALANCE',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['balance'],1,0,'C');
+                    $pdf->Cell(50,5,'',1,1,'C');
+                    $pdf->Cell(100,5,'PENALTY',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['penalty'],1,0,'C');
+                    $pdf->Cell(50,5,'',1,1,'C');
+                    $pdf->Cell(100,5,'TNC',1,0,'L');
+                    $pdf->Cell(39,5,$transaction['TNC'],1,0,'C');
+                    $pdf->Cell(50,5,'',1,1,'C');          
+                }
+                //$pdf->Output();
+
+                //set sender email
+                $mail->setFrom("ucc.enrollment.management2022@gmail.com");
+                //set email body
+                $mail->Body = "Hello, ".$name['firstname']." ".$name['middlename']." ".$name['lastname']."! (SN#: ".$studentNumber.") This is your E-Registration Form";
+                //attachment
+                $doc = $pdf->Output('S');
+                $mail->AddStringAttachment($doc, $studentNumber.'.pdf', 'base64', 'application/pdf');
+
+                //get student's email
+
+                //add recipient
+                $mail->addAddress("exclamado.troy.bscs2019@gmail.com");
+                //finally send email
+                if($mail->Send()){
+                    echo '<script>alert("Email sent successfully!")</script>';
+                    header('location: ./Enrolled.php');
+                } else {
+                    echo '<script>alert("Email failed to send")</script>';
+                }
+                //closing smtp connection
+                $mail->smtpClose();
+
+            }
+
+        }
+    }
+?>

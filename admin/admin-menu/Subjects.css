@@ -356,17 +356,15 @@ h1 {
 .custom-select {
   position: relative;
   font-family: Arial;
-  display: flex;
- 
 }
-
-.custom-select select {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 110px;
-    border-radius: 5px;
-    min-width: 150px;
-    width: auto;
+.custom-select select{
+  width: 150px;
+}
+.custom-select select, h4, input {
+  display: inline-block;
+  margin-left: 10px;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
 }
 
 .select-selected {
@@ -415,7 +413,6 @@ h1 {
   background-color: #e6e6e6;
 }
 #filter {
-  position: absolute;
   left: 20px;
   right: 0;
 }

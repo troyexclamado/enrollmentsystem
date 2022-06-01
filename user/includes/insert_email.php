@@ -3,7 +3,7 @@ include("db.inc.php");
 session_start();
 
 if(isset($_POST["submit"])){
-
+    
     $accountID = $_SESSION['studentnum'];
     $email = $_POST['email'];
     $confirmEMail = $_POST['confirm-email'];

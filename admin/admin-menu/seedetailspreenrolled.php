@@ -42,14 +42,28 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
 </nav>
 <br>
 <?php 
-        if(isset($_POST['viewDetails'])){
-            $studentNumber = $_POST['viewDetails'];
+        if(isset($_POST['viewDetails']) || isset($_POST['remove'])){
+            if(isset($_POST['remove'])){
+                $studentNumber = $_POST['studentNumber'];
+                $subjectCode = $_POST['subjectCode'];
+                $courseID = $_POST['courseID'];
+                $id = $_POST['id'];
+
+                $updatesubject = "UPDATE tblbacksubjects SET status = 'Save' WHERE accountID = $studentNumber AND subjectCode = '$subjectCode'";
+                $sqlupdatesubject = mysqli_query($conn, $updatesubject);
+
+                $removequery = "DELETE FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND subjectCode = '$subjectCode' AND courseID = $courseID AND id = $id";
+                $sqlremovequery = mysqli_query($conn, $removequery);
+
+            }
+            $studentNumber = (empty($_POST['viewDetails']) ? $_POST['studentNumber'] : $_POST['viewDetails']) ;
             $query = "SELECT * FROM tblstudents WHERE studentNumber = $studentNumber";
             $sql = mysqli_query($conn, $query);
             if(mysqli_num_rows($sql) > 0){
@@ -59,8 +73,7 @@
 <h2 style="margin-left: 20px;">STUDENT DETAILS(<?php echo $studentNumber?>)</h2>
 <div class="container">
     
-  <form method = "post" action="#">
-      <input type="hidden" name="studentNumber" value = "<?php echo $studentNumber ?>">
+  
       <div id="myModal" class="modal" style="display: block;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -121,6 +134,7 @@
                         <th>Subject Code</th>
                         <th>Subject Name</th>
                         <th>Subject Units</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <?php
@@ -134,28 +148,40 @@
                         $courseDetails = $row['courseID'];
                     }
 
-                    $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                    $sql = "SELECT id,subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $studentNumber";
                     $res = mysqli_query($conn, $sql);
 
                     while($row_course = mysqli_fetch_array($res)){
+                        $subjectCode = $row_course['subjectCode'];
+                        $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
+                        $result = mysqli_query($conn, $subjectsquery);
+                        if(mysqli_num_rows($result) > 0){
+                            $row = mysqli_fetch_array($result);
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
                         // $subject_id = $row_course['subj_id'];
-                        $subject_code = $row_course['subjectCode'];
-                        $subject_name = $row_course['subjectDescription'];
-                        $subject_units = $row_course['subjectUnits'];
                 ?>
-
                 <tbody>
                     <tr>
                         <td><?php echo $subject_code;?></td>
                         <td><?php echo $subject_name;?></td>
                         <td><?php echo $subject_units;?></td>
+                        <form method="POST" action="seedetailspreenrolled.php" onsubmit="return confirm('Do you want to remove this subject?')" >
+                        <input type="hidden" name="id" value="<?php echo $row_course['id']?>">
+                        <input type="hidden" name="studentNumber" value="<?php echo $studentNumber?>">
+                        <input type="hidden" name="subjectCode" value="<?php echo $subject_code?>">
+                        <input type="hidden" name="courseID" value="<?php echo $courseDetails?>">
+                        <td><button type="submit" name="remove" class="deletebutton">REMOVE</button></td>
+                        </form>
                     </tr>
-                <?php } ?>
+                <?php 
+                        }
+                    } ?>
                 </tbody>
             </table>
         </div>
     <div class="row">
-      <input type="submit" name="addtransaction" value="Generate E-Registration Form">
       <a href="Pre-Enrolled.php"><input type="button" name="addtransaction" value="Back"></a>
     </div>
   </form>

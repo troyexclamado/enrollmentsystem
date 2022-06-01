@@ -22,10 +22,8 @@
                 </thead>
             <!-- PHP CODE TO FETCH DATA FROM ROWS-->
                 <?php
-                    if ($result->num_rows > 0) 
-                    {
-                        while($row = $result->fetch_assoc()) 
-                        {
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
                  ?>
                             <tr>
                                 <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" > -->
@@ -73,26 +71,26 @@
                                             $sqlquery = mysqli_query($conn, $query);
                                             if(mysqli_num_rows($sqlquery) > 0){
                                                 ?>
-                                                <form method="POST" action="studenttransaction.php">
-                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
-                                                    <input type ="submit" name="update" value="Update/View Transaction">
+                                                <form method="POST" action="updatestudenttransaction.php">
+                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>" >
+                                                    <input type ="submit" name="view" value="Update/View Transaction" class="okay">
                                                 </form>
                                                 <?php
                                             } else {
                                                 ?>
                                                 <form method="POST" action="studenttransaction.php">
                                                 <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
-                                                <input type ="submit" name="add" value="Add Transaction">
+                                                <input type ="submit" name="add" value="Add Transaction" class="pending">
                                                 </form>
                                                 <?php
                                             }
                                         ?>
                                         
                                     </td>
-                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " onsubmit="return confirm('Do you want to accept/reject this?')">
                                     <td>
-                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>">Accept</button>
-                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>">Reject</button>
+                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>" class="accept">Accept</button>
+                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>" class="reject">Reject</button>
                                     </td>
                                 </form>
                             </tr>
@@ -212,6 +210,132 @@
             
             <?php
         }else {
+            echo "<h2 style='margin-left: 20px'>NO DATA FOUND</h2>";
+        }
+    }
+    if(isset($_POST['course']) || isset($_POST['year']) || isset($_POST['date'])){
+        $course = $_POST['course'];
+        $year = $_POST['year'];
+        $date = $_POST['date'];
+        //echo '<script>alert('.$date.')</script>';
+        // $query12 = "SELECT courseID FROM tblcoursedetails".(empty($course) ? (empty($year) ? : " WHERE year = $year") : " WHERE courseAbbr = '$course'"). (empty($year) ? "": " AND year = $year");
+        $query12 = "SELECT courseID FROM tblcoursedetails";
+        if(empty($course)){
+            if(empty($year)){
+                $query12 .= "";
+            } else {
+                $query12 .= " WHERE year = $year";
+            }
+        } else {
+            $query12 .= " WHERE courseAbbr = '$course'";
+            if(empty($year)){
+                $query12 .= "";
+            } else {
+                $query12 .= " AND year = $year";
+            }
+        }
+        $result12 = mysqli_query($conn, $query12);
+        
+        if(mysqli_num_rows($result12) > 0){
+        ?>
+            <div class="preenrolled">
+            <table id="preenrolled" class="content-table">
+                <thead>
+                    <tr>
+                        <th>STUDENT NUMBER</th>
+                        <th>NAME</th>
+                        <th>COURSE AND YEAR</th>
+                        <th>DATE OF<br>APPLICATION</th>
+                        <th>VIEW<br>INFORMATION</th>
+                        <th>PAYMENT<br>INFORMATION</th>
+                        <th>COMMAND</th>
+                    </tr>
+                </thead>
+                <?php
+                while($row12 = mysqli_fetch_array($result12)){
+                $courseID = $row12['courseID'];
+                    $query = "SELECT * from tblstudents WHERE statusID = 0 AND courseID = $courseID".(empty($date) ? "" : " AND dateOfEnrollment = '$date'");
+                    $result = mysqli_query($conn, $query);
+                    if ($result->num_rows > 0) {
+                        while($row = $result->fetch_assoc()) {
+                        ?>
+                            <tr>
+                                <!-- <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" > -->
+                                    <td>
+                                        <p><?=$row['studentNumber']?></p>
+                                    </td>
+                                    <td>
+                                        <p><?php 
+                                            //KUKUNIN YUNG FULLNAME SA TBLACCOUNTS
+                                            $studentNumber = $row['studentNumber'];
+                                            $getFullname = "SELECT * FROM tblstudentaccounts WHERE studentNumber = $studentNumber";
+                                            $sqlGetName = mysqli_query($conn, $getFullname);
+
+                                            while($name_result = mysqli_fetch_array($sqlGetName)) {
+                                            ?>
+                                            <p><?php echo $name_result['lastname'].", ".$name_result['firstname']." ".$name_result['middlename']?></p>
+                                            <?php
+                                            }
+                                            ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?php 
+                                        $courseID = $row['courseID'];
+                                        $query1 = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+                                        $result1 = mysqli_query($conn, $query1);
+                                        if(mysqli_num_rows($result1) > 0){
+                                            $row1 = mysqli_fetch_array($result1);
+                                            echo $row1['courseAbbr'].' '.$row1['year'];
+                                        }
+                                        ?></p>
+                                    </td>
+                                    <td>
+                                        <p><?=$row['dateOfEnrollment']?></p>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="seedetailspreenrolled.php">
+                                        <button type="submit" name="viewDetails" value="<?=$row['studentNumber']?>" >View Details</button>
+                                        </form>
+                                    </td>
+                                    </form>
+                                    <td>
+                                        <?php 
+                                            $studentNumber = $row['studentNumber'];
+                                            $query = "SELECT * FROM tblstudenttransactions WHERE studentNumber = $studentNumber";
+                                            $sqlquery = mysqli_query($conn, $query);
+                                            if(mysqli_num_rows($sqlquery) > 0){
+                                                ?>
+                                                <form method="POST" action="updatestudenttransaction.php">
+                                                    <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>" >
+                                                    <input type ="submit" name="view" value="Update/View Transaction" class="okay">
+                                                </form>
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <form method="POST" action="studenttransaction.php">
+                                                <input type="hidden" name = "studentNumber" value="<?php echo $row['studentNumber']?>">
+                                                <input type ="submit" name="add" value="Add Transaction" class="pending">
+                                                </form>
+                                                <?php
+                                            }
+                                        ?>
+                                        
+                                    </td>
+                                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?> " onsubmit="return confirm('Do you want to accept/reject this?')">
+                                    <td>
+                                        <button type="submit" name="btncmdAccept" id="btncmdAccept" value="<?=$row['studentNumber']?>" class="accept">Accept</button>
+                                        <button type="submit" name="btnreject" id="btnreject" value="<?=$row['studentNumber']?>" class="reject">Reject</button>
+                                    </td>
+                                </form>
+                            </tr>
+            <?php
+                        }//end of while loop
+                     }
+                     
+                 ?>
+        <?php
+            }
+        } else {
             echo "<h2 style='margin-left: 20px'>NO DATA FOUND</h2>";
         }
     }

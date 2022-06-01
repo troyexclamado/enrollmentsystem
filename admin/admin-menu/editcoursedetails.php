@@ -1,6 +1,19 @@
 <?php 
     session_start();
     include('dbconnection.php');
+
+    if(isset($_POST['btndel'])){
+      $courseID = $_POST['courseID'];
+      $strupdatetblcourse = "UPDATE tblcoursedetails SET del='1' WHERE courseID = $courseID ";
+      $updateresult = $conn->query($strupdatetblcourse);
+      if($updateresult){
+           echo("<script>location.href = 'Course.php';</script>");
+      }
+    }
+    if(isset($_POST['btnedit'])){
+      $courseID = $_POST['courseID'];
+      $query = "SELECT * FROM tblcoursedetails WHERE courseID = $courseID";
+      $result = mysqli_query($conn, $query);
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -14,7 +27,7 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-         <?php
+        <?php
                 if($_SESSION['POSITION']== "PROFESSOR"){
                     ?> <p>PROFESSOR</p>
                     <?php
@@ -22,7 +35,6 @@
                     ?> <p>Admin </p><?php
                 }
             ?>
-            
            </div>
          <ul>
             <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
@@ -48,64 +60,70 @@
          </ul>
 </nav>
 <br>
-<h2>ADD SUBJECT</h2>
+<h2>UPDATE COURSE DETAILS</h2>
 <div class="container">
-  <form method = "post" action="addsubject.php">
+  <form method = "post" action="c.php">
+
+    <?php 
+      if(mysqli_num_rows($result) > 0){
+        $row = mysqli_fetch_array($result);
+      
+    ?>
     <div class="row">
       <div class="col-25">
-        <label for="fname">Subject Code</label>
+        <label for="fname">Course Abbreviation</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subCodes" name="subjectCode" placeholder="Enter subject code" required>
+        <input type="text" id="subCodes" name="courseAbbr" placeholder="" value="<?=$row['courseAbbr']?>" oninput="this.value = this.value.toUpperCase()" required>
       </div>
     </div>
+
     <div class="row">
       <div class="col-25">
-        <label for="fname">Subject Description</label>
+        <label for="fname">Course Description</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subDes" name="subjectDescription" placeholder="Enter subject description" required>
+        <input type="text" id="subDes" name="courseDescription" placeholder="" value="<?=$row['courseDescription']?>" oninput="this.value = this.value.toUpperCase()" required>
       </div>
     </div>
+
     <div class="row">
       <div class="col-25">
-        <label for="lname">Subject Units</label>
+        <label for="fname">Year</label>
       </div>
       <div class="col-75">
-        <input type="text" id="subUnit" name="subjectUnits" placeholder="Enter subject units" required>
+        <input type="text" id="subDes" name="year" placeholder="" value="<?=$row['year']?>" oninput="this.value = this.value.toUpperCase()" onkeypress="return /[1-4]/i.test(event.key)" maxlength="1" required>
       </div>
     </div>
+
    <div class="row">
       <div class="col-25">
-        <label for="lname">Course</label>
+        <label for="fname">Section</label>
       </div>
       <div class="col-75">
-        <!-- <input type="text" id="subCourse" name="course" placeholder="Enter course"> -->
-        <select id="subCourse" name="course" required>
-        <?php 
-            $getCourses = "SELECT DISTINCT courseDescription FROM tblcoursedetails";
-            $sqlGetCourses = mysqli_query($conn, $getCourses);
-            while($results = mysqli_fetch_array($sqlGetCourses)){
-            ?>
-            <option><?php echo $results['courseDescription']?></option>
-        <?php } ?>
-        </select>
+        <input type="text" id="subDes" name="section" placeholder="" value="<?=$row['section']?>" oninput="this.value = this.value.toUpperCase()"  onkeypress="return /[A-C]/i.test(event.key)" maxlength="1" required>
       </div>
     </div>
+
     <div class="row">
       <div class="col-25">
-        <label for="country">Year</label>
+        <label for="country">Available Slot</label>
       </div>
       <div class="col-75">
-        <select id="subYear" name="year" required>
-          <option value="1">1st</option>
-          <option value="2">2nd</option>
-          <option value="3">3rd</option>
-          <option value="4">4th</option>
-        </select>
+        <input type="text" id="subCourse" name="availableslots" placeholder="" value="<?=$row['availableslots']?>" onkeypress="return /[0-9]/i.test(event.key)" required>
       </div>
     </div>
-      <div class="row">
+
+     <div class="row">
+      <div class="col-25">
+        <label for="country">Semester</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="subCourse" name="semester" placeholder="" value="<?=$row['semester']?>" onkeypress="return /[1-2]/i.test(event.key)" maxlength="1" required>
+      </div>
+    </div>
+
+      <!-- <div class="row">
       <div class="col-25">
         <label for="country">Semester</label>
       </div>
@@ -129,11 +147,19 @@
           <option>D</option>
         </select>
       </div>
-    </div>
+    </div> -->
       
     <div class="row">
-      <input type="submit" value="Add Subject">
+      <a href="Courses.php"><input type="button" name="addtransaction" value="Back"></a>
+      <input type="hidden" name="courseID" value = <?php echo $courseID?>>
+      <input type="submit" name="updatepick" value="Update Course Details">
+      
     </div>
+
+     <?php
+      }
+    }//end if while
+    ?>
   </form>
 </div>
 

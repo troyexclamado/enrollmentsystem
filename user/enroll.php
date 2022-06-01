@@ -299,14 +299,20 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $accountID";
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){
+                    $subjectCode = $row_course['subjectCode'];
+                    $query = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' AND courseID = $courseDetails";
+                    $resultsquery = mysqli_query($conn, $query);
+                    if(mysqli_num_rows($resultsquery) > 0){
+                        while($row = mysqli_fetch_array($resultsquery)){
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
                     // $subject_id = $row_course['subj_id'];
-                    $subject_code = $row_course['subjectCode'];
-                    $subject_name = $row_course['subjectDescription'];
-                    $subject_units = $row_course['subjectUnits'];
+                    
             ?>
 
                 <tbody>
@@ -315,7 +321,10 @@
                     <td><?php echo $subject_name;?></td>
                     <td><?php echo $subject_units;?></td>
                     </tr>
-                      <?php } ?>
+                      <?php
+                        }
+                    }
+                } ?>
                 </tbody>
                 </table>
             </div>

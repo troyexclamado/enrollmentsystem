@@ -1,7 +1,36 @@
 <?php
     require('dbconnection.php');
     session_start();
+    $datenow = date('Y-m-d');
 
+    if(isset($_POST['addavailability'])){
+      $accountID = $_SESSION['accountID'];
+      $day = $_POST['day'];
+      $startTime = $_POST['startTime'];
+      $endTime = $_POST['endTime'];
+
+      $query = "INSERT INTO tblprofessoravailability(accountID, day, startTime, endTime) VALUES($accountID, '$day', '$startTime', '$endTime')";
+      $result = mysqli_query($conn, $query);
+      if($result){
+        echo '<script>alert("Successfully Addded!")</script>';
+        echo '<script>window.location.href="../admin-menu/schedule.php"</script>';
+      } else {
+        echo '<script>alert("Failed to Add!")</script>';
+        echo '<script>window.location.href="../admin-menu/schedule.php"</script>';
+      }
+    }
+    if(isset($_POST['remove'])){
+      $id = $_POST['id'];
+      $query = "DELETE FROM tblprofessoravailability WHERE id = $id";
+      $result = mysqli_query($conn, $query);
+      if($result){
+        echo '<script>alert("Successfully Removed!")</script>';
+        echo '<script>window.location.href="../admin-menu/schedule.php"</script>';
+      } else {
+        echo '<script>alert("Failed to Remove!")</script>';
+        echo '<script>window.location.href="../admin-menu/schedule.php"</script>';
+      }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -15,234 +44,92 @@
    <body>
       <nav class="sidebar">
          <div class="text">
-         <?php
-                if($_SESSION['POSITION']== "PROFESSOR"){
-                    ?> <p>PROFESSOR</p>
-                    <?php
-                } else {
-                    ?> <p>Admin </p><?php
-                }
+          <p>
+            <?php
+                echo $_SESSION['NAME'];
             ?>
-            
+            </p>
+            <br>
+            <p><?php echo $datenow?></p>
           </div>
+          <br>
          <ul>
-            <li class="active"><a href="Admin.php">DASHBOARD <img src="dash.png" alt="" style="width: 20px;height:20px;"></i></i></a></li> 
-            <li>
-               <a href="#" class="feat-btn">STUDENTS  <img src="stud.png" alt="" style="width: 20px;height:20px;">
-               <span class="fas fa-caret-down first"></span>
-               </a>
-               <ul class="feat-show">
-                  <li><a href="Pre-Enrolled.php">PRE ENROLLED <img src="pending.png" alt="" style="width: 20px;height:20px;"></a></li>
-                  <li><a href="Enrolled.php">ENROLLED  <img src="enrlld.png" alt="" style="width: 20px;height:20px;"></a></li>
-               </ul>
-            </li>
-            
-            <li><a href="Courses.php">COURSE <img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="Subjects.php">SUBJECTS <img src="sub.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
-            <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
-            <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
       </nav>
 
 <div class="container">
-<div class="search">
-    <div class="search-box">
-      <input type="text" placeholder="Type here...">
-      <button for="check" class="icon">
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
-  </div>
-<div class="col-2">
-<h4> YOUR SUBJECTS </h4>
-<select id="subject" name="subject" onchange="update();" required>
-    <?php
-        $professorID = $_SESSION['PROFESSOR_ID'];
-        $getSubjects = "SELECT * FROM tblprofessorsubjects WHERE professorID = $professorID";
-        $sqlGetSubject = mysqli_query($conn, $getSubjects);
-        if(mysqli_num_rows($sqlGetSubject) > 0){
-          while($subjects = mysqli_fetch_array($sqlGetSubject)){
-            ?> <option><?php echo $subjects['subjectCode']?></option><?php
-          }
-        } else {
-          ?> <option value="">NO SUBJECTS YET</option><?php
-        }
-    ?> 
-</select>	
-
-</div>
-<div class="col-3">
-<button class="col-4" id="myBtn">Add Subject</button>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2>Add subject</h2>
-  </div>
-  <form method="POST" action="addsubjectprofessor.php">
-  <div class="modal-body">
-    <p>Add subject</p>
-    <select id="currentSubject" class="subject" name="subject" required>
-      <option selected disabled hidden>Select a subject</option>
-      <?php 
-        $getSubjects = "SELECT DISTINCT subjectCode, subjectDescription FROM tblsubjects";
-        $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-        if(mysqli_num_rows($sqlGetSubjects) > 0){
-          while($subjectsResult = mysqli_fetch_array($sqlGetSubjects)){
-      ?>
-      <option value="<?php echo $subjectsResult['subjectCode']?>"><?php echo $subjectsResult['subjectCode']." - ".$subjectsResult['subjectDescription']?></option>
-      <?php 
-          }
-        } else {
-          ?> <option>NO SUBJECTS AVAILABLE</option> <?php
-        }
-    ?>
-    </select>
-  </div>
-  <div class="modal-footer">
-  <button type="submit" name="professoraddsubject">Add Subject</button>
-  </div>
-  </form>
-</div>
-
-</div>
-<div class="col-1">
-<p style="float: left;"> VIEW SCHEDULE </p>
-<select style="float: right; width: 150px">
-    <option selected disabled hidden>SELECT SECTION</option>
-    <?php
-    $getCourses = "SELECT * FROM tblcoursedetails WHERE semester = $SEMESTER";
-    $sqlGetCourses = mysqli_query($conn, $getCourses);
-    while($results = mysqli_fetch_array($sqlGetCourses)){
-    ?>
-      <option><?php 
-        echo $results['courseAbbr']." ".$results['year'].$results['section']?></option>
-    <?php } ?>
-  </select>	
-</div>
-
-<h4 id="filter"> ADD SCHEDULE: </h4>
-<form method="POST" action="addscheduleprofessor.php" name ="addschedule">
-<div class="custom-select" style="width:200px;">
-  <select name="course" required>
-    <option selected disabled hidden>SELECT COURSE</option>
-  <?php
-    $getCourses = "SELECT DISTINCT courseAbbr FROM tblcoursedetails";
-    $sqlGetCourses = mysqli_query($conn, $getCourses);
-    while($results = mysqli_fetch_array($sqlGetCourses)){
-    ?>
-      <option><?php echo $results['courseAbbr']?></option>
-    <?php } ?>
+<br>
+<h2 style="margin-left: 20px; margin-top: 10px">PROFESSOR AVAILABILITY</h2> 
+<br>
+<form action="schedule.php" method="POST">
+<div class="custom-select">
+<h4 id="filter"> ADD AVAILABILITY : </h4>
+  <select id="day" name="day" required>
+    <option selected hidden diabled>Select day</option>
+    <option value="MONDAY">MONDAY</option>
+    <option value="TUESDAY">TUESDAY</option>
+    <option value="WEDNESDAY">WEDNESDAY</option>
+    <option value="THURSDAY">THURSDAY</option>
+    <option value="FRIDAY">FRIDAY</option>
+    <option value="SATURDAY">SATURDAY</option>
+    <option value="SUNDAY">SUNDAY</option>
   </select>
-  <div class="space">
-  </div>
-    <select name="year" required>
-    <option selected disabled hidden>SELECT YEAR</option>
-    <option value="1">1st</option>
-    <option value="2">2nd</option>
-    <option value="3">3rd</option>
-    <option value="4">4th</option>
-  </select>
- <div class="space">
-  </div>
-    <select name="section" required>
-    <option selected disabled hidden>SELECT SECTION</option>
-    <option value="A">A</option>
-    <option value="B">B</option>
-    <option value="C">C</option>
-    <option value="D">D</option>
-    <option value="E">E</option>
-  </select>
- <div class="space">
-  </div>
-    <select name ="semester">
-    <option selected disabled hidden>SELECT SEMESTER</option>
-    <option value=<?php echo $SEMESTER?>>2ND</option>
-  </select>
-<div class="space">
-  </div>
-<select name="day">
-    <option selected disabled hidden>SELECT DAY</option>
-    <option value="MON">MONDAY</option>
-    <option value="TUE">TUESDAY</option>
-    <option value="WED">WEDNESDAY</option>
-    <option value="THU">THURSDAY</option>
-    <option value="FRI">FRIDAY</option>
-    <option value="SAT">SATURDAY</option>
-    <option value="SUM">SUNDAY</option>
-</select>
-</div>
-<div class="col-25">
-<small>Start Time</small><input type="time" id="subUnit" size="16" name="startTime" required>
-</div>
-<div class="col-75">
-<small>End Time</small><input type="time" id="subUnit" size="16" name="endTime" required>
-</div>
-<input type="hidden" id="currentSubject" name="currentSubject">
-    <script type="text/javascript">
-			function update() {
-				// var select = document.getElementById('subject');
-				// var option = select.options[select.selectedIndex];
-        var textbox = document.forms['addschedule']['currentSubject'];
-        textbox.value = document.getElementById('subject').value;
-      }
-			update();
-		</script>
-<div class="col-18">
-<button class="myCol" type="submit" name="addschedule">Add Schedule</button>
+    <h4>Start Time</h4>
+    <input type="time" id="startTime" name="startTime" required>
+    <h4>End Time</h4>
+    <input type="time" id="endTime" name="endTime" required>
+    <input type="submit" name="addavailability" id="filterdata" value="Add Availability">
 </div>
 </form>
-
-<table class="content-table">
-  <thead>
-    <tr>
-    <th>Monday</th>
-    <th>Tuesday</th>
-    <th>Wednesday</th>
-    <th>Thursday</th>
-    <th>Friday</th>
-    <th>Saturday</th>
-    <th>Sunday</th>
-  </tr>
-</thead>
-    <?php 
-      $professorID = $_SESSION['PROFESSOR_ID'];
-      $showSchedule = "SELECT * FROM tblsubjectschedules WHERE courseID = 1 and professorID = $professorID";
-      $sqlShowSchedule = mysqli_query($conn, $showSchedule);
-      if(mysqli_num_rows($sqlShowSchedule) > 0){
-        while($schedule = mysqli_fetch_array($sqlShowSchedule)){
-    ?>
-  <tr>
-    <td><?php if($schedule['day'] == "MON"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "TUE"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "WED"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "THU"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "FRI"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "SAT"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-    <td><?php if($schedule['day'] == "SUN"){echo $schedule['subject']."<br>".date('g:i A',strtotime($schedule['startTime']))."-".date('g:i A',strtotime($schedule['endTime']));}?></td>
-  </tr>
-    <?php
-        }//end of while ($schedule = mysqli_fetch_array($sqlShowSchedule))
-      }else {
-        ?> 
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <?php
-      }//end of mysqli num rows
-    ?>
-</div>
-</div>
+<div id="searchresult"> </div>
+        <div class="enrolled" id="enrolledtable">
+            <table id="enrolled" class="content-table">
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>DAY</th>
+                        <th>AVAILABLE TIME</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <?php 
+                  $accountID = $_SESSION['accountID'];
+                  $query = "SELECT * FROM tblprofessoravailability WHERE accountID = $accountID";
+                  $result = mysqli_query($conn, $query);
+                  if(mysqli_num_rows($result) > 0){
+                    while($row = mysqli_fetch_array($result)){
+                      ?>
+                      <tr>
+                        <td><?php
+                            $accountID = $row['accountID'];
+                            $searchname = "SELECT * FROM tblaccounts WHERE accountID = $accountID";
+                            $resultsname = mysqli_query($conn, $searchname);
+                            if(mysqli_num_rows($resultsname) > 0){
+                              $row1 = mysqli_fetch_array($resultsname);
+                              echo $row1['lastname'].', '.$row1['firstname'].' '.$row1['middlename'];
+                            }
+                        ?></td>
+                        <td><?php echo $row['day']?></td>
+                        <td><?php echo date('h:i A', strtotime($row['startTime'])).'-'.date('h:i A', strtotime($row['endTime']))?></td>
+                        <form action="schedule.php" method="post" onsubmit="return confirm('Do you want to edit/remove this?')">
+                        <td>
+                          <input type="hidden" name="id" value="<?php echo $row['id']?>">
+                          <input type="submit" class="accept" name="edit" value = "Edit">
+                          <input type="submit" class="reject" name= "remove" value = "Remove">
+                        </td>
+                        </form>
+                      </tr>
+                      <?php
+                    }
+                  }
+                ?>
+            </table>
+                </div>
+        </div>
 
 <script>
   // Get the modal

@@ -193,10 +193,60 @@
                         <?php } ?>
                     </form>
                 </div>
+            <div class="subject-container">
+            <div class="subject">
+            <table>
+                <thead>
+                    <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Subject Units</th>
+                    </tr>
+                </thead>
+
+                <?php
+
+                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
+                $result = mysqli_query($conn, $sql1);
+                while($row = mysqli_fetch_array($result)){
+                    // $course = $row['course'];
+                    // $year = $row['year'];
+                    // $semester = $row['semester'];
+                    $courseDetails = $row['courseID'];
+                }
+
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $accountID";
+                $res = mysqli_query($conn, $sql);
+
+                while($row_course = mysqli_fetch_array($res)){
+                    $subjectCode = $row_course['subjectCode'];
+                    $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' AND courseID = $courseDetails";
+                    $result = mysqli_query($conn, $subjectsquery);
+                    if(mysqli_num_rows($result) > 0){
+                        while($row = mysqli_fetch_array($result)){
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
+                    // $subject_id = $row_course['subj_id'];
+            ?>
+
+                <tbody>
+                <tr>
+                    <td><?php echo $subject_code;?></td>
+                    <td><?php echo $subject_name;?></td>
+                    <td><?php echo $subject_units;?></td>
+                    </tr>
+                      <?php
+                            }
+                        }
+                    }?>
+                </tbody>
+                </table>
             </div>
         </div>
     </div>
-
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber='$accountID' AND courseID = $courseDetails";
+                $res = mysqli_query($conn, $sql);
 
 
     <section class="footer">

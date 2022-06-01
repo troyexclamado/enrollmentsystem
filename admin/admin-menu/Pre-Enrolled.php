@@ -59,6 +59,7 @@
             <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
             <?php }?>
             <li><a href="studentaccounts.php">STUDENT ACCOUNTS<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
+            <li><a href="professoravailability.php">AVAILABILITY<img src="crse.png" alt="" style="width: 20px;height:20px;"></a></a></li>
             <li><a href="activitylog.php">ACTIVITY LOG <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
             <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
          </ul>
@@ -173,29 +174,27 @@
                     <button for="check" class="icon"><i class="fas fa-search"></i></button>
                 </div>
             </div>
-            <h4 id="filter"> FILTER BY : </h4>
-<div class="custom-select" style="width:200px;">
-  <select>
-    <option value="0">Course:</option>
-    <option value="1">BSCS</option>
-    <option value="2">BSIT</option>
-    <option value="3">BSEMC</option>
-    <option value="4">BSIS</option>
+            
+<div class="custom-select">
+<h4 id="filter"> FILTER BY : </h4>
+  <select id="course">
+    <option value="">Course:</option>
+    <option value="BSCS">BSCS</option>
+    <option value="BSIT">BSIT</option>
+    <option value="BSEMC">BSEMC</option>
+    <option value="BSIS">BSIS</option>
   </select>
-    <select>
-    <option value="0">Year:</option>
+    <select id="year">
+    <option value="">Year:</option>
     <option value="1">1st</option>
     <option value="2">2nd</option>
     <option value="3">3rd</option>
     <option value="4">4th</option>
     
   </select>
-    <select>
-    <option value="0">Date of Enrollment:</option>
-    <option value="1">Ascending</option>
-    <option value="2">Descending</option>
-    
-  </select>
+    <input type="date" id="date">
+    <input type="button" name="filter" id="filterdata" value="Filter Data">
+    <a href="Pre-Enrolled.php"><input type="button" value="Reset"></a>
 </div>
 <div id="searchresult"></div>
     <div id="divpreenrolled"class="preenrolled">
@@ -365,11 +364,20 @@
 
                 if(isset($_POST['btnreject'])){
                     $studentNumber  = $_POST['btnreject'];
+                    $courseDetails;
+                    $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = $studentNumber";
+                    $result = mysqli_query($conn, $sql1);
+                    while($row = mysqli_fetch_array($result)){
+                        $courseDetails = $row['courseID'];
+                    }
                     //echo $preID;
                     //$deleteinfo = "delete from tblstudentinfo where accountID = '$preID'";
                     $rejectinfo = "update tblstudents set statusID='3' where studentNumber = $studentNumber";
                     $resultrejectinfo = $conn->query($rejectinfo);
                     if($resultrejectinfo){
+                        $querydeletesub = "DELETE FROM tblenrolledsubjects WHERE studentNumber = $studentNumber AND courseID = $courseDetails";
+                        $resultdeletesub = mysqli_query($conn, $querydeletesub);
+
                          //activity log
                          $name = $_SESSION['NAME'];
                          $activity = 'REJECTED STUDENT '.$studentNumber;
@@ -425,28 +433,29 @@
                                     echo 'yey';
                                 }
 
-                                if($studentType == "REGULAR"){
-                                    $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
-                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
-                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                            $subjectCode = $subjects['subjectCode'];
-                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
-                                        }
-                                    }
-                                }else if ($studentType = "IRREGULAR"){
-                                    $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
-                                    $sqlGetSubjects = mysqli_query($conn, $getSubjects);
-                                    if(mysqli_num_rows($sqlGetSubjects) > 0){
-                                        while($subjects = mysqli_fetch_array($sqlGetSubjects)){
-                                            $subjectCode = $subjects['subjectCode'];
-                                            $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
-                                            $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
-                                        }
-                                    }
+                                // if($studentType == "REGULAR"){
+                                //     $getSubjects = "SELECT * FROM tblsubjects WHERE courseID = $data_courseID";
+                                //     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                //     if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                //         while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                //             $subjectCode = $subjects['subjectCode'];
+                                //             $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                //             $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                //         }
+                                //     }
+                                // }else
+                                // if ($studentType = "IRREGULAR"){
+                                //     $getSubjects = "SELECT * FROM tblbacksubjects WHERE studentNumber = $studentNum AND (status = 'Required' OR status = 'Taken')";
+                                //     $sqlGetSubjects = mysqli_query($conn, $getSubjects);
+                                //     if(mysqli_num_rows($sqlGetSubjects) > 0){
+                                //         while($subjects = mysqli_fetch_array($sqlGetSubjects)){
+                                //             $subjectCode = $subjects['subjectCode'];
+                                //             $enrollSubjects = "INSERT INTO tblenrolledsubjects(studentNumber, subjectCode) VALUES($studentNum, '$subjectCode')";
+                                //             $sqlEnrollSubjects = mysqli_query($conn, $enrollSubjects);
+                                //         }
+                                //     }
                 
-                                }
+                                // }
 
                                 $sqlinsert = "UPDATE tblstudents SET dateOfEnrollment = '$datenow', statusID = 1 WHERE studentNumber = $studentNum";
                                 $updatedate = mysqli_query($conn, $sqlinsert);
@@ -580,27 +589,68 @@ var datamap = new Map([
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#search").keyup(function(){
-                    var input = $(this).val();
-                    //alert(input);
-                    if(input != null){
-                        $("#searchresult").show();
-                        $("#preenrolled").hide();
-                        $("#divpreenrolled").hide();
-                        $.ajax({
-                            url: "preenrolledlivesearch.php",
-                            method: "POST",
-                            data: {input:input},
+                //$("#search").keyup(function(){
+                $("#search").keypress(function(e){
+                    if(e.which == 13){
+                        var input = $(this).val();
+                        //alert(input);
+                        if(input != null){
+                            $("#searchresult").show();
+                            $("#preenrolled").hide();
+                            $("#divpreenrolled").hide();
+                            $.ajax({
+                                url: "preenrolledlivesearch.php",
+                                method: "POST",
+                                data: {input:input},
 
-                            success:function(data){
-                                $("#searchresult").html(data);
-                            }
-                        })
-                    } else {
-                        $("#searchresult").hide();
-                        $("#preenrolled").show();
-                        //$("#accountstable").show();
+                                success:function(data){
+                                    $("#searchresult").html(data);
+                                }
+                            })
+                        } else {
+                            $("#searchresult").hide();
+                            $("#preenrolled").show();
+                            //$("#accountstable").show();
+                        }
                     }
+                });
+                $("#filterdata").click(function(){
+                    var course = $("#course").val();
+                    var year = $("#year").val();
+                    var date = $("#date").val();
+                    alert(course + year + date);
+                    $("#searchresult").show();
+                    $("#preenrolled").hide();
+                    $("#divpreenrolled").hide();
+                    $.ajax({
+                        url: "preenrolledlivesearch.php",
+                        method: "POST",
+                        data: {course:course, year:year, date:date},
+
+                        success:function(data){
+                            $("#searchresult").html(data);
+                        }
+                    })
+                    // var input = $(this).val();
+                    // //alert(input);
+                    // if(input != null){
+                    //     $("#searchresult").show();
+                    //     $("#subjectstable").hide();
+                    //     //$("#pagination").hide();
+                    //     $.ajax({
+                    //         url: "livesearch.php",
+                    //         method: "POST",
+                    //         data: {input:input},
+
+                    //         success:function(data){
+                    //             $("#searchresult").html(data);
+                    //         }
+                    //     })
+                    // } else {
+                    //     $("#searchresult").hide();
+                    //     $("#myTable").show();
+                    //     //$("#pagination").show();
+                    // }
                 });
             });
         </script>

@@ -1,5 +1,5 @@
 <?php
- require('includes/db.inc.php');
+ require('including/db.inc.php');
     session_start();
     if(isset($_SESSION['studentnum'])){
           $accountID = $_SESSION['studentnum'];
@@ -169,7 +169,7 @@
                     <p>Send password verification code to reset your password?</p>
                 </div>
                 <div class="modal-footer">
-                    <form method="POST" action="includes/profile_changepass.php">
+                    <form method="POST" action="including/profile_changepass.php">
                         <button type="submit" class="btn btn-primary" name="confirm">Send Verification</button>
                     </form>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -346,7 +346,7 @@
                 </div>
                 <div class="center">
                     <div class="password-container">
-                        <form method="POST" action="includes/profile_changepass.php">
+                        <form method="POST" action="including/profile_changepass.php">
                             <label for="name">New Password</label>
                             <input type="password" name="password" required>
                             <label for="name">Confirm Password</label>

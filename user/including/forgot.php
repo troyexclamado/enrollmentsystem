@@ -2,12 +2,13 @@
 include("db.inc.php");
 session_start();
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 if(isset($_POST["submit"])){
 
@@ -35,15 +36,16 @@ if(isset($_POST["submit"])){
              die();
         }
 
-        $mail = new PHPMailer;
+        $mail = new PHPMailer();
 
-        $mail->isSMTP();                      
-        $mail->Host = 'smtp.gmail.com';      
-        $mail->SMTPAuth = true;              
-        $mail->Username = 'ucc.enrollment.management2022@gmail.com';   // Your Email
-        $mail->Password = 'sample0001';   // Your password
-        $mail->SMTPSecure = 'tls';        
-        $mail->Port = 587;                 
+        $mail->isSMTP();
+        $mail->SMTPAuth = "true";                        
+        $mail->Host = "smtp.gmail.com";      
+        $mail->SMTPSecure = "tls";        
+        $mail->Port = "587";   
+        $mail->Username = "ucc.enrollment.management2022@gmail.com";   // Your Email
+        $mail->Password = "sample0001";   // Your password
+                      
 
         // Add a recipient
         $mail->addAddress($email);
@@ -51,7 +53,7 @@ if(isset($_POST["submit"])){
         $mail->isHTML(true);
 
         // Mail subject
-        $mail->Subject = 'Verify account';
+        $mail->Subject = "Verify account";
 
         // Mail body content
         $bodyContent = '<p>Hi '.$fname.', '.$lname.',</p>';
@@ -68,11 +70,11 @@ if(isset($_POST["submit"])){
     }
         // Send email 
     if(!$mail->send()) { 
-        echo 'Message could not be sent. Mailer Error: '.$mail->ErrorInfo; 
+        echo 'Message could not be sent. Mailer Error: '.$mail->ErrorInfo;
     } else { 
         header('location: ../confirmemail.php');
-        die();
         // echo 'Message has been sent.'; 
     } 
+    $mail->smtpClose();
 }
 ?>

@@ -1,5 +1,5 @@
 <?php 
-  require('includes/db.inc.php');
+  require('including/db.inc.php');
   session_start();
 ?>
 <!DOCTYPE html>
@@ -30,7 +30,7 @@
                 <h2>Enter Your Student Number</h2>
                 <p>Please enter your student number to search for your account.</p>
                 <label for="studentnum">Student Number</label>
-                <form method="POST" action="includes/forgot.php">
+                <form method="POST" action="including/forgot.php">
                     <input type="text" name="studentnumber" placeholder="Enter your student number" required>
                     <?php 
         if(isset($_SESSION["not_exist"])){

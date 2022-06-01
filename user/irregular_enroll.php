@@ -1,5 +1,5 @@
 <?php
-    require('includes/db.inc.php');
+    require('including/db.inc.php');
     session_start();
 
     if(isset($_SESSION['studentnum']) && !empty($_SESSION['studentnum'])){

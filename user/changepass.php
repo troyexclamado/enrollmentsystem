@@ -1,5 +1,5 @@
 <?php 
-  require('includes/db.inc.php');
+  require('including/db.inc.php');
   session_start();
   unset($_SESSION["security_code"]);
 ?>
@@ -31,7 +31,7 @@
                 <h2>Choose a New Password</h2>
                 <p>Create a new password that is at least 6 characters long.</p>
                 <label for="studentnum">New Password</label>
-                <form method="POST" action="includes/newpass.php">
+                <form method="POST" action="including/newpass.php">
                     <input type="text" name="newpass" placeholder="Enter your student number" required>
                     <?php 
                     if(isset($_SESSION["less"]))

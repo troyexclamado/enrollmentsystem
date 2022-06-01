@@ -28,7 +28,7 @@
             <div class="content">
                 <h2>Enter Security Number</h2>
                 <p>Please check your email for a message with your code. Your code is 6 numbers long.</p>
-                <form method="POST" action="includes/security_code.php">
+                <form method="POST" action="including/security_code.php">
                     <div class="form-content">
                         <input type="text" name="sec_code" placeholder="Enter Code" required>
                         <div class="text-content">

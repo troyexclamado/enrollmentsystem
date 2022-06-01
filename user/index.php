@@ -1,5 +1,5 @@
 <?php
- require_once "includes/insert_email.php";
+ require_once "including/insert_email.php";
     /* CHECK IF ACCOUNTID IS ALREADY ENROLLED*/
 
     if(isset($_SESSION['studentnum'])){

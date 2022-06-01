@@ -1,5 +1,5 @@
 <?php
-require_once"includes/login_inc.php";
+require_once"including/login_inc.php";
 unset($_SESSION["studentnumber"]);
 unset($_SESSION["email"]);
 ?>

@@ -1,7 +1,7 @@
 <?php
     session_start();
     
-    require('includes/db.inc.php');
+    require('including/db.inc.php');
 
 
     /* REGULAR STUDENT SUBMIT */

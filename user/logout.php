@@ -11,6 +11,7 @@
 
     unset($_SESSION['studentnum']);
     unset($_SESSION['email']);
+    unset($_SESSION["code"]);
 
     // session_destroy();
     //  session_unset();

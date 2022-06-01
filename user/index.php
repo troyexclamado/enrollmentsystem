@@ -22,6 +22,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
@@ -77,7 +80,7 @@
                     <li><a href="login.php">Profile</a></li>
                     <?php }
                 else {
-                    echo '<li><a href="profile.php">Profile</a></li>';                    
+                    echo '<li><a href="profile.php#profiletop">Profile</a></li>';                    
                 } ?>
                     <li><a href="contactus.php">Contact</a></li>
                     <?php
@@ -127,6 +130,7 @@
     </section>
 
     <?php
+    if(isset($_SESSION["email"]) && $_SESSION['email'] == '' && isset($_SESSION['studentnum'])){
         if(isset($_SESSION['email']) ? $_SESSION['email'] == '' && isset($_SESSION['studentnum']) : ""){
     ?>
     <!-- Modal Email -->
@@ -151,13 +155,13 @@
                                 echo '<input type="email" name="email" placeholder="sample@sample@gmail.com" required> ';
                             }
                             ?>
-                            
+
                         </div>
                         <?php 
                             if(isset($_SESSION["email_exist"])){
                             ?>
-                            <span class="email-exist"><?php echo $_SESSION["email_exist"]?></span>
-                            <?php } 
+                        <span class="email-exist"><?php echo $_SESSION["email_exist"]?></span>
+                        <?php } 
                             else{
 
                             }?>
@@ -191,7 +195,7 @@
 
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

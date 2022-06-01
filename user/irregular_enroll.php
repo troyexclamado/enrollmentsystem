@@ -241,7 +241,6 @@
                 <div class="intro">
                     <div class="intro-title">
                 <p>Back Subjects * </p>
-                <span>Insert Subject Code (for example "CS 101") </span>
                     </div>
                 </div>
             </div>
@@ -251,8 +250,17 @@
             <div class="subject-container">
             <table class="table table-bordered" id="dynamic_field">  
                 <tr>  
-                <td><input type="text" name="name[]" placeholder="Enter Subject Code" class="form-control name_list" required /></td>  
-                <td><button type="button" name="add" id="add" class="btn btn-success" >Add More</button></td>  
+                <td><select name="name[]" class="form-control name_list">
+                <option selected disabled hidden value="">SELECT YOUR COURSE</option>
+                <?php 
+                                $getsubjects = "SELECT DISTINCT subjectCode FROM tblsubjects ORDER BY subjectCode ASC";
+                                $sqlsubjects = mysqli_query($conn, $getsubjects);
+                                while($results = mysqli_fetch_array($sqlsubjects)){
+                            ?>
+                            <option><?php echo $results['subjectCode']?></option>
+                            <?php } ?>
+                        </select></td>
+                        <td><button type="button" name="add" id="add" class="btn btn-success" required>Add More</button></td>
                 </tr>  
             </table> 
             </div>
@@ -323,7 +331,7 @@
                     $subjectCode = $row['subjectCode'];
                 
 
-                $getsubject = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode'";
+                $getsubject = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' limit 1";
                 $res = mysqli_query($conn, $getsubject);
                 if(mysqli_num_rows($res) > 0){
                     $subjectrow = mysqli_fetch_array($res);
@@ -408,29 +416,30 @@
             }
         }
 
-        $(document).ready(function(){  
-      var i=1;  
-      $('#add').click(function(){  
-           i++;  
-           $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Enter Subject Code" class="form-control name_list" required/></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
-      });  
-      $(document).on('click', '.btn_remove', function(){  
-           var button_id = $(this).attr("id");   
-           $('#row'+button_id+'').remove();  
-      });  
-      $('#submit').click(function(){            
-           $.ajax({  
-                url:"preenrollment.php",  
-                method:"POST",  
-                data:$('#add_name').serialize(),  
-                success:function(data)  
-                {  
-                     alert(data);  
-                     $('#add_name')[0].reset();  
-                }  
-           });  
-      });  
- });  
+        $(document).ready(function() {
+        var i = 1;
+        $('#add').click(function() {
+            i++;
+            $('#dynamic_field').append('<tr id="row' + i +
+                '"><td><select name="name[]" class="form-control name_list"> <option selected disabled hidden value="">SELECT YOUR COURSE</option> <?php $getsubjects = "SELECT DISTINCT subjectCode FROM tblsubjects"; $sqlsubjects = mysqli_query($conn, $getsubjects); while($results = mysqli_fetch_array($sqlsubjects)){ ?> <option><?php echo $results['subjectCode']?></option> <?php } ?> </select></td><td><button type="button" name="remove" id="' +
+                i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
+        });
+        $(document).on('click', '.btn_remove', function() {
+            var button_id = $(this).attr("id");
+            $('#row' + button_id + '').remove();
+        });
+        $('#submit').click(function() {
+            $.ajax({
+                url: "preenrollment.php",
+                method: "POST",
+                data: $('#add_name').serialize(),
+                success: function(data) {
+                    alert(data);
+                    $('#add_name')[0].reset();
+                }
+            });
+        });
+    });
         
     </script>
 </body>

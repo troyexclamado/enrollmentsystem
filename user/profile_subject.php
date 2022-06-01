@@ -143,18 +143,57 @@
                 <div class="profile-image">
                     <img src="img/admin.png">
                     <div class="profile-top">
-                        <span class="name">Andrei Nowell G. Ong</span>
-                        <span class="pre">Pre-Enrolled</span>
+                        <?php 
+                        $name = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$accountID'";
+                        $nameres = mysqli_query($conn, $name);
+                        while($row = mysqli_fetch_array($nameres)){
+                         $fname = $row['firstname'];
+                         $lname = $row['lastname'];
+                        }
+                        ?>
+                        <span class="name"><?php echo $fname . ", " . $lname;?></span>
+                        <?php 
+                            $query = "SELECT statusID FROM tblstudents WHERE studentNumber = '$accountID'";
+                            $results = mysqli_query($conn, $query);
+                            if(mysqli_num_rows($results) > 0){
+                                $row = mysqli_fetch_array($results);
+                                $statusID = $row['statusID'];
+
+                                if($statusID == 0){
+                                    ?>
+                                    <span class="pre">Pending</span>
+                                    <?php
+                                } else if ($statusID == 1){
+                                    ?>
+                                    <span class="pre">Enrolled</span>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span class="pre">Rejected</span>
+                                    <form method="POST" action="enrollagain.php">
+                                        <input type="hidden" name="studentNumber" value="<?php echo $accountID?>">
+                                        <input type="submit" name="submit" value="Click to enroll again">    
+                                    </form>
+                                    <?php
+                                    
+                                }
+                            }
+                            else {
+                                ?>
+                                    <span class="pre">Not yet Enrolled</span>
+                                <?php
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="dark"></div>
                 <div class="choices">
                     <ul>
                         <span><a href="">My Account</a></span>
-                        <li><a href="">Profile</a></li>
+                        <li><a href="profile.php">Profile</a></li>
                         <li><a href="profile_changepass.php#changetop">Change Password</a></li>
                         <span><a href="">Enrollment</a></span>
-                        <li><a href="">Subject</a></li>
+                        <li><a href="">Subjects</a></li>
 
                     </ul>
                 </div>
@@ -193,14 +232,19 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql = "SELECT * FROM tblsubjects WHERE courseID = $courseDetails";
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $accountID";
                 $res = mysqli_query($conn, $sql);
 
                 while($row_course = mysqli_fetch_array($res)){
+                    $subjectCode = $row_course['subjectCode'];
+                    $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' AND courseID = $courseDetails";
+                    $result = mysqli_query($conn, $subjectsquery);
+                    if(mysqli_num_rows($result) > 0){
+                        while($row = mysqli_fetch_array($result)){
+                            $subject_code = $row['subjectCode'];
+                            $subject_name = $row['subjectDescription'];
+                            $subject_units = $row['subjectUnits'];
                     // $subject_id = $row_course['subj_id'];
-                    $subject_code = $row_course['subjectCode'];
-                    $subject_name = $row_course['subjectDescription'];
-                    $subject_units = $row_course['subjectUnits'];
             ?>
 
                             <tbody>
@@ -209,7 +253,10 @@
                                     <td><?php echo $subject_name;?></td>
                                     <td><?php echo $subject_units;?></td>
                                 </tr>
-                                <?php } ?>
+                                <?php }
+                                    }    
+                                    }
+                                 ?>
                             </tbody>
                         </table>
                     </div>
@@ -238,7 +285,8 @@
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject Name</th>
-                                    <th>Action</th>
+                                    <th>Units</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                             </thead>
                             <?php
@@ -252,88 +300,32 @@
                     $courseDetails = $row['courseID'];
                 }
 
-                $sql3 = "SELECT * FROM tblbacksubjects WHERE studentNumber = $accountID AND status = 'Save'";
-                $res = mysqli_query($conn, $sql3);
-                while($row_subjects = mysqli_fetch_array($res)){
-                    $subject_id =   $row_subjects['backsubjectID'];
-                    $subject_code = $row_subjects['subjectCode'];
-                    $status = $row_subjects['status'];
+                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber='$accountID' AND courseID = $courseDetails";
+                $res = mysqli_query($conn, $sql);
 
-                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code' AND courseID = $courseDetails";
-                    $success = mysqli_query($conn, $sql);
-
-                    while($row = mysqli_fetch_array($success)){
-                    $subject_name = $row['subjectDescription'];
+                while($row_course = mysqli_fetch_array($res)){
+                    // $subject_id = $row_course['subj_id'];
+                    $subject_code = $row_course['subjectCode'];
+                    $getSubjectDetails = "SELECT * FROM tblsubjects WHERE subjectCode = '$subject_code'";
+                    $subject_name = "";
+                    $subject_units = "";
+                    $sqlGetSubjectDetails = mysqli_query($conn, $getSubjectDetails);
+                    while($subjectsresult = mysqli_fetch_array($sqlGetSubjectDetails)){
+                        $subject_name = $subjectsresult['subjectDescription'];
+                        $subject_units = $subjectsresult['subjectUnits'];
+                    }
 
                 ?>
                             <tbody>
                                 <tr>
                                     <td><?php echo $subject_code;?></td>
                                     <td><?php echo $subject_name;?></td>
-                                    <td><a class="untake"
-                                            href="preenrollment.php?act=<?php echo $subject_code;?>">Take</a></td>
+                                    <td><?php echo $subject_units;?></td>
+                                    <!-- <td><a class="untake"
+                                            href="preenrollment.php?act=<?php echo $subject_code;?>">Take</a></td> -->
                                 </tr>
                                 <?php } ?>
-                                <?php } ?>
-                                <?php
-                 $sql = "SELECT subjectCode FROM tblbacksubjects WHERE studentNumber = '$accountID' AND status = 'Required'";
-                $result = mysqli_query($conn, $sql);
-                while($row = mysqli_fetch_array($result)){
-                    $subjectCode = $row['subjectCode'];
-                
-
-                $getsubject = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' limit 1";
-                $res = mysqli_query($conn, $getsubject);
-                while($subjectrow = mysqli_fetch_array($res)){
-                    $subjectName = $subjectrow['subjectDescription'];
-            
-                    ?>
-                                <tr>
-                                    <td><?php echo $subjectCode;?></td>
-                                    <td><?php echo $subjectName;?></td>
-                                    <td>
-                                        <p class="required">Required</p>
-                                    </td>
-                                </tr>
-                                <?php } ?>
-                                <?php } ?>
-                                <?php
-                   $sql5 = "SELECT * FROM tblbacksubjects WHERE studentNumber = '$accountID' AND status = 'Taken'";
-                   $res = mysqli_query($conn, $sql5);
-                
-                   if($res == true){
-                    while($row_subj = mysqli_fetch_array($res)){
-
-                    $subj_id =   $row_subj['backsubjectID'];
-                    $subj_code = $row_subj['subjectCode'];
-                    $status = $row_subj['status'];
-                    
-                    $courseDetails = "";
-                    $sql2 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
-                        $result = mysqli_query($conn, $sql2);
-                        while($row = mysqli_fetch_array($result)){
-                            // $course = $row['course'];
-                            // $year = $row['year'];
-                            // $semester = $row['semester'];
-                            $courseDetails = $row['courseID'];
-                        }
-                    $sql = "SELECT * FROM tblsubjects WHERE subjectCode = '$subj_code' AND courseID = '$courseDetails'";
-                    $success = mysqli_query($conn, $sql);
-
-                    while($row = mysqli_fetch_array($success)){
-                    $subject_name = $row['subjectDescription'];
-
-                   ?>
-                                <tr>
-                                    <td><?php echo $subj_code;?></td>
-                                    <td><?php echo $subject_name;?></td>
-                                    <td>
-                                        <p class="required">Taken</p>
-                                    </td>
-                                    <?php } ?>
-                                    <?php }
-                } ?>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>

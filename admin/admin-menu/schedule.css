@@ -249,7 +249,7 @@ h1 {
   font-family: Arial;
 }
 .custom-select select{
-  width: 200px;
+  width: 100px;
 }
 .custom-select select, h4, input {
   display: inline-block;

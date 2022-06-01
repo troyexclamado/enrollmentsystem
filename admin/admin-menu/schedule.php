@@ -8,8 +8,9 @@
       $day = $_POST['day'];
       $startTime = $_POST['startTime'];
       $endTime = $_POST['endTime'];
+      $subject = $_POST['subject'];
 
-      $query = "INSERT INTO tblprofessoravailability(accountID, day, startTime, endTime) VALUES($accountID, '$day', '$startTime', '$endTime')";
+      $query = "INSERT INTO tblprofessoravailability(accountID, subject, day, startTime, endTime) VALUES($accountID, '$subject', '$day', '$startTime', '$endTime')";
       $result = mysqli_query($conn, $query);
       if($result){
         echo '<script>alert("Successfully Addded!")</script>';
@@ -69,7 +70,7 @@
 <div class="custom-select">
 <h4 id="filter"> ADD AVAILABILITY : </h4>
   <select id="day" name="day" required>
-    <option selected hidden diabled>Select day</option>
+    <option selected hidden diabled>Day</option>
     <option value="MONDAY">MONDAY</option>
     <option value="TUESDAY">TUESDAY</option>
     <option value="WEDNESDAY">WEDNESDAY</option>
@@ -78,6 +79,20 @@
     <option value="SATURDAY">SATURDAY</option>
     <option value="SUNDAY">SUNDAY</option>
   </select>
+  <select id="subject" name="subject">
+  <option selected hidden diabled>Subject</option>
+    <?php
+        $query = "SELECT DISTINCT subjectCode, subjectDescription FROM tblsubjects";
+        $results = mysqli_query($conn, $query);
+        if(mysqli_num_rows($results) > 0){
+            while($rows = mysqli_fetch_array($results)){
+            ?>
+                <option value="<?php echo $rows['subjectCode']?>"><?php echo $rows['subjectCode'].'-'.$rows['subjectDescription']?></option>
+            <?php
+            }
+        }
+    ?>
+    </select>
     <h4>Start Time</h4>
     <input type="time" id="startTime" name="startTime" required>
     <h4>End Time</h4>
@@ -92,6 +107,7 @@
                     <tr>
                         <th>NAME</th>
                         <th>DAY</th>
+                        <th>SUBJECT</th>
                         <th>AVAILABLE TIME</th>
                         <th>ACTIONS</th>
                     </tr>
@@ -114,14 +130,20 @@
                             }
                         ?></td>
                         <td><?php echo $row['day']?></td>
+                        <td><?php echo $row['subject']?></td>
                         <td><?php echo date('h:i A', strtotime($row['startTime'])).'-'.date('h:i A', strtotime($row['endTime']))?></td>
-                        <form action="schedule.php" method="post" onsubmit="return confirm('Do you want to edit/remove this?')">
                         <td>
+                          <form method="POST" action="editschedule.php" onsubmit="return confirm('Do you want to edit this?')">
                           <input type="hidden" name="id" value="<?php echo $row['id']?>">
                           <input type="submit" class="accept" name="edit" value = "Edit">
+                          </form>
+                          <form action="schedule.php" method="post" onsubmit="return confirm('Do you want to remove this?')">
+                          <input type="hidden" name="id" value="<?php echo $row['id']?>">
                           <input type="submit" class="reject" name= "remove" value = "Remove">
+                          </form>
+                          
                         </td>
-                        </form>
+                        
                       </tr>
                       <?php
                     }

@@ -592,16 +592,16 @@ p {
     color: rgba(0, 0, 0, 0.555);
 }
 .information{
-    width: 40%;
+    width: 60%;
     margin: 2rem 1rem;
-    text-align: right;
+    text-align: left;
     display: inline-block;
-
+}
+.information p span{
+    text-align: left;
 }
 
 form input{
-    margin: 1rem;
-    width: 50%;
     background-color: #fff;
     color: #000;
     border: none;

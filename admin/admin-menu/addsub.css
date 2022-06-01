@@ -104,6 +104,13 @@ nav ul li a span.rotate{
    height: 100vh;
    background: #FFF;
 }
+.container input[type="time"]{
+  float: left;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 12px 12px 12px;
+  border-radius: 5px;
+}
 
 .mytabs{
     display: flex;
@@ -276,6 +283,7 @@ input[type=submit]:hover {
   }
 }
 h2 {
+  margin-left: 20px;
   position: absolute;
   left: 260px;
   z-index: 1;

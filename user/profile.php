@@ -138,17 +138,48 @@
                         }
                         ?>
                         <span class="name"><?php echo $fname . ", " . $lname;?></span>
-                        <span class="pre">Pre-Enrolled</span>
+                        <?php 
+                            $query = "SELECT statusID FROM tblstudents WHERE studentNumber = '$accountID'";
+                            $results = mysqli_query($conn, $query);
+                            if(mysqli_num_rows($results) > 0){
+                                $row = mysqli_fetch_array($results);
+                                $statusID = $row['statusID'];
+
+                                if($statusID == 0){
+                                    ?>
+                                    <span class="pre">Pending</span>
+                                    <?php
+                                } else if ($statusID == 1){
+                                    ?>
+                                    <span class="pre">Enrolled</span>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span class="pre">Rejected</span>
+                                    <form method="POST" action="enrollagain.php">
+                                        <input type="hidden" name="studentNumber" value="<?php echo $accountID?>">
+                                        <input type="submit" name="submit" value="Click to enroll again">    
+                                    </form>
+                                    <?php
+                                    
+                                }
+                            }
+                            else {
+                                ?>
+                                    <span class="pre">Not yet Enrolled</span>
+                                <?php
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="dark"></div>
                 <div class="choices">
                     <ul>
                         <span><a href="">My Account</a></span>
-                        <li><a href="">Profile</a></li>
+                        <li><a href="profile.php">Profile</a></li>
                         <li><a href="profile_changepass.php#changetop">Change Password</a></li>
                         <span><a href="">Enrollment</a></span>
-                        <li><a href="profile_subject.php">Subject</a></li>
+                        <li><a href="profile_subject.php">Subjects</a></li>
 
                     </ul>
                 </div>
@@ -172,12 +203,18 @@
                          $email = $row['email'];
                      
                     ?>
-                        <label>Name</label>
-                        <input disabled="disabled" type="text" value="<?php echo $fname . ", ". $lname;?>">
-                        <label>Student Number</label>
-                        <input disabled="disabled" type="text" value="<?php echo $studentnum;?>">
-                        <label>Email</label>
+                        <p>Name
+                        <span><?php echo $fname . ", ". $lname;?></span>
+                        </p>
+                        <!-- <input disabled="disabled" type="text" value="<?php echo $fname . ", ". $lname;?>"> -->
+                        <p>Student Number
+                        <span><?php echo $studentnum;?></span>
+                        </p>
+                        <!-- <input disabled="disabled" type="text" value="<?php echo $studentnum;?>"> -->
+                        <p>Email
                         <span><?php echo $email;?></span>
+                        </p>
+                        <!-- <input disabled="disabled" type="text" value="<?php echo $email;?>"> -->
                         <?php } ?>
                         <?php 
                     $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
@@ -186,69 +223,24 @@
                        $contact = $row['contactNumber'];
                        $birthday = $row['birthday'];
                     ?>
-                        <label>Mobile Number</label>
-                        <input disabled="disabled" type="text" value="<?php echo $contact;?>">
-                        <label>Date of Birth</label>
-                        <input disabled="disabled" type="text" value="<?php echo $birthday;?>">
+                        <p>Mobile Number
+                        <span><?php echo $contact;?></span>
+                        </p>
+                        <!-- <input disabled="disabled" type="text" value="<?php echo $contact;?>"> -->
+                        <p>Date of Birth
+                        <span><?php echo $birthday;?></span>
+                        </p>
+                        <!-- <input disabled="disabled" type="text" value="<?php echo $birthday;?>"> -->
                         <?php } ?>
                     </form>
+                    
                 </div>
-            <div class="subject-container">
-            <div class="subject">
-            <table>
-                <thead>
-                    <tr>
-                <th>Subject Code</th>
-                <th>Subject Name</th>
-                <th>Subject Units</th>
-                    </tr>
-                </thead>
-
-                <?php
-
-                $sql1 = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
-                $result = mysqli_query($conn, $sql1);
-                while($row = mysqli_fetch_array($result)){
-                    // $course = $row['course'];
-                    // $year = $row['year'];
-                    // $semester = $row['semester'];
-                    $courseDetails = $row['courseID'];
-                }
-
-                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE courseID = $courseDetails AND studentNumber = $accountID";
-                $res = mysqli_query($conn, $sql);
-
-                while($row_course = mysqli_fetch_array($res)){
-                    $subjectCode = $row_course['subjectCode'];
-                    $subjectsquery = "SELECT * FROM tblsubjects WHERE subjectCode = '$subjectCode' AND courseID = $courseDetails";
-                    $result = mysqli_query($conn, $subjectsquery);
-                    if(mysqli_num_rows($result) > 0){
-                        while($row = mysqli_fetch_array($result)){
-                            $subject_code = $row['subjectCode'];
-                            $subject_name = $row['subjectDescription'];
-                            $subject_units = $row['subjectUnits'];
-                    // $subject_id = $row_course['subj_id'];
-            ?>
-
-                <tbody>
-                <tr>
-                    <td><?php echo $subject_code;?></td>
-                    <td><?php echo $subject_name;?></td>
-                    <td><?php echo $subject_units;?></td>
-                    </tr>
-                      <?php
-                            }
-                        }
-                    }?>
-                </tbody>
-                </table>
-            </div>
-        </div>
+            
     </div>
-                $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber='$accountID' AND courseID = $courseDetails";
-                $res = mysqli_query($conn, $sql);
+                <!-- $sql = "SELECT subjectCode FROM tblenrolledsubjects WHERE studentNumber='$accountID' AND courseID = $courseDetails";
+                $res = mysqli_query($conn, $sql); -->
 
-
+                        
     <section class="footer">
         <h4>About Us</h4>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.Aliquam explicabo ad possimus eveniet, minus

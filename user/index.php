@@ -130,7 +130,6 @@
     </section>
 
     <?php
-    if(isset($_SESSION["email"]) && $_SESSION['email'] == '' && isset($_SESSION['studentnum'])){
         if(isset($_SESSION['email']) ? $_SESSION['email'] == '' && isset($_SESSION['studentnum']) : ""){
     ?>
     <!-- Modal Email -->

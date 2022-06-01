@@ -23,12 +23,14 @@
 
                 $name = $results['firstname'].' '.$results['middlename'].' '.$results['lastname'];
                 $_SESSION['NAME'] = $name;
+                $_SESSION['FIRSTNAME'] = $results['firstname'];
 
                 echo '<script>alert("Welcome to Enrollment Management System!")</script>';
                 echo '<script>window.location.href="../admin-menu/schedule.php"</script>';
             }
             $name = $results['firstname'].' '.$results['middlename'].' '.$results['lastname'];
             $_SESSION['NAME'] = $name;
+            $_SESSION['FIRSTNAME'] = $results['firstname'];
             //activity log
             $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('LOGGED IN', '$name')";
             $activityresult = mysqli_query($connection, $activityquery);

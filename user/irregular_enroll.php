@@ -251,7 +251,7 @@
             <table class="table table-bordered" id="dynamic_field">  
                 <tr>  
                 <td><select name="name[]" class="form-control name_list">
-                <option selected disabled hidden value="">SELECT YOUR COURSE</option>
+                <option selected disabled hidden value="">SELECT YOUR SUBJECTS</option>
                 <?php 
                                 $getsubjects = "SELECT DISTINCT subjectCode FROM tblsubjects ORDER BY subjectCode ASC";
                                 $sqlsubjects = mysqli_query($conn, $getsubjects);
@@ -320,7 +320,22 @@
                 <tr>
                     <td><?php echo $subject_code;?></td>
                     <td><?php echo $subject_name;?></td>
-                    <td><a class="untake" href="preenrollment.php?action=<?php echo $subject_code;?>" >Take</a></td>
+                    <?php 
+                        $sql = "SELECT * FROM tblstudents WHERE studentNumber = '$accountID'";
+                        $resu = mysqli_query($conn, $sql);
+                        if(mysqli_num_rows($resu) > 0){
+                            $rows = mysqli_fetch_array($resu);
+                            if($rows['statusID'] == 1){
+                                ?>
+                                <td><a class="untake">Take</a></td>
+                                <?php
+                            }else {
+                                ?>
+                                <td><a class="untake" href="preenrollment.php?action=<?php echo $subject_code;?>" >Take</a></td>
+                                <?php
+                            }
+                        }
+                    ?>
                     </tr>
                     <?php } ?>
                 <?php } ?>

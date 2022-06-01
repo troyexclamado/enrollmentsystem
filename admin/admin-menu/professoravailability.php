@@ -7,7 +7,7 @@
    <head>
       <meta charset="utf-8">
       <title>Enrollment System </title>
-      <link rel="stylesheet" href="ENROLLED.css?<?php echo time();?>">
+      <link rel="stylesheet" href="Enrolled.css?<?php echo time();?>">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
    </head>
@@ -75,6 +75,20 @@
         <option value="SATURDAY">SATURDAY</option>
         <option value="SUNDAY">SUNDAY</option>
     </select>
+    <select id="subject" name="subject">
+  <option selected hidden diabled>Subject</option>
+    <?php
+        $query = "SELECT DISTINCT subjectCode, subjectDescription FROM tblsubjects";
+        $results = mysqli_query($conn, $query);
+        if(mysqli_num_rows($results) > 0){
+            while($rows = mysqli_fetch_array($results)){
+            ?>
+                <option value="<?php echo $rows['subjectCode']?>"><?php echo $rows['subjectCode'].'-'.$rows['subjectDescription']?></option>
+            <?php
+            }
+        }
+    ?>
+    </select>
     <h4>Start Time</h4>
     <input type="time" id="startTime" name="startTime">
     <h4>End Time</h4>
@@ -90,6 +104,7 @@
                     <th>ACCOUNT ID</th>
                     <th>NAME</th>
                     <th>DAY</th>
+                    <th>SUBJECT</th>
                     <th>TIME</th>
                 </tr>
             </thead>
@@ -111,6 +126,7 @@
                             }
                         ?></td>
                         <td><?php echo $row['day']?></td>
+                        <td><?php echo $row['subject']?></td>
                         <td><?php echo date('h:i A', strtotime($row['startTime'])).'-'.date('h:i A', strtotime($row['endTime']))?></td>
                     </tr>
                         <?php
@@ -204,14 +220,15 @@ var datamap = new Map([
                     var day = $("#day").val();
                     var startTime = $("#startTime").val();
                     var endTime = $("#endTime").val();
-                    alert(day + startTime + endTime);
+                    var subject = $("#subject").val();
+                    alert(day + startTime + endTime + subject);
                     $("#searchresult").show();
                     $("#enrolled").hide();
                     $("#enrolledtable").hide();
                     $.ajax({
                         url: "professoravailabilitylivesearch.php",
                         method: "POST",
-                        data: {day:day, startTime:startTime, endTime:endTime},
+                        data: {day:day, startTime:startTime, endTime:endTime, subject:subject},
 
                         success:function(data){
                             $("#searchresult").html(data);

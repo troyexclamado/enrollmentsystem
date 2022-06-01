@@ -281,8 +281,47 @@
                 <div class="profile-image">
                     <img src="img/admin.png">
                     <div class="profile-top">
-                        <span class="name">Andrei Nowell G. Ong</span>
-                        <span class="pre">Pre-Enrolled</span>
+                    <?php 
+                        $name = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$accountID'";
+                        $nameres = mysqli_query($conn, $name);
+                        while($row = mysqli_fetch_array($nameres)){
+                         $fname = $row['firstname'];
+                         $lname = $row['lastname'];
+                        }
+                        ?>
+                        <span class="name"><?php echo $fname . ", " . $lname;?></span>
+                        <?php 
+                            $query = "SELECT statusID FROM tblstudents WHERE studentNumber = '$accountID'";
+                            $results = mysqli_query($conn, $query);
+                            if(mysqli_num_rows($results) > 0){
+                                $row = mysqli_fetch_array($results);
+                                $statusID = $row['statusID'];
+
+                                if($statusID == 0){
+                                    ?>
+                                    <span class="pre">Pending</span>
+                                    <?php
+                                } else if ($statusID == 1){
+                                    ?>
+                                    <span class="pre">Enrolled</span>
+                                    <?php
+                                } else {
+                                    ?>
+                                    <span class="pre">Rejected</span>
+                                    <form method="POST" action="enrollagain.php">
+                                        <input type="hidden" name="studentNumber" value="<?php echo $accountID?>">
+                                        <input type="submit" name="submit" value="Click to enroll again">    
+                                    </form>
+                                    <?php
+                                    
+                                }
+                            }
+                            else {
+                                ?>
+                                    <span class="pre">Not yet Enrolled</span>
+                                <?php
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="dark"></div>
@@ -292,7 +331,7 @@
                         <li><a href="profile.php#profiletop">Profile</a></li>
                         <li><a href="">Change Password</a></li>
                         <span><a href="">Enrollment</a></span>
-                        <li><a href="profile_subject.php">Subject</a></li>
+                        <li><a href="profile_subject.php">Subjects</a></li>
 
                     </ul>
                 </div>

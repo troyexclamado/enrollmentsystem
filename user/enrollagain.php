@@ -13,7 +13,7 @@ if(isset($_POST['submit'])){
         if(isset($_SESSION['position'])){
             unset($_SESSION['position']);
         }
-        echo '<script>window.location.href="/enrollmentsystem/user/index.php"</script>';
+        echo '<script>window.location.href="index.php"</script>';
     }else {
         echo '<script>alert("failed")</script>';
     }

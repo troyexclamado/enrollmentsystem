@@ -15,11 +15,11 @@ if(isset($_POST["submit"])){
 
     $sql = "SELECT * FROM tblstudentaccounts WHERE studentNumber = '$studentnum'";
     $result = mysqli_query($conn, $sql);
-    
+
     if(mysqli_num_rows($result) == 1){
         $row = mysqli_fetch_assoc($result);
         if($row['studentNumber'] == $studentnum){
-        
+
         $_SESSION["studentnumber"] = $row['studentNumber'];
         $studentnum = $row['studentNumber'];
         $_SESSION["email"] = $row['email'];
@@ -28,7 +28,7 @@ if(isset($_POST["submit"])){
         $lname = $row['lastname'];
         $six_digit_random_number = random_int(100000, 999999);
         $_SESSION["security_code"] = $six_digit_random_number;
-        
+
         if($email == ''){
             $_SESSION["nothing"] = "Sorry, email does not exist";
             header('location: ../forgotpass.php');
@@ -47,18 +47,18 @@ if(isset($_POST["submit"])){
 
         // Add a recipient
         $mail->addAddress($email);
-        
+
         $mail->isHTML(true);
-        
+
         // Mail subject
-        $mail->Subject = 'Verify Your Account';
-        
+        $mail->Subject = 'Verify account';
+
         // Mail body content
         $bodyContent = '<p>Hi '.$fname.', '.$lname.',</p>';
         $bodyContent .= '<p>We received a request to reset your UCC enrollment account password.
         <br>Enter the following password reset code:</p><br><h4>'.$six_digit_random_number.'</h4>';
         $mail->Body    = $bodyContent;
-            
+
         }
     }
     else{

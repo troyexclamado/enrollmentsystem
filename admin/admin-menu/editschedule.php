@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include('dbconnection.php');
+    $datenow = date('Y-m-d');
 
     if(isset($_POST['updateavailability'])){
         $id = $_POST['id'];
@@ -31,26 +32,25 @@
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
-      <title>Enrollment System </title>
+      <title>Edit Schedule | Enrollment System </title>
+      <link rel="icon" type="image/x-icon" href="logo-icon.png">
       <link rel="stylesheet" href="addsub.css">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
    </head>
    <body>
       <nav class="sidebar">
-         <div class="text">
-        <?php
-                if($_SESSION['POSITION']== "PROFESSOR"){
-                    ?> <p>PROFESSOR</p>
-                    <?php
-                } else {
-                    ?> <p>Admin </p><?php
-                }
+      <div class="text">
+            <p>
+            <?php
+                echo $_SESSION['NAME'];
             ?>
-           </div>
+            </p>
+            <p><?php echo $datenow?></p>
+         </div>
          <ul>
-            <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
-            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="schedule.php"><img src="schedule.png" alt="" style="width: 20px;height:20px;"> SCHEDULE </a></li>
+            <li><a href="logout.php"><img src="actlog.png" alt="" style="width: 20px;height:20px;"> LOG OUT </a></li>
          </ul>
 </nav>
 <br>

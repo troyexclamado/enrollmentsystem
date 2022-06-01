@@ -24,7 +24,8 @@
 <!DOCTYPE html>
 <head>
     <meta name="viewport" content="with=device-width, initial-scale=1.0">
-    <title>Enroll</title>
+    <title>Pre-Enrollment | Enrollment System </title>
+    <link rel="icon" type="image/x-icon" href="logo-icon.png">
     <link rel="stylesheet" href="style.css?<?php echo time();?>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -12,7 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/changepass.css?<?php echo time();?>">
-    <title>Document</title>
+    <title>Change Password | Enrollment System </title>
+    <link rel="icon" type="image/x-icon" href="logo-icon.png">
 </head>
 
 <body>

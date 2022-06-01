@@ -10,6 +10,6 @@
         $sqlAddSubjectProfessor = mysqli_query($conn, $addsubjectProfessor);
   
         echo '<script>alert("Subject Added!")</script>';
-        echo '<script>window.location.href="/enrollmentsystem/admin/admin-menu/schedule.php"</script>';
+        echo '<script>window.location.href="schedule.php"</script>';
     }
  ?>

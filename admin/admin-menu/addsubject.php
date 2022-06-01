@@ -29,7 +29,7 @@
             $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
             $activityresult = mysqli_query($conn, $activityquery);
             
-            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            header("Location: Subjects.php", true, 301);
             exit();
         } else {
             //ichecheck yung mga ininput tas hahanapin sa tblcoursedetails, pag may nahanap na kaparehas kukunin yung value ng courseID
@@ -49,7 +49,7 @@
             $activityquery = "INSERT INTO tblactivitylog(activity, incharge) VALUES('$activity', '$name')";
             $activityresult = mysqli_query($conn, $activityquery);
 
-            header("Location: /enrollmentsystem/admin/admin-menu/Subjects.php", true, 301);
+            header("Location: Subjects.php", true, 301);
             echo 'why?';
         }
     }

@@ -11,7 +11,8 @@ unset($_SESSION["email"]);
     <link rel="stylesheet" type="text/css" href="css/login.css?<?php echo time();?>">
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Enrollment Management System</title>
+    <title>Login | Enrollment System </title>
+    <link rel="icon" type="image/x-icon" href="logo-icon.png">
 </head>
 
 <body>

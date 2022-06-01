@@ -37,7 +37,8 @@
 <html lang="en" dir="ltr">
    <head>
       <meta charset="utf-8">
-      <title>Enrollment System </title>
+      <title>Availability | Enrollment System </title>
+      <link rel="icon" type="image/x-icon" href="logo-icon.png">
       <link rel="stylesheet" href="schedule.css?<?php echo time();?>">
       <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
@@ -56,9 +57,9 @@
           <br>
          <ul>
             <?php if(!empty($_SESSION['POSITION']) && ($_SESSION['POSITION'] == "PROFESSOR")){ ?> 
-            <li><a href="schedule.php">SCHEDULE <img src="schedule.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="schedule.php"><img src="schedule.png" alt="" style="width: 20px;height:20px;"> SCHEDULE </a></li>
             <?php }?>
-            <li><a href="logout.php">LOG OUT <img src="actlog.png" alt="" style="width: 20px;height:20px;"></a></li>
+            <li><a href="logout.php"><img src="actlog.png" alt="" style="width: 20px;height:20px;"> LOG OUT </a></li>
          </ul>
       </nav>
 
